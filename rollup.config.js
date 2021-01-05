@@ -7,7 +7,7 @@ import json from '@rollup/plugin-json'
 /** @type {import('rollup').RollupOptions} */
 const config = {
     input: [
-        'src/entry.ts'
+        'src/beautypanel.ts'
     ],
     output: {
         file: 'index.js',
