@@ -7,7 +7,8 @@
         "declaration": false,
         "experimentalDecorators": true,
         "resolveJsonModule": true,
-        "importHelpers": true
+        "importHelpers": true,
+        "allowSyntheticDefaultImports": true
     },
     "include": [
         "src/**/*.ts"

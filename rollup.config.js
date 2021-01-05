@@ -4,6 +4,8 @@ import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript'
 import json from '@rollup/plugin-json'
 
+const extensions = ['.js', '.ts'];
+
 /** @type {import('rollup').RollupOptions} */
 const config = {
     input: [
@@ -14,10 +16,24 @@ const config = {
         format: 'cjs'
     },
     plugins: [
-        resolve(),
-        json(),
+        // Allows node_modules resolution
+        resolve({
+            mainFields: ['jsnext:main', 'module', 'main'],
+            extensions: ['.mjs', '.js']
+        }),
+        // Bundle JSON files
+        json({
+            compact: true,
+            exclude: [
+                'node_modules',
+            ],
+            preferConst: true,
+            namedExports: false
+        }),
+        // Compile TypeScript/JavaScript files
         typescript(),
-        cjs()
+        // Convert cjs and umd modules to esm
+        cjs({ extensions }),
     ]
 }
 
