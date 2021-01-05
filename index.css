@@ -1,0 +1,20 @@
+body {
+    color: white;
+    padding: 0 16px;
+}
+
+#center {
+    border: 1px solid #808080;
+    border-radius: 4px;
+    padding: 16px;
+}
+
+#error-output {
+    margin-top: 1rem;
+    display: flex;
+    padding: 16px;
+    background-color: red;
+}
+#error-output[hidden] {
+    display: none;
+}

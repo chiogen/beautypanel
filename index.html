@@ -1,31 +1,24 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <script src="index.js"></script>    
-</head>
-<style>
-  body {
-    color: white;
-    padding: 0 16px;
-  }
-  li:before {
-    content: '• ';
-    width: 3em;
-  }
 
-  #layers {
-    border: 1px solid #808080;
-    border-radius: 4px;
-    padding: 16px;
-  }
-</style>
+<head>
+  <script src="index.js"></script>
+  <link rel="stylesheet" href="./index.css" />
+</head>
+
 <body>
   <sp-heading>Beautypanel</sp-heading>
-  <sp-body id="layers">
-    
+  <sp-body id="center">
+    Hello World!
   </sp-body>
   <footer>
     <sp-button id="btnPopulate">Button</sp-button>
   </footer>
+  <div id="error-panel">
+    <div id="error-message"></div>
+    <button id="error-action-close">Close</button>
+  </div>
+  
 </body>
+
 </html>
