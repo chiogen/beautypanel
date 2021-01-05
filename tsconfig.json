@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "moduleResolution": "node",
+        "target": "ES2020",
+        "module": "ES2020",
+        "sourceMap": false,
+        "declaration": false,
+        "experimentalDecorators": true,
+        "resolveJsonModule": true,
+        "importHelpers": true
+    },
+    "include": [
+        "src/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
