@@ -12,25 +12,25 @@ i18next.init({
     }
 });
 
-for (const language in resources) {
 
-    const data = resources[language];
-    if (!data) {
-        continue;
+// Load localization resources
+export const localizationLoaded = new Promise<void>((fulfill) => {
+    for (const language in resources) {
+        const data = resources[language];
+        if (!data) {
+            continue;
+        }
+        i18next.addResourceBundle(language, 'common', data);
     }
 
-    i18next.addResourceBundle(language, 'common', data);
-}
+    fulfill();
+});
 
-export const localizationLoaded = Promise.resolve();
 
+// Apply localizations to static html elements
 localizationLoaded.then(() => {
-
-    const elements = document.body.querySelectorAll<HTMLElement>('[locale]');
-
-    for (const el of elements) {
-        const key = el.getAttribute('locale');
-        el.innerHTML = i18next.t(key);
-    }
-
+    document.body.querySelectorAll<HTMLElement>('[locale]').forEach(element => {
+        const key = element.getAttribute('locale');
+        element.innerHTML = i18next.t(key);
+    });
 })
