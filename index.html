@@ -2,23 +2,41 @@
 <html>
 
 <head>
-  <link rel="stylesheet" href="./index.css" />
+	<link rel="stylesheet" href="./index.css" />
 </head>
 
 <body>
-  <sp-heading>Beautypanel</sp-heading>
-  <sp-body id="center">
-    Hello World!
-  </sp-body>
-  <footer>
-    <sp-button id="btnPopulate">Button</sp-button>
-  </footer>
-  <div id="error-panel">
-    <div id="error-message"></div>
-    <button id="error-action-close">Close</button>
-  </div>
-  <script src="index.js"></script>
-  
+	<div id="center">
+
+		<div id="tools" class="page" active>
+			<div id="tools-general">
+				<div id="tools-general-grid">
+					<div>
+						<sp-button>Frequenztrennung</sp-button>
+						<sp-button>D&B Gradient</sp-button>
+					</div>
+					<div>
+						<sp-button>Vignette</sp-button>
+						<sp-button>D&B Gray</sp-button>
+					</div>
+				</div>
+				<div>
+					<sp-button>Speichern JPG 2048</sp-button>
+				</div>
+			</div>			
+		</div>
+
+		<div id="sharpen" class="page">
+
+		</div>
+
+		<div id="effects" class="page">
+
+		</div>
+
+	</div>
+
 </body>
+<script async src="index.js"></script>
 
 </html>

@@ -3,11 +3,12 @@ import cjs from '@rollup/plugin-commonjs'
 import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript'
 import json from '@rollup/plugin-json'
+import scss from 'rollup-plugin-scss'
 
 const extensions = ['.js', '.ts'];
 
 /** @type {import('rollup').RollupOptions} */
-const config = {
+const app = {
     input: [
         'src/beautypanel.ts'
     ],
@@ -30,6 +31,13 @@ const config = {
             preferConst: true,
             namedExports: false
         }),
+        // Stylesheets
+        scss({
+            output: 'index.css',
+            includePaths: ['node_modules'],
+            compiler: require('sass'),
+            watch: 'src/styles'
+        }),
         // Compile TypeScript/JavaScript files
         typescript(),
         // Convert cjs and umd modules to esm
@@ -37,4 +45,6 @@ const config = {
     ]
 }
 
-export default config;
+export default [
+    app
+];

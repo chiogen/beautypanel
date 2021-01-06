@@ -1,0 +1,22 @@
+// https://www.adobe.io/photoshop/uxp/uxp/reference-html/General/Unsupported%20Elements/
+
+i, em { font-style: italic; }
+strong { font-weight: bold; }
+q:before { content: '“'; }
+q:after { content: '”'; }
+blockquote { margin: 1em; }
+pre { white-space: pre; }
+code { font-family: Courier; }
+ul {
+    margin-left: 1em;
+}
+li:before {
+    content: '•';
+    display: inline-block;
+    text-align: center;
+    margin-left: -1em;
+    width: 1em;
+}
+title {
+    display: none;
+}

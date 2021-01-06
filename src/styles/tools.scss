@@ -1,0 +1,17 @@
+#tools {
+    position: relative;
+    button, sp-button {
+        display: flex;
+        flex-grow: 1;
+        margin: 5px;
+    }
+}
+#tools-general-grid {
+    display: flex;
+    > div {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        width: 50%;
+    }
+}

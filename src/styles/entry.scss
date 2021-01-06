@@ -1,0 +1,28 @@
+@import "./polyfills.scss";
+@import "./button.scss";
+@import "./tools.scss";
+
+body {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#center {
+    padding: 4px;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.page {
+  &:not([active]) {
+    display: none;
+  }
+}
