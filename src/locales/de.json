@@ -1,7 +1,14 @@
 {
+    "tabbar": {
+        "tools": "Werkzeuge",
+        "sharpen": "Schärfe",
+        "effects": "Effekte"
+    },
     "frequencySeparation": "Frequenztrennung",
     "vignette": "Vignette",
     "dodgeAndBurnGradient": "D&B Gradient",
     "dodgeAndBurnGray": "D&B Gray",
-    "saveJpg2048": "Speichern JPG 2048"
+    "saveJpg2048": "Speichern JPG 2048",
+    "opacity": "Deckkraft",
+    "hardness": "Härte"
 }

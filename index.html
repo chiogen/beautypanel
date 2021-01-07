@@ -8,6 +8,18 @@
 <body>
 	<div id="center">
 
+		<div id="tabbar">
+			<div id="tabbar-tools" class="tab" page="tools" locale="tabbar.tools" ></div>
+			<div class="separator"></div>
+			<div id="tabbar-sharpen" class="tab" page="sharpen" locale="tabbar.sharpen"></div>
+			<div class="separator"></div>
+			<div id="tabbar-effects" class="tab" page="effects" locale="tabbar.effects"></div>
+			<div class="separator"></div>
+			<div id="tabbar-settings" class="tab">
+				<img width="12" height="12" src="icons/ic_settings_white_48dp_1x.png" />
+			</div>
+		</div>
+
 		<div id="tools" class="page" active>
 			<div id="tools-general">
 				<div id="tools-general-grid">
@@ -23,7 +35,34 @@
 				<div>
 					<sp-button locale="saveJpg2048"></sp-button>
 				</div>
-			</div>			
+			</div>
+			<hr>
+			<div id="tools-shortcuts">
+				<img width="24" height="24" src="icons/ic_brush_white_48dp_1x.png" />
+				<img width="24" height="24" src="icons/stamp-opac.png" />
+			</div>
+			<hr>
+			<div id="tools-opacity">
+				<div class="title" locale="opacity"></div>
+				<div class="profiles">
+					<sp-button id="tools-opacity-profile-1" index="0">2%</sp-button>
+					<sp-button id="tools-opacity-profile-2" index="1">6%</sp-button>
+					<sp-button id="tools-opacity-profile-3" index="3">32%</sp-button>
+					<sp-button id="tools-opacity-profile-4" index="4">50%</sp-button>
+					<sp-button id="tools-opacity-profile-5" index="5">100%</sp-button>
+				</div>
+			</div>
+			<hr>
+			<div id="tools-hardness">
+				<div class="title" locale="hardness"></div>
+				<div class="profiles">
+					<sp-button id="tools-hardness-profile-1" index="0">0%</sp-button>
+					<sp-button id="tools-hardness-profile-2" index="1">25%</sp-button>
+					<sp-button id="tools-hardness-profile-3" index="2">50%</sp-button>
+					<sp-button id="tools-hardness-profile-4" index="3">75%</sp-button>
+					<sp-button id="tools-hardness-profile-5" index="4">100%</sp-button>					
+				</div>
+			</div>
 		</div>
 
 		<div id="sharpen" class="page">

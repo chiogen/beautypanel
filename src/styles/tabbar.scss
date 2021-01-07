@@ -1,0 +1,26 @@
+
+$tabbar-border-color: rgba(255, 255, 255, 0.5);
+$tab-hover-color: rgba(255, 255, 255, 0.1);
+
+#tabbar {
+    display: flex;
+    border: 1px solid $tabbar-border-color;
+    font-size: 1.5rem;
+    font-weight: bold;
+
+    .tab {
+
+        padding: 6px;
+        
+        &:hover {
+            cursor: pointer;
+            background-color: $tab-hover-color;
+        }
+    }
+
+    .separator {
+        width: 2px;
+        height: 100%;
+        background-color: $tabbar-border-color;
+    }
+}

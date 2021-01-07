@@ -33,6 +33,9 @@ li:before {
 title {
   display: none; }
 
+hr {
+  background-color: #888; }
+
 /* Tint */
 /* Shade */
 /* Contrast */
@@ -69,6 +72,21 @@ button {
 sp-button {
   border-radius: 7px; }
 
+#tabbar {
+  display: flex;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  font-size: 1.5rem;
+  font-weight: bold; }
+  #tabbar .tab {
+    padding: 6px; }
+    #tabbar .tab:hover {
+      cursor: pointer;
+      background-color: rgba(255, 255, 255, 0.1); }
+  #tabbar .separator {
+    width: 2px;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5); }
+
 #tools {
   position: relative; }
   #tools button, #tools sp-button {
@@ -83,6 +101,24 @@ sp-button {
     flex-direction: column;
     flex-grow: 1;
     width: 50%; }
+
+#tools-shortcuts {
+  display: flex;
+  justify-content: center; }
+  #tools-shortcuts img[selected] {
+    background-color: #f00; }
+
+#tools-opacity, #tools-hardness {
+  display: flex;
+  flex-direction: column; }
+  #tools-opacity .title, #tools-hardness .title {
+    display: flex;
+    justify-content: center;
+    font-size: 1.5em;
+    font-weight: bold; }
+  #tools-opacity .profiles, #tools-hardness .profiles {
+    display: flex;
+    justify-content: stretch; }
 
 body {
   color: white;
