@@ -58,11 +58,11 @@
     }
 }
 
-// #tools-opacity, #tools-hardness {
-//     display: flex;
-//     flex-direction: column;
-//     .profiles {
-//         display:flex;
-//         justify-content: stretch;
-//     }
-// }
+#tools-opacity, #tools-hardness {
+    display: flex;
+    flex-direction: column;
+    .profiles {
+        display:flex;
+        justify-content: stretch;
+    }
+}
