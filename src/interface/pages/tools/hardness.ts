@@ -1,12 +1,10 @@
 import { app } from 'photoshop'
 import { html } from "htm/react";
 import i18next from "i18next";
-import { Divider } from '@adobe/react-spectrum';
 
 export const Hardness = () => html`
-    <div>
+    <div className="section">
         <h2 className="title">${i18next.t('hardness')}</h2>
-        <${Divider} size="medium" />
         <div className="flex-buttons">
             <sp-action-button id="tools-hardness-profile-1" index="0" onClick="${onHardnessPresetClick}">0%</sp-action-button>
             <sp-action-button id="tools-hardness-profile-2" index="1" onClick="${onHardnessPresetClick}">25%</sp-action-button>

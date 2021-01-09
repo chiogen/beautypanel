@@ -1,11 +1,9 @@
-import { Divider } from "@adobe/react-spectrum";
 import { html } from "htm/react";
 import i18next from "i18next";
 
 export const DodgeAndBurn = () => html`
-    <div>
+    <div className="section">
         <h2>Dodge and Burn</h2>
-        <${Divider} size="medium" />
         <div id="dodge-and-burn">
             <div className="flex-buttons">
                 <sp-action-button>${i18next.t('dodgeAndBurn.gradient')}</sp-action-button>

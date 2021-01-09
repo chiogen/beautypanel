@@ -1,7 +1,6 @@
 import { app } from 'photoshop'
 import { html } from "htm/react";
 import i18next from "i18next";
-import { Divider } from '@adobe/react-spectrum';
 
 let defaultPresets = [2, 6, 32, 50, 100];
 
@@ -18,9 +17,8 @@ for (let i = 0; i < numberOfPresets; i++) {
 }
 
 export const Opacity = () => html`
-    <div>
+    <div className="section">
         <h3 className="title">${i18next.t('opacity')}</h3>
-        <${Divider} size="medium" />
         <div className="flex-buttons">
             <sp-action-button index="0" onClick="${onOpacityPresetClick}">${presets[0]}%</sp-action-button>
             <sp-action-button index="1" onClick="${onOpacityPresetClick}">${presets[1]}%</sp-action-button>
