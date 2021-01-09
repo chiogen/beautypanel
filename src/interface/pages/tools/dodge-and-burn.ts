@@ -3,7 +3,7 @@ import i18next from "i18next";
 
 export const DodgeAndBurn = () => html`
     <div className="section">
-        <h2>Dodge and Burn</h2>
+        <h3 className="title">Dodge and Burn</h3>
         <div id="dodge-and-burn">
             <div className="flex-buttons">
                 <sp-action-button>${i18next.t('dodgeAndBurn.gradient')}</sp-action-button>
