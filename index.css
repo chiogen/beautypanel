@@ -119,6 +119,13 @@ sp-action-button {
   #tools-shortcuts img[selected] {
     background-color: #f00; }
 
+#tools-opacity, #tools-hardness {
+  display: flex;
+  flex-direction: column; }
+  #tools-opacity .profiles, #tools-hardness .profiles {
+    display: flex;
+    justify-content: stretch; }
+
 body {
   color: white;
   display: flex;
