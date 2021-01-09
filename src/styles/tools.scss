@@ -1,12 +1,3 @@
-#tools {
-    position: relative;
-    button, sp-action-button {
-        display: flex;
-        flex-grow: 1;
-        margin: 5px;
-    }
-}
-
 #frequency-separation {
     display: flex;
     > sp-action-button {
@@ -34,9 +25,4 @@
         background-color: black;
         color: white;
     }
-}
-
-.flex-buttons {
-    display:flex;
-    justify-content: stretch;
 }

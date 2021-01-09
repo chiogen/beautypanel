@@ -44,6 +44,7 @@ hr {
 /* Error */
 /* Success */
 sp-action-button {
+  margin: 4px;
   min-width: 0;
   border-radius: 7px; }
 
@@ -80,13 +81,6 @@ sp-action-button {
     height: 100%;
     background-color: rgba(255, 255, 255, 0.5); }
 
-#tools {
-  position: relative; }
-  #tools button, #tools sp-action-button {
-    display: flex;
-    flex-grow: 1;
-    margin: 5px; }
-
 #frequency-separation {
   display: flex; }
   #frequency-separation > sp-action-button {
@@ -109,10 +103,6 @@ sp-action-button {
   background-color: black;
   color: white; }
 
-.flex-buttons {
-  display: flex;
-  justify-content: stretch; }
-
 body {
   color: white;
   display: flex;
@@ -129,8 +119,16 @@ body {
   flex-grow: 1;
   overflow-y: auto; }
 
-.page:not(.active) {
-  display: none; }
+.page {
+  position: relative; }
+  .page:not(.active) {
+    display: none; }
+
+.flex-buttons {
+  display: flex;
+  justify-content: stretch; }
+  .flex-buttons > sp-action-button {
+    flex-grow: 1; }
 
 [dir=ltr] ._spectrum-Checkbox_0ffa4 {
   padding-right: calc(var(--spectrum-global-dimension-size-100) * 2); }

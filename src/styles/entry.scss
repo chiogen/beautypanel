@@ -24,7 +24,17 @@ body {
 }
 
 .page {
+  position: relative;
   &:not(.active) {
     display: none;
+  }
+}
+
+
+.flex-buttons {
+  display:flex;
+  justify-content: stretch;
+  > sp-action-button {
+    flex-grow: 1;
   }
 }

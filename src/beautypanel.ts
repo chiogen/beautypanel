@@ -8,6 +8,7 @@ import './styles/entry.scss';
 import { Tools } from './interface/pages/tools';
 import { tabbar } from './interface/tabbar';
 import { localizationLoaded } from './localization';
+import { Sharpen } from './interface/pages/sharpen';
 
 localizationLoaded.then(() => {
     ReactDOM.render(html`
@@ -16,7 +17,7 @@ localizationLoaded.then(() => {
         </div>
         <div id="pages" key="pages">
             ${Tools()}
-            <div id="sharpen" className="page"></div>
+            ${Sharpen()}
             <div id="effects" className="page"></div>
         </div>
     `, document.getElementById('app'));
