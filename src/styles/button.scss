@@ -1,48 +1,6 @@
 @import "./lumo.scss";
 
-@mixin button {
-    display: inline-flex;
-    // position: relative; already set in mdc-elevation-overlay-surface-position
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-    min-width: 64px;
-    border: none;
-    border-radius: 7px;
-    outline: none;
-    /* @alternate */
-    line-height: inherit;
-    user-select: none;
-    -webkit-appearance: none;
-    // Even though `visible` is the default, IE 11 computes the property as
-    // `hidden` in some cases, unless it's explicitly defined here.
-    overflow: visible;
-    vertical-align: middle;
-    min-width: 0;
-
-    background-color: $lumo-primary-color-50pct;
-    color: $lumo-primary-contrast-color;
-
-    &:active {
-        outline: none;
-    }
-    
-    &:hover {
-        cursor: pointer;
-        background-color: $lumo-primary-color;
-    }
-    
-    &:disabled {
-        cursor: default;
-        pointer-events: none;
-    }
-}
-
-button {
-    @include button;
-}
-
-sp-button {
+sp-action-button {
     min-width: 0;
     border-radius: 7px;
 }

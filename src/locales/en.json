@@ -5,10 +5,19 @@
         "effects": "Effects",
         "settings": "Settings"
     },
-    "frequencySeparation": "Freq. separation",
+    "frequencySeparation": {
+        "default": "Freq. separation",
+        "soft": "Soft",
+        "details": "Details"
+    },
     "vignette": "Vignette",
-    "dodgeAndBurnGradient": "D&B Gradient",
-    "dodgeAndBurnGray": "D&B Gray",
+    "dodgeAndBurn": {
+        "gradient": "D&B Gradient",
+        "default": "Dodge and Burn",
+        "white": "White",
+        "gray": "Gray",
+        "black": "Black"
+    },
     "saveJpg2048": "Save JPG 2048",
     "opacity": "Opacity",
     "hardness": "Hardness"

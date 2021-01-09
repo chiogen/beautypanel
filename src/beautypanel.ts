@@ -5,11 +5,6 @@ import './localization';
 import * as ReactDOM from 'react-dom';
 import { html } from 'htm/react';
 import './styles/entry.scss';
-import './interface/tabbar';
-
-// Tools
-import './tools/opacity';
-import './tools/hardness';
 import { Tools } from './interface/pages/tools';
 import { tabbar } from './interface/tabbar';
 import { localizationLoaded } from './localization';

@@ -5,10 +5,19 @@
         "effects": "Effekte",
         "settings": "Einstellungen"
     },
-    "frequencySeparation": "Frequenztrennung",
+    "frequencySeparation": {
+        "default": "Frequenztrennung",
+        "soft": "Weich",
+        "details": "Details"
+    },
     "vignette": "Vignette",
-    "dodgeAndBurnGradient": "D&B Gradient",
-    "dodgeAndBurnGray": "D&B Gray",
+    "dodgeAndBurn": {
+        "gradient": "D&B Gradient",
+        "default": "Dodge and Burn",
+        "white": "Weiß",
+        "gray": "Grau",
+        "black": "Schwarz"
+    },
     "saveJpg2048": "Speichern JPG 2048",
     "opacity": "Deckkraft",
     "hardness": "Härte"

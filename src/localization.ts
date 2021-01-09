@@ -1,11 +1,15 @@
 import i18next from 'i18next'
 import * as resources from './locales/index'
 
+function detectLanguage(): string {
+    return 'en';
+}
+
 i18next.init({
     ns: ['common'],
     defaultNS: 'common',
     fallbackLng: 'en',
-    lng: 'en',
+    lng: detectLanguage(),
     lowerCaseLng: true,
     interpolation: {
         escapeValue: false
