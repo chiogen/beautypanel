@@ -16,14 +16,14 @@ body {
     height: 100%;
 }
 
-#center {
+#app {
     padding: 4px;
     flex-grow: 1;
     overflow-y: auto;
 }
 
 .page {
-  &:not([active]) {
+  &:not(.active) {
     display: none;
   }
 }

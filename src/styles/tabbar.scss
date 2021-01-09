@@ -1,20 +1,32 @@
+@import "./lumo.scss";
 
 $tabbar-border-color: rgba(255, 255, 255, 0.5);
 $tab-hover-color: rgba(255, 255, 255, 0.1);
 
 #tabbar {
     display: flex;
-    border: 1px solid $tabbar-border-color;
-    font-size: 1.5rem;
+    // border: 1px solid $tabbar-border-color;
+    justify-content: center;
+    font-size: 1.35rem;
     font-weight: bold;
+    
 
     .tab {
 
+        // flex-grow: 1;
         padding: 6px;
+        text-align: center;
+        margin: 3px;
+
+        background-color: $lumo-contrast-5pct;
         
         &:hover {
             cursor: pointer;
-            background-color: $tab-hover-color;
+            background-color: $lumo-contrast-10pct;
+        }
+
+        &.active {
+            background-color: $lumo-primary-color-50pct;
         }
     }
 

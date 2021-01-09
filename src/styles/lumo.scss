@@ -29,24 +29,24 @@
   $lumo-shade: hsl(214, 33%, 13%);
 
   /* Contrast */
-  $lumo-contrast-5pct: var($lumo-tint-5pct);
-  $lumo-contrast-10pct: var($lumo-tint-10pct);
-  $lumo-contrast-20pct: var($lumo-tint-20pct);
-  $lumo-contrast-30pct: var($lumo-tint-30pct);
-  $lumo-contrast-40pct: var($lumo-tint-40pct);
-  $lumo-contrast-50pct: var($lumo-tint-50pct);
-  $lumo-contrast-60pct: var($lumo-tint-60pct);
-  $lumo-contrast-70pct: var($lumo-tint-70pct);
-  $lumo-contrast-80pct: var($lumo-tint-80pct);
-  $lumo-contrast-90pct: var($lumo-tint-90pct);
-  $lumo-contrast: var($lumo-tint);
+  $lumo-contrast-5pct: $lumo-tint-5pct;
+  $lumo-contrast-10pct: $lumo-tint-10pct;
+  $lumo-contrast-20pct: $lumo-tint-20pct;
+  $lumo-contrast-30pct: $lumo-tint-30pct;
+  $lumo-contrast-40pct: $lumo-tint-40pct;
+  $lumo-contrast-50pct: $lumo-tint-50pct;
+  $lumo-contrast-60pct: $lumo-tint-60pct;
+  $lumo-contrast-70pct: $lumo-tint-70pct;
+  $lumo-contrast-80pct: $lumo-tint-80pct;
+  $lumo-contrast-90pct: $lumo-tint-90pct;
+  $lumo-contrast: $lumo-tint;
 
   /* Text */
-  $lumo-header-text-color: var($lumo-contrast);
-  $lumo-body-text-color: var($lumo-contrast-90pct);
-  $lumo-secondary-text-color: var($lumo-contrast-70pct);
-  $lumo-tertiary-text-color: var($lumo-contrast-50pct);
-  $lumo-disabled-text-color: var($lumo-contrast-30pct);
+  $lumo-header-text-color: $lumo-contrast;
+  $lumo-body-text-color: $lumo-contrast-90pct;
+  $lumo-secondary-text-color: $lumo-contrast-70pct;
+  $lumo-tertiary-text-color: $lumo-contrast-50pct;
+  $lumo-disabled-text-color: $lumo-contrast-30pct;
 
   /* Primary */
   $lumo-primary-color: hsl(214, 86%, 55%);

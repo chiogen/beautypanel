@@ -18,6 +18,7 @@
     // `hidden` in some cases, unless it's explicitly defined here.
     overflow: visible;
     vertical-align: middle;
+    min-width: 0;
 
     background-color: $lumo-primary-color-50pct;
     color: $lumo-primary-contrast-color;
@@ -42,5 +43,6 @@ button {
 }
 
 sp-button {
+    min-width: 0;
     border-radius: 7px;
 }

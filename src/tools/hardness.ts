@@ -1,7 +1,7 @@
 import { app } from 'photoshop'
 
 // Initialize
-document.querySelectorAll('#tools-hardness profiles sp-button').forEach(button => {
+document.body.querySelectorAll('#tools-hardness .profiles sp-button').forEach(button => {
     button.addEventListener('click', onHardnessPresetButtonClick);
 });
 

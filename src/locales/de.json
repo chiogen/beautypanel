@@ -2,7 +2,8 @@
     "tabbar": {
         "tools": "Werkzeuge",
         "sharpen": "Schärfe",
-        "effects": "Effekte"
+        "effects": "Effekte",
+        "settings": "Einstellungen"
     },
     "frequencySeparation": "Frequenztrennung",
     "vignette": "Vignette",

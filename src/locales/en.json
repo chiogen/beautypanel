@@ -2,7 +2,8 @@
     "tabbar": {
         "tools": "Tools",
         "sharpen": "Sharpen",
-        "effects": "Effects"
+        "effects": "Effects",
+        "settings": "Settings"
     },
     "frequencySeparation": "Freq. separation",
     "vignette": "Vignette",

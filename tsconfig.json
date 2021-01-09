@@ -1,8 +1,8 @@
 {
     "compilerOptions": {
         "moduleResolution": "node",
-        "target": "ES2020",
-        "module": "ES2020",
+        "target": "ES2015",
+        "module": "CommonJS",
         "sourceMap": false,
         "declaration": false,
         "experimentalDecorators": true,

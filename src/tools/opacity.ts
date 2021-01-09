@@ -5,23 +5,30 @@ let defaultPresets = [2, 6, 32, 50, 100];
 let numberOfPresets = 5;
 let presets: Array<number> = new Array(numberOfPresets);
 
-// Initialize
-const buttons = document.querySelectorAll('#tools-opacity profiles sp-button');
-buttons.forEach(button => {
-    button.addEventListener('click', onOpacityPresetButtonClick);
-});
+document.body.addEventListener('load', initialize);
 
-for (let i = 0; i < numberOfPresets; i++) {
-    let value = localStorage.getItem('opacity-preset-' + i);
-    if (value) {
-        presets[i] = parseFloat(value);
-    } else {
-        presets[i] = defaultPresets[i];
+// Initialize
+function initialize() {
+
+    for (let i = 0; i < numberOfPresets; i++) {
+        let value = localStorage.getItem('opacity-preset-' + i);
+        if (value) {
+            presets[i] = parseFloat(value);
+        } else {
+            presets[i] = defaultPresets[i];
+        }
+
+        const button = getPresetButton(i);
+        button.innerHTML = value + "%";
+        button.addEventListener('click', onOpacityPresetButtonClick);
     }
 
-    buttons[i].innerHTML = value + "%";
 }
 
+function getPresetButton(index: number) {
+    const id = `tools-opacity-profile-${index}`;
+    return document.getElementById(id) as HTMLButtonElement;
+}
 
 function onOpacityPresetButtonClick(e: MouseEvent) {
     const button = e.currentTarget as HTMLButtonElement;
