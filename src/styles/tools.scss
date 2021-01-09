@@ -22,13 +22,6 @@
 }
 
 #dodge-and-burn {
-    > div {
-        display: flex;
-        > * {
-            flex-grow: 1;
-        }
-    }
-
     .white {
         background-color: white;
         color: black;
@@ -43,26 +36,7 @@
     }
 }
 
-#save-shortcuts {
-    display: flex;
-    > sp-action-button {
-        flex-grow: 1;
-    }
-}
-
-#tools-shortcuts {
-    display: flex;
-    justify-content: center;
-    img[selected] {
-        background-color: #f00;
-    }
-}
-
-#tools-opacity, #tools-hardness {
-    display: flex;
-    flex-direction: column;
-    .profiles {
-        display:flex;
-        justify-content: stretch;
-    }
+.flex-buttons {
+    display:flex;
+    justify-content: stretch;
 }

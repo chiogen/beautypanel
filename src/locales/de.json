@@ -20,5 +20,7 @@
     },
     "saveJpg2048": "Speichern JPG 2048",
     "opacity": "Deckkraft",
-    "hardness": "Härte"
+    "hardness": "Härte",
+    "zoom": "Zoom (%)",
+    "zoomFit": "Fit"
 }

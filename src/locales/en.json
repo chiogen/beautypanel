@@ -20,5 +20,7 @@
     },
     "saveJpg2048": "Save JPG 2048",
     "opacity": "Opacity",
-    "hardness": "Hardness"
+    "hardness": "Hardness",
+    "zoom": "Zoom (%)",
+    "zoomFit": "Fit"
 }

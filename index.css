@@ -91,11 +91,6 @@ sp-action-button {
     #frequency-separation > div > sp-action-button {
       flex-grow: 1; }
 
-#dodge-and-burn > div {
-  display: flex; }
-  #dodge-and-burn > div > * {
-    flex-grow: 1; }
-
 #dodge-and-burn .white {
   background-color: white;
   color: black; }
@@ -108,23 +103,9 @@ sp-action-button {
   background-color: black;
   color: white; }
 
-#save-shortcuts {
-  display: flex; }
-  #save-shortcuts > sp-action-button {
-    flex-grow: 1; }
-
-#tools-shortcuts {
+.flex-buttons {
   display: flex;
-  justify-content: center; }
-  #tools-shortcuts img[selected] {
-    background-color: #f00; }
-
-#tools-opacity, #tools-hardness {
-  display: flex;
-  flex-direction: column; }
-  #tools-opacity .profiles, #tools-hardness .profiles {
-    display: flex;
-    justify-content: stretch; }
+  justify-content: stretch; }
 
 body {
   color: white;

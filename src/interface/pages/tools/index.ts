@@ -3,6 +3,7 @@ import { DodgeAndBurn } from './dodge-and-burn';
 import { FrequencySeparation } from './frequency-separation';
 import { Hardness } from './hardness';
 import { Opacity } from './opacity';
+import { Zoom } from './zoom';
 
 export function Tools() {
     return html`
@@ -11,6 +12,7 @@ export function Tools() {
             ${DodgeAndBurn()}
             ${Opacity()}
             ${Hardness()}
+            ${Zoom()}
         </div>
     `;
 }
