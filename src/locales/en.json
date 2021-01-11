@@ -7,6 +7,8 @@
     },
     "frequencySeparation": {
         "default": "Freq. separation",
+        "long": "Frequency Separation",
+        "short": "Freq. separation",
         "soft": "Soft",
         "details": "Details"
     },

@@ -2,6 +2,7 @@
 @import "./button.scss";
 @import "./section.scss";
 @import "./tabbar.scss";
+@import "./pages.scss";
 @import "./tools.scss";
 
 body {
@@ -21,13 +22,6 @@ body {
     padding: 4px;
     flex-grow: 1;
     overflow-y: auto;
-}
-
-.page {
-  position: relative;
-  &:not(.active) {
-    display: none;
-  }
 }
 
 

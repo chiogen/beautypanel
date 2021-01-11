@@ -5,20 +5,13 @@ import './localization';
 import * as ReactDOM from 'react-dom';
 import { html } from 'htm/react';
 import './styles/entry.scss';
-import { Tools } from './interface/pages/tools';
-import { tabbar } from './interface/tabbar';
+import { Tabbar } from './interface/tabbar';
 import { localizationLoaded } from './localization';
-import { Sharpen } from './interface/pages/sharpen';
+import { Pages } from './interface/pages/index';
 
 localizationLoaded.then(() => {
     ReactDOM.render(html`
-        <div key="tabbar">
-            ${tabbar()}
-        </div>
-        <div id="pages" key="pages">
-            ${Tools()}
-            ${Sharpen()}
-            <div id="effects" className="page"></div>
-        </div>
+        <${Tabbar} key="tabbar" />
+        <${Pages} key="pages" />
     `, document.getElementById('app'));
 })
