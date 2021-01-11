@@ -1,8 +1,9 @@
 import * as React from 'react'
 import { Unsubscribe } from 'redux';
+import { Pages } from '../../interface/pages';
 import { store, TState } from '../../store';
 
-export abstract class StatefulComponent extends React.Component {
+export abstract class StatefulComponent<P = {}, S = {}, SS = any> extends React.Component<P, S, SS> {
 
     private __unsubscribe?: Unsubscribe;
 

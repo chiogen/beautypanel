@@ -1,0 +1,30 @@
+import * as React from 'react'
+import { Page } from '../../enums';
+import { Filter } from './sharpen/filter';
+import { Options } from './sharpen/options';
+
+type Props = {
+    isActive: boolean
+}
+
+export class Sharpen extends React.Component<Props> {
+
+    public getPageKey() {
+        return Page.Sharpen;
+    }
+
+    render() {        
+        const classes = ['page'];
+        
+        let style: React.CSSProperties = {};
+        if (!this.props.isActive) {
+            style.display = 'none';
+        }
+
+        return <div id="sharpen" className={classes.join(' ')} style={style}>
+            {Filter()}
+            {Options()}
+        </div>;
+    }
+
+}

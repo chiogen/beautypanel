@@ -7,7 +7,7 @@ import { html } from 'htm/react';
 import './styles/entry.scss';
 import { Tabbar } from './interface/tabbar';
 import { localizationLoaded } from './localization';
-import { Pages } from './interface/pages/index';
+import { Pages } from './interface/pages';
 
 localizationLoaded.then(() => {
     ReactDOM.render(html`
