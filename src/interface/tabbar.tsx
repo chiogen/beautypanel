@@ -62,20 +62,3 @@ export class Tabbar extends StatefulComponent {
     }
 
 }
-
-export function getTabs() {
-    return document.body.querySelectorAll<HTMLElement>('#tabbar .tab');
-}
-export function getPages() {
-    return document.body.querySelectorAll<HTMLElement>('.page');
-}
-export function updateTabs() {
-    const activePage = store.getState().page;
-    getTabs().forEach(tab => {
-        if (tab.getAttribute('page') === activePage) {
-            tab.classList.add('selected');
-        } else {
-            tab.classList.remove('selected');
-        }
-    });
-}
