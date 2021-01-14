@@ -20,6 +20,38 @@
         "gray": "Gray",
         "black": "Black"
     },
+    "sharpen": {
+        "filters": "Filters",
+        "unsharpen": "Unsharpen",
+        "selective": "Selective",
+        "frequencySeparation": "FreqT",
+        "masked": "Masked",
+        "switchToDetailLayer": "Switch to 'Detail' Layer",
+        "presets": "Presets"
+    },
+    "effects": {
+        "enhanceDetails": "Enhance Details",
+        "strengthenDetails": "Strengthen Details",
+        "orton": "Orton Effect",
+        "vignette": "Vignette",
+        "autumn": "Autumn Effect"
+    },
+    "savePage": {
+        "currentPicture": "Current picture",
+        "resolution": "Resolution",
+        "pictureTypeLabel": "Type",
+        "pictureType": {
+            "jpg": "JPG",
+            "png": "PNG"
+        },
+        "saveButtonText": "Save",
+        "saveToButtonText": "Save as",
+        "saveScaledCopyTo": "Save copy as (scaled)",
+        "saveScaledButtonText": "Save JPG 2048",
+        "saveUnscaledCopyTo": "Save copy as (noscaled)",
+        "saveUnscaledButtonText": "1:1 JPG"
+    },
+    "options": "Options",
     "saveJpg2048": "Save JPG 2048",
     "opacity": "Opacity",
     "hardness": "Hardness",

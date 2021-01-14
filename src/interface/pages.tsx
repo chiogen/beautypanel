@@ -4,6 +4,8 @@ import * as React from 'react';
 import { StatefulComponent } from '../components/base/stateful-component';
 import { store, TState } from '../store';
 import { Page } from '../enums';
+import { Effects } from './pages/effects';
+import { SavePage } from './save';
 
 type S = {
     page: Page
@@ -25,6 +27,8 @@ export class Pages extends StatefulComponent<{}, S> {
         return <div className="pages">
             <Tools isActive={page === Page.Tools} />
             <Sharpen isActive={page === Page.Sharpen} />
+            <Effects isActive={page === Page.Effects} />
+            <SavePage isActive={page === Page.Save} />
         </div>
     }
 

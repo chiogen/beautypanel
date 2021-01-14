@@ -20,7 +20,39 @@
         "gray": "Grau",
         "black": "Schwarz"
     },
-    "saveJpg2048": "Speichern JPG 2048",
+    "sharpen": {
+        "filters": "Filterauswahl",
+        "unsharpen": "Unscharf",
+        "selective": "Selektiv",
+        "frequencySeparation": "FreqT",
+        "masked": "Maskiert",
+        "options": "Optionen",
+        "switchToDetailLayer": "Zum 'Detail' Layer wechseln",
+        "presets": "VOrgaben"
+    },
+    "effects": {
+        "enhanceDetails": "Details verbessern",
+        "strengthenDetails": "Details verstärken",
+        "orton": "Orton Effect",
+        "vignette": "Vignette",
+        "autumn": "Herbst Effect"
+    },
+    "savePage": {
+        "currentPicture": "Aktuelles Bild",
+        "resolution": "Auflösung",
+        "pictureTypeLabel": "Format",
+        "pictureType": {
+            "jpg": "JPG",
+            "png": "PNG"
+        },
+        "saveButtonText": "Speichern",
+        "saveToButtonText": "Speichern unter",
+        "saveScaledCopyTo": "Kopie speichern unter (skaliert)",
+        "saveScaledButtonText": "Speichern JPG 2048",
+        "saveUnscaledCopyTo": "Kopie speichern unter (unskaliert)",
+        "saveUnscaledButtonText": "1:1 JPG"
+    },
+    "options": "Optionen",
     "opacity": "Deckkraft",
     "hardness": "Härte",
     "zoom": "Zoom (%)",
