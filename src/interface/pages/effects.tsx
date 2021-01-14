@@ -1,10 +1,10 @@
 import i18next from 'i18next';
 import * as React from 'react'
-import { ActionButton } from '@adobe/react-spectrum'
 
 type Props = {
     isActive: boolean
 }
+
 
 export class Effects extends React.Component<Props> {
 
@@ -16,11 +16,11 @@ export class Effects extends React.Component<Props> {
         }
 
         return <div className="page" style={style}>
-            <ActionButton>{i18next.t('effects.enhanceDetails')}</ActionButton>
-            <ActionButton>{i18next.t('effects.strengthenDetails')}</ActionButton>
-            <ActionButton>{i18next.t('effects.orton')}</ActionButton>
-            <ActionButton>{i18next.t('effects.vignette')}</ActionButton>
-            <ActionButton>{i18next.t('effects.autumn')}</ActionButton>
+            <sp-action-button>{i18next.t('effects.enhanceDetails')}</sp-action-button>
+            <sp-action-button>{i18next.t('effects.strengthenDetails')}</sp-action-button>
+            <sp-action-button>{i18next.t('effects.orton')}</sp-action-button>
+            <sp-action-button>{i18next.t('effects.vignette')}</sp-action-button>
+            <sp-action-button>{i18next.t('effects.autumn')}</sp-action-button>
         </div>;
     }
 

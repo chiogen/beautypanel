@@ -1,4 +1,9 @@
 
+declare namespace JSX {
+    interface IntrinsicElements {
+        'sp-action-button': React.DetailedHTMLProps<React.HTMLAttributes<HTMLButtonElement>, HTMLButtonElement>;
+    }
+}
 declare module 'photoshop' {
 
     export type Bounds = {
@@ -8,104 +13,175 @@ declare module 'photoshop' {
         bottom: number
     }
 
-    export interface PhotoshopTool {
+    export interface Tool {
         id: string
     }
 
-    export interface PhotoshopArtboard {
+    export type Artboard = any
+    export type LayerTypes = Layer;
+    export type PercentValue = { 
+        _unit: "percentUnit", 
+        /** value between 0 and 100 */
+        _value: number
+    };
+    export type PixelValue = unknown;
+    export type AngleValue = unknown;
+    export type AnchorPosition = unknown;
+    export type ResampleMethod = "nearestNeighbor" | "bilinear" | "bicubic" | "bicubicSmoother" | "bicubicSharper" | "bicubicAutomatic" | "preserveDetailsUpscale" | "deepUpscale";
+
+    export interface File {
 
     }
 
-    export interface PhotoshopAction {
-        new (e: unknown): PhotoshopAction
+    export interface Reference {
+        readonly _id: string
+    }
+
+    export interface Action {
+        new(e: unknown): Action
         name: string
         index: number
         parent: unknown
         delete(): unknown
-        duplicate(): unknown
-        play(): unknown
+        duplicate(): Action
+        play(): Promise<void>
     }
-    export interface PhotoshopActionSet {
-        new (e: unknown): PhotoshopActionSet
+    export interface ActionSet {
+        new(e: unknown): ActionSet
         name: string
         index: number
         parent: unknown
-        actions: PhotoshopAction[]
-        new (e: unknown): PhotoshopAction
-        delete(): unknown
-        duplicate(): unknown
-        play(): unknown
+        actions: Action[]
+        new(e: unknown): Action
+        delete(): void
+        duplicate(): ActionSet
+        play(): Promise<void>
     }
 
-    export interface PhotoshopDocumentLayer {
-        new (e: unknown, t: unknown): PhotoshopDocumentLayer
+    export interface Layer extends Reference {
+        new(e: unknown, t: unknown): Layer
         name: string
-        blendMode?: string
         readonly bounds: Bounds
         readonly boundsNoEffects: Bounds
         readonly kind: number
-        readonly linkedLayers: PhotoshopDocumentLayer[]
+        readonly linkedLayers: Layer[]
+        blendMode?: string
         locked: boolean
         /** Percentage value ? */
         opacity: number
-        readonly parent: any
         selected: boolean
         visible: boolean
+        delete(): void
+        duplicate(targetDocument?: Document, name?: string): Promise<void>
+        flip(axis:  "horizontal" | "vertical" | "both"): Promise<void>
+        link(targetLayer: Layer): Layer[]
+        moveAbove(target: LayerTypes): void
+        moveBelow(target: LayerTypes): void
+        nudge(horizontal: number | PercentValue | PixelValue, vertical: number | PercentValue | PixelValue): Promise<void>
+        rotate(angle: number | AngleValue): Promise<void>
+        scale(width: number | PercentValue, height: number | PercentValue, options?: { interpolation?: unknown }): Promise<void>
+        skew(angleH: number | AngleValue, angleV: number | AngleValue, options?: { interpolation?: unknown }): Promise<void>
+        unlink(): Promise<void>
     }
 
-    export interface PhotoshopGroupLayer extends PhotoshopDocumentLayer {
-        new (t: unknown, r: unknown): PhotoshopGroupLayer
-        readonly children: Array<unknown>        
+    export interface GroupLayer extends Layer {
+        new(t: unknown, r: unknown): GroupLayer
+        readonly children: Array<unknown>
     }
 
-    export interface PhotoshopDocument {
-        new (e: unknown): PhotoshopDocument
-        readonly activeLayers: PhotoshopDocumentLayer[]
-        readonly layerTree: PhotoshopDocumentLayer[]
-        readonly layers: PhotoshopDocumentLayer[]
-        readonly artboards: PhotoshopArtboard[]
-        readonly backgroundLayer: PhotoshopDocumentLayer
+    export interface Document extends Reference {
+        readonly _id: string
+        new(e: unknown): Document
+        readonly activeLayers: Layer[]
+        readonly layerTree: Layer[]
+        readonly layers: Layer[]
+        readonly artboards: Artboard[]
+        readonly backgroundLayer: Layer | null
         readonly path: string
         readonly resolution: number
         readonly title: string
         readonly width: number
         readonly height: number
-        close(e: unknown): Promise<void>
+        close(saveDialogOptions?: SaveDialogOptions): Promise<void>
         closeWithoutSaving(): void
-        createLayer(e: unknown): Promise<PhotoshopDocumentLayer>
-        createLayerGroup(e: unknown): Promise<unknown>
-        crop(e: unknown, t: unknown): Promise<unknown>
-        duplicateLayers(e: unknown, t: unknown): Promise<unknown>
-        flatten(): Promise<unknown>
-        linkLayers(e: unknown): Promise<unknown>
-        mergeVisibleLayers(): Promise<unknown>
-        resizeCanvas(e: unknown, t: unknown, r: unknown): Promise<unknown>
-        resizeImage(e: unknown, t: unknown, r: unknown, n: unknown): Promise<unknown>
-        rotate(e: unknown): Promise<unknown>
-        save(e: unknown, t: unknown): Promise<unknown>
+        createLayer(options?: LayerCreateOptions): Promise<Layer | null>
+        createLayerGroup(options?: GroupLayerCreateOptions): Promise<GroupLayer | null>
+        /**
+         * Crops the document to given bounds
+         */
+        crop(bounds: unknown, angle: number): Promise<void>
+        /**
+         * Duplicates given layer(s), creating all copies above the top most one in layer stack, and returns the newly created layers.
+         */
+        duplicateLayers(layers: Layer[], targetDocument?: Document): Promise<Layer[]>
+        /**
+         * Flatten all layers in the document
+         */
+        flatten(): Promise<void>
+        /**
+         * Create a layer group from existing layers.
+         */
+        groupLayers(layers: Layer[]): Promise<GroupLayer | null>
+        linkLayers(layers: Layer[]): Promise<Layer[]>
+        mergeVisibleLayers(): Promise<void>
+        resizeCanvas(width: number, height: number, anchor?: AnchorPosition): Promise<void>
+        resizeImage(width: number, height: number, resolution?: number, resampleMethod?: ResampleMethod): Promise<void>
+        rotate(angles: number): Promise<void>
+        save(entry?: File, saveOptions?: SaveOptions): Promise<void>
+    }
+    export interface SaveDialogOptions {
+        
+    }
+    export interface SaveOptions {
+        embedColorProfile: boolean
+    }
+    export interface LayerCreateOptions {
+        name: string
+        opacity: number
+        mode: string
+    }
+    export interface GroupLayerCreateOptions {
+        name: string
+        fromLayers: Layer[]
+        opacity: number
+        mode: string
     }
 
     export interface Photoshop {
+        readonly Action: new (e: unknown) => Action
+        readonly ActionSet: new (e: unknown) => ActionSet
+        readonly Document: new (e: unknown) => Document
+        readonly Layer: new (e: unknown, t: unknown) => Layer
 
-        readonly Action: new (e: unknown) => PhotoshopAction
-        readonly ActionSet: new (e: unknown) => PhotoshopActionSet
-        readonly Document: new (e: unknown) => PhotoshopDocument
-        readonly Layer: new (e: unknown, t: unknown) => PhotoshopDocumentLayer
-
-        activeDocument: PhotoshopDocument
-        readonly documents: PhotoshopDocument[]
-        readonly actionTree: unknown
+        activeDocument: Document
+        readonly documents: Document[]
+        readonly actionTree: ActionSet[]
         readonly backgroundColor: object
         readonly foregroundColor: object
-        readonly currentTool: PhotoshopTool
+        readonly currentTool: Tool
+        eventNotifier: (event: unknown, descriptor: unknown) => void
 
-        batchPlay(e: unknown, t: unknown): unknown
-        bringToFront(): unknown
-        createDocument(e: unknown): PhotoshopDocument
-        open(e: unknown): unknown
-        showAlert(e: unknown): Promise<void>
+        batchPlay(commands: any, options: any): Promise<Descriptor[]>
+        bringToFront(): void
+        createDocument(options?: DocumentCreateOptions): Promise<Document | null>
+        open(entry?: File): Promise<Document>
+        showAlert(mesasge: string): Promise<void>
+    }
+    export interface DocumentCreateOptions {
+
+    }
+    export interface Descriptor {
+
+    }
+    export interface ActionDescriptor {
+
     }
 
+
     export const app: Photoshop;
+
+    export const action: {
+        batchPlay(descriptors: ActionDescriptor[], options: Object): Promise<Object[]>
+    };
 
 }

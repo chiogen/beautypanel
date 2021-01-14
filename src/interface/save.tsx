@@ -1,6 +1,5 @@
 import { app } from 'photoshop'
 import * as React from 'react'
-import { ActionButton } from '@adobe/react-spectrum'
 import i18next from 'i18next'
 
 type Props = {
@@ -31,7 +30,7 @@ export class SavePage extends React.Component<Props> {
                     <span>JPG</span>
                 </div>
             </div>
-        </div>
+        </div>;
     }
 
 }

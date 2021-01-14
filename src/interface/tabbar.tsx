@@ -17,6 +17,7 @@ export class Tabbar extends StatefulComponent {
         sharpen: string
         effects: string
         settings: string
+        save: string
     }
 
     constructor(props) {
@@ -33,6 +34,7 @@ export class Tabbar extends StatefulComponent {
             {this.renderTab(Page.Tools, this.texts.tools)}
             {this.renderTab(Page.Sharpen, this.texts.sharpen)}
             {this.renderTab(Page.Effects, this.texts.effects)}
+            {this.renderTab(Page.Save, this.texts.save)}
             {this.renderTab(Page.Settings, this.texts.settings)}
         </div>;
     }
