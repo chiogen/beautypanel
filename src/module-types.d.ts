@@ -70,7 +70,7 @@ declare module 'photoshop' {
         selected: boolean
         visible: boolean
         delete(): void
-        duplicate(targetDocument?: Document, name?: string): Promise<void>
+        duplicate(targetDocument?: Document, name?: string): Promise<Layer>
         flip(axis:  "horizontal" | "vertical" | "both"): Promise<void>
         link(targetLayer: Layer): Layer[]
         moveAbove(target: LayerTypes): void

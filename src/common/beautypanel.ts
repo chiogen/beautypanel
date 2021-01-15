@@ -1,4 +1,4 @@
-import { app } from "photoshop";
+import { app, Layer } from "photoshop";
 import { layerNames } from "./layer-names";
 
 export namespace BeautyPanel {
@@ -53,7 +53,7 @@ export namespace BeautyPanel {
         return layerNames[code];
     }
 
-    function getLayerByCode(code: string) {
+    function getLayerByCode(code: string): Layer | undefined {
         const name = getLayerNameByCode(code);;
         return app.activeDocument.layers.find(layer => layer.name.toLowerCase() === name.toLowerCase());
     }

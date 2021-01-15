@@ -18,4 +18,8 @@ export namespace LayerUtils {
 
     }
 
+    export async function createContrastLayer(layer: Layer, rangeStart: number, rangeEnd: number): Promise<Layer> {
+        return layer.duplicate();
+    }
+
 }
