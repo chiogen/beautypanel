@@ -4,6 +4,9 @@ import { app } from 'photoshop';
 import { BeautyPanel } from '../../../common/beautypanel';
 import { LayerUtils } from '../../../common/layer-utils';
 import { DocumentUtils } from '../../../common/document-utils';
+import { confirm } from '../../dialogues/confirm';
+import { AppUtils } from '../../../common/app-utils';
+import { percent } from '../../../common/type-utils';
 
 export const FrequencySeparation = () => 
     <div className="section">
@@ -26,7 +29,7 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
 
         button.disabled = true;
 
-        await BeautyPanel.checkBitsPerChannel();
+        await DocumentUtils.checkBitsPerChannel();
         
         const document = app.activeDocument;
         const referenceLayer = document.backgroundLayer;
@@ -40,34 +43,48 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
                 soft?.delete();
                 detail?.delete();
                 levels?.delete();
+                soft = detail = levels = undefined;
             }
         }
 
         // Ensure the required layers exist
         if (!soft) {
-            soft = await referenceLayer.duplicate(undefined, BeautyPanel.getLayerNameByCode('soft'));
+            const name = BeautyPanel.getLayerNameByCode('soft');
+            soft = await referenceLayer.duplicate(undefined, name);
         }
         if (!detail) {
-            detail = await referenceLayer.duplicate(undefined, BeautyPanel.getLayerNameByCode('detail'));
+            const name = BeautyPanel.getLayerNameByCode('detail');
+            detail = await referenceLayer.duplicate(undefined, name);
         }
 
-        // ToDO - Interpolate brightness (on soft layer) (median noise 10.0)
+        // Interpolate brightness (on soft layer)
+        await LayerUtils.applyMedianNoise(soft, 10);
 
         // Picture calculation
-        LayerUtils.applyCalculation(detail, soft, 'RGB ', true, 'Add ', 2, 0);
-        detail.blendMode = 'linearlight';
+        await LayerUtils.applyCalculation(detail, soft, 'RGB ', true, 'Add ', 2, 0);
+        detail.blendMode = 'linearLight';
+
+        // Focus detail layer
+        await DocumentUtils.setActiveLayers([detail]);
 
         // Create adjustment layer (levels)
-        levels = await LayerUtils.createContrastLayer(detail, 120, 132);
+        levels = await LayerUtils.createContrastLayer(120, 132);
         levels.name = BeautyPanel.getLayerNameByCode('levels');
 
         // Update layer visibility
         referenceLayer.visible = false;
         soft.visible = false;
 
-        DocumentUtils.setActiveLayers([detail]);
+        // Set Brush as current tool
+        // Set brush hardness to 100%
+        // Set brush opacity to 100%
+        await AppUtils.selectBrush('cloneStampTool', {
+            hardness: percent(100),
+            opacity: percent(100)
+        });
 
-        await postFrequencySeparation();
+        const group = await app.activeDocument.groupLayers([soft, levels, detail])
+        group.name = "Frequenztrennung";
 
     } catch (err) {
         app.showAlert("Error at executeFrequencySeparation(): " + err?.message ?? err)
@@ -75,20 +92,4 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
         button.disabled = false;
     }
 
-}
-
-async function postFrequencySeparation() {
-    try {
-
-        const targetBrush = "cloneStampTool";
-
-        // Set Brush as current tool
-
-        // Set brush hardness to 100%
-
-        // Set brush opacity to 100%
-
-    } catch (err) {
-        app.showAlert(err?.message ?? err)
-    }
 }

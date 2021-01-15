@@ -24,7 +24,10 @@ declare module 'photoshop' {
         /** value between 0 and 100 */
         _value: number
     };
-    export type PixelValue = unknown;
+    export type PixelValue = {
+        _unit: "pixelsUnit",
+        _value: number
+    };
     export type AngleValue = unknown;
     export type AnchorPosition = unknown;
     export type ResampleMethod = "nearestNeighbor" | "bilinear" | "bicubic" | "bicubicSmoother" | "bicubicSharper" | "bicubicAutomatic" | "preserveDetailsUpscale" | "deepUpscale";
@@ -156,7 +159,7 @@ declare module 'photoshop' {
         readonly currentTool: Tool
         eventNotifier: (event: unknown, descriptor: unknown) => void
 
-        batchPlay(commands: Array<ActionDescriptor>, options: any): Promise<Descriptor[]>
+        batchPlay(commands: Array<ActionDescriptor>, options: any): Promise<Descriptor[] & { message: string}>
         bringToFront(): void
         createDocument(options?: DocumentCreateOptions): Promise<Document | null>
         open(entry?: File): Promise<Document>
@@ -175,7 +178,7 @@ declare module 'photoshop' {
     export interface ActionDescriptor {
         /** This is the action key */
         _obj: string
-        _target: ActionTargetReference
+        _target: ActionTargetReference | Array<ActionTargetReference>
         _options?: Object
         synchronousExecution?: boolean
         modalBehavior?: 'wait' | 'execute' | 'fail'
@@ -183,8 +186,9 @@ declare module 'photoshop' {
         [key: string]: any
     }
     export interface ActionTargetReference {
-        _ref: 'document' | 'layer'
+        _ref: string
         _id?: number
+        _name?: string
         _enum?: string
         _value?: any
     }

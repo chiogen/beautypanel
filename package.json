@@ -6,7 +6,8 @@
   "license": "Apache-2.0",
   "main": "index.js",
   "scripts": {
-    "start": "rollup --config rollup.config.js --watch"
+    "start": "rollup --config rollup.config.js --watch",
+    "start:tsc": "tsc -w"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

@@ -45,10 +45,6 @@ export namespace BeautyPanel {
         }
     }
 
-    export async function checkBitsPerChannel() {
-        // Not implemented yet
-    }
-
     export function getLayerNameByCode(code: string): string {
         return layerNames[code];
     }
