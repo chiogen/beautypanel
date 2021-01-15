@@ -30,7 +30,7 @@ export async function executeFrequencySeparation() {
         let deleteLayers = false;
         if (layersExist) {
             // Ask user if he wants to delete layers and create new
-            deleteLayers = confirm('Delete layers?')
+            deleteLayers = confirm('Create new layers?')
         }
 
         if (!layersExist || deleteLayers) {
@@ -43,8 +43,6 @@ export async function executeFrequencySeparation() {
             await referenceLayer.duplicate(undefined, BeautyPanel.getLayerNameByCode('soft'));
             await referenceLayer.duplicate(undefined, BeautyPanel.getLayerNameByCode('detail'));
             await referenceLayer.duplicate(undefined, BeautyPanel.getLayerNameByCode('levels'));
-
-            
 
         }
 

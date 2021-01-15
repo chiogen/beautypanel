@@ -1,9 +1,9 @@
-import { app, Layer } from "photoshop";
+import { ActionDescriptor, app, Layer } from "photoshop";
 
 export namespace LayerUtils {
 
-    export async function desaturate(layer: Layer) {        
-        const descriptor = {
+    export async function desaturate(layer: Layer) {
+        const descriptor: ActionDescriptor = {
             _obj: "desaturate",
             _target: {
                 _ref: 'layer',

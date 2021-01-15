@@ -29,15 +29,15 @@ declare module 'photoshop' {
     export type AnchorPosition = unknown;
     export type ResampleMethod = "nearestNeighbor" | "bilinear" | "bicubic" | "bicubicSmoother" | "bicubicSharper" | "bicubicAutomatic" | "preserveDetailsUpscale" | "deepUpscale";
 
-    export interface File {
+    export abstract class File {
 
     }
 
-    export interface Reference {
-        readonly _id: string
+    export class Reference {
+        readonly _id: number
     }
 
-    export interface Action {
+    export abstract class Action {
         new(e: unknown): Action
         name: string
         index: number
@@ -46,8 +46,7 @@ declare module 'photoshop' {
         duplicate(): Action
         play(): Promise<void>
     }
-    export interface ActionSet {
-        new(e: unknown): ActionSet
+    export abstract class ActionSet {
         name: string
         index: number
         parent: unknown
@@ -58,8 +57,7 @@ declare module 'photoshop' {
         play(): Promise<void>
     }
 
-    export interface Layer extends Reference {
-        new(e: unknown, t: unknown): Layer
+    export abstract class Layer extends Reference {
         name: string
         readonly bounds: Bounds
         readonly boundsNoEffects: Bounds
@@ -84,14 +82,11 @@ declare module 'photoshop' {
         unlink(): Promise<void>
     }
 
-    export interface GroupLayer extends Layer {
-        new(t: unknown, r: unknown): GroupLayer
+    export abstract class GroupLayer extends Layer {
         readonly children: Array<unknown>
     }
 
-    export interface Document extends Reference {
-        readonly _id: string
-        new(e: unknown): Document
+    export abstract class Document extends Reference {
         readonly activeLayers: Layer[]
         readonly layerTree: Layer[]
         readonly layers: Layer[]
@@ -148,10 +143,10 @@ declare module 'photoshop' {
     }
 
     export interface Photoshop {
-        readonly Action: new (e: unknown) => Action
-        readonly ActionSet: new (e: unknown) => ActionSet
-        readonly Document: new (e: unknown) => Document
-        readonly Layer: new (e: unknown, t: unknown) => Layer
+        readonly Action: typeof Action
+        readonly ActionSet: typeof ActionSet
+        readonly Document: typeof Document
+        readonly Layer: typeof Layer
 
         activeDocument: Document
         readonly documents: Document[]
@@ -161,11 +156,15 @@ declare module 'photoshop' {
         readonly currentTool: Tool
         eventNotifier: (event: unknown, descriptor: unknown) => void
 
-        batchPlay(commands: any, options: any): Promise<Descriptor[]>
+        batchPlay(commands: Array<ActionDescriptor>, options: any): Promise<Descriptor[]>
         bringToFront(): void
         createDocument(options?: DocumentCreateOptions): Promise<Document | null>
         open(entry?: File): Promise<Document>
         showAlert(mesasge: string): Promise<void>
+    }
+    interface DocumentReference {
+        _ref: 'document'
+        _id: number
     }
     export interface DocumentCreateOptions {
 
@@ -174,7 +173,20 @@ declare module 'photoshop' {
 
     }
     export interface ActionDescriptor {
-
+        /** This is the action key */
+        _obj: string
+        _target: ActionTargetReference
+        _options?: Object
+        synchronousExecution?: boolean
+        modalBehavior?: 'wait' | 'execute' | 'fail'
+        historyStateInfo?: 'none' | { name: string, target: DocumentReference }
+        [key: string]: any
+    }
+    export interface ActionTargetReference {
+        _ref: 'document' | 'layer'
+        _id?: number
+        _enum?: string
+        _value?: any
     }
 
 
