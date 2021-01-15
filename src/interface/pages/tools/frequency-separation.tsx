@@ -61,19 +61,21 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
         await LayerUtils.applyMedianNoise(soft, 10);
 
         // Picture calculation
-        await LayerUtils.applyCalculation(detail, soft, 'RGB ', true, 'Add ', 2, 0);
+        await DocumentUtils.setActiveLayers([detail]);
+        await LayerUtils.applyCalculation(detail, soft, /*'RGB '*/ "red", true, "add", 2, 0);
         detail.blendMode = 'linearLight';
 
-        // Focus detail layer
-        await DocumentUtils.setActiveLayers([detail]);
-
         // Create adjustment layer (levels)
+        await DocumentUtils.setActiveLayers([detail]);
         levels = await LayerUtils.createContrastLayer(120, 132);
         levels.name = BeautyPanel.getLayerNameByCode('levels');
 
         // Update layer visibility
         referenceLayer.visible = false;
         soft.visible = false;
+
+        // Focus detail layer
+        await DocumentUtils.setActiveLayers([detail]);
 
         // Set Brush as current tool
         // Set brush hardness to 100%
@@ -82,9 +84,6 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
             hardness: percent(100),
             opacity: percent(100)
         });
-
-        const group = await app.activeDocument.groupLayers([soft, levels, detail])
-        group.name = "Frequenztrennung";
 
     } catch (err) {
         app.showAlert("Error at executeFrequencySeparation(): " + err?.message ?? err)

@@ -28,7 +28,50 @@ export namespace LayerUtils {
         return app.batchPlay([descriptor], {});
     }
 
-    export async function applyCalculation(layer: Layer, targetLayer: Layer, channel: string, invert: boolean, mode: string, scale: number, offset: number) {
+    export async function applyCalculation(source1: Layer, source2: Layer, channel: string, invert: boolean, mode: string, scale: number, offset: number) {
+
+        const descriptor: ActionDescriptor =  {
+            _obj: "calculation",
+            _target: {
+                _ref: "layer",
+                _id: source1._id
+            },
+            to: {
+                _ref: "channel",
+                _enum: "channel",
+                _value: "red"
+            },
+            invert,
+            calculation: {
+                _enum: "calculationType",
+                _value: mode
+            },
+            scale,
+            offset,
+            // Target descriptor
+            source2: {
+                _ref: [
+                    {
+                        _ref: "channel",
+                        _enum: "channel",
+                        _value: "red"
+                    },
+                    {
+                        _ref: "layer",
+                        _id: source2._id
+                    }
+                ]
+            },
+            invertSource2: invert
+        }
+
+        const result = await app.batchPlay([descriptor], {});
+
+        for (const item of result) {
+            if (result.message) {
+                app.showAlert(result.message);
+            }
+        }
 
     }
 

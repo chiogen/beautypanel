@@ -177,8 +177,8 @@ declare module 'photoshop' {
     }
     export interface ActionDescriptor {
         /** This is the action key */
-        _obj: string
-        _target: ActionTargetReference | Array<ActionTargetReference>
+        _obj?: string
+        _target?: ActionTargetReference | Array<ActionTargetReference>
         _options?: Object
         synchronousExecution?: boolean
         modalBehavior?: 'wait' | 'execute' | 'fail'
