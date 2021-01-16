@@ -10,7 +10,7 @@ import { percent } from '../../../common/type-utils';
 
 export const FrequencySeparation = () => 
     <div className="section">
-        <h3 className="title">${i18next.t('frequencySeparation.long')}</h3>
+        <h3 className="title">{i18next.t('frequencySeparation.long')}</h3>
         <div id="frequency-separation">
             <sp-action-button onClick={executeFrequencySeparation}>{i18next.t('frequencySeparation.short')}</sp-action-button>
             <div>
