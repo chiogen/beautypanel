@@ -1,7 +1,8 @@
 {
+  "manifestVersion": 4,
   "id": "com.chiogen.beautypanel",
   "name": "Beautypanel",
-  "version": "10",
+  "version": "1.0.0",
   "main": "index.html",
   "host": [
     {
@@ -9,7 +10,6 @@
       "minVersion": "22"
     }
   ],
-  "manifestVersion": 4,
   "entrypoints": [
     {
       "type": "panel",
@@ -32,7 +32,11 @@
       },
       "label": {
         "default": "Beautypanel"
-      }
+      },
+      "icons": [
+          {"width":23,"height":23,"path":"icons/dark.png","scale":[1,2],"theme":["darkest","dark","medium"]},
+          {"width":23,"height":23,"path":"icons/light.png","scale":[1,2],"theme":["lightest","light"]}
+      ]
     }
   ],
   "icons": [
