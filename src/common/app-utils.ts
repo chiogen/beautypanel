@@ -9,7 +9,9 @@ export namespace AppUtils {
             _target: {
                 _ref: targetBrush
             },
-            ...options
+            to: {
+                ...options
+            }
         };
 
         await app.batchPlay([descriptor], {});
