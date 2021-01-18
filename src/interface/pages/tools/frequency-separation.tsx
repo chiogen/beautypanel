@@ -1,7 +1,7 @@
 import * as React from 'react'
 import i18next from "i18next";
 import { app } from 'photoshop';
-import { BeautyPanel } from '../../../common/beautypanel';
+import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
 import { LayerUtils } from '../../../common/layer-utils';
 import { DocumentUtils } from '../../../common/document-utils';
 import { confirm } from '../../dialogues/confirm';
@@ -34,7 +34,7 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
         const document = app.activeDocument;
         const referenceLayer = document.backgroundLayer;
 
-        // Check if layers exist
+        // Get maybe existing layers
         let { detail, soft, levels } = BeautyPanel.layers;
         
         // Delete layers if they exist and the user has permitted it
@@ -49,11 +49,11 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
 
         // Ensure the required layers exist
         if (!soft) {
-            const name = BeautyPanel.getLayerNameByCode('soft');
+            const name = BeautyPanel.getLayerName(E_Layer.Soft);
             soft = await referenceLayer.duplicate(undefined, name);
         }
         if (!detail) {
-            const name = BeautyPanel.getLayerNameByCode('detail');
+            const name = BeautyPanel.getLayerName(E_Layer.Detail);
             detail = await referenceLayer.duplicate(undefined, name);
         }
 
@@ -68,7 +68,7 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
         // Create adjustment layer (levels)
         await DocumentUtils.setActiveLayers([detail]);
         levels = await LayerUtils.createContrastLayer(120, 132);
-        levels.name = BeautyPanel.getLayerNameByCode('levels');
+        levels.name = BeautyPanel.getLayerName(E_Layer.Levels);
 
         // Update layer visibility
         referenceLayer.visible = false;
@@ -80,7 +80,7 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
         // Set Brush as current tool
         // Set brush hardness to 100%
         // Set brush opacity to 100%
-        await AppUtils.selectBrush('cloneStampTool', {
+        await AppUtils.selectTool('cloneStampTool', {
             hardness: percent(100),
             opacity: percent(100)
         });

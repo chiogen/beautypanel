@@ -15,6 +15,18 @@ export namespace LayerUtils {
         return app.batchPlay([descriptor], {});
     }
 
+    export async function invert(layer: Layer) {
+        const descriptor: ActionDescriptor = {
+            _obj: "invert",
+            _target: {
+                _ref: 'layer',
+                _id: layer._id
+            }
+        }
+
+        return app.batchPlay([descriptor], {});
+    }
+
     export async function applyMedianNoise(layer: Layer, radius: number) {
         const descriptor: ActionDescriptor = {
             _obj: "median",
@@ -68,8 +80,8 @@ export namespace LayerUtils {
         const result = await app.batchPlay([descriptor], {});
 
         for (const item of result) {
-            if (result.message) {
-                app.showAlert(result.message);
+            if (item.message) {
+                app.showAlert(item.message);
             }
         }
 

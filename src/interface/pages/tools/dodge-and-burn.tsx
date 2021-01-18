@@ -1,13 +1,17 @@
 import * as React from 'react'
-import { html } from "htm/react";
 import i18next from "i18next";
+import { ActionDescriptor, app, Layer } from 'photoshop';
+import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
+import { DocumentUtils } from '../../../common/document-utils';
+import { LayerUtils } from '../../../common/layer-utils';
+import { AppUtils } from '../../../common/app-utils';
 
-export const DodgeAndBurn = () => 
+export const DodgeAndBurn = () =>
     <div className="section">
         <h3 className="title">Dodge and Burn</h3>
         <div id="dodge-and-burn">
             <div className="flex-buttons">
-                <sp-action-button>{i18next.t('dodgeAndBurn.gradient')}</sp-action-button>
+                <sp-action-button onClick={executeDodgeAndBurnGradient}>{i18next.t('dodgeAndBurn.gradient')}</sp-action-button>
                 <sp-action-button>{i18next.t('dodgeAndBurn.default')}</sp-action-button>
             </div>
             <div className="flex-buttons">
@@ -21,4 +25,100 @@ export const DodgeAndBurn = () =>
             </div>
         </div>
     </div>
-;
+    ;
+
+async function executeDodgeAndBurnGradient(e: React.MouseEvent<HTMLButtonElement>) {
+    try {
+
+        await DocumentUtils.checkBitsPerChannel();
+
+        // Get maybe existing layers
+        let bright = BeautyPanel.layers.bright;
+        let dark = BeautyPanel.layers.dark;
+
+        // Delete layers if they exist and the user has permitted it
+        if (bright || dark) {
+            if (confirm('Create new layers?')) {
+                bright?.delete();
+                dark?.delete();
+                bright = dark = undefined;
+            }
+        }
+
+        // ============================================ //
+        // Create adjustment layer "Bright"
+        if (!bright) {
+            bright = await addCurvedAdjustmentLayer(
+                BeautyPanel.getLayerName(E_Layer.Bright),
+                [
+                    [0, 0],
+                    [84, 105],
+                    [188, 234],
+                    [255, 255]
+                ]
+            )
+            await LayerUtils.invert(bright);
+        }
+        bright.blendMode = 'luminosity';
+
+        // ============================================ //
+        // Create adjustment layer "Dark"
+        if (!dark) {
+            dark = await addCurvedAdjustmentLayer(
+                BeautyPanel.getLayerName(E_Layer.Dark),
+                [
+                    [0, 0],
+                    [63, 21],
+                    [166, 144],
+                    [255, 255]
+                ]
+            );
+            await LayerUtils.invert(dark);
+        }
+        dark.blendMode = 'luminosity';
+
+        // Select brush to start painting
+        AppUtils.selectTool('paintbrushTool');
+
+    } catch (err) {
+        const message = err.message || err;
+        app.showAlert(message);
+    }
+}
+
+async function addCurvedAdjustmentLayer(name: string, curve: Array<number[]>): Promise<Layer> {
+
+    const layer = await app.activeDocument.backgroundLayer.duplicate(undefined, name);
+    await DocumentUtils.setActiveLayers([layer]);
+
+    const descriptor: ActionDescriptor = {
+        _obj: 'curves',
+        presetKind: {
+            _enum: "presetKindType",
+            _value: "presetKindCustom"
+        },
+        adjustment: [
+            {
+                _obj: "curvesAdjustment",
+                channel: {
+                    _ref: "channel",
+                    _enum: "channel",
+                    _value: "composite"
+                },
+                curve: curveArgument(curve)
+            }
+        ]
+    }
+
+    await app.batchPlay([descriptor], {});
+    return layer;
+}
+function curveArgument(curve: Array<number[]>) {
+    return curve.map(([x, y]) => {
+        return {
+            _obj: "paint",
+            horizontal: x,
+            vertical: y
+        }
+    })
+}

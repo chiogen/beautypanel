@@ -1,56 +1,76 @@
 import { app, Layer } from "photoshop";
 import { layerNames } from "./layer-names";
 
+export enum E_Layer {
+    // Frequency Separation
+    Soft = 'soft',
+    Detail = 'detail',
+    Levels = 'levels',
+    // Dodge and Burn
+    Bright = 'bright',
+    Dark = 'dark',
+    DodgeAndBurnGray = 'dodgeAndBurnGray',
+    // 
+    DetailBlackWhite = 'detailBlackWhite',
+    DetailColor = 'detailColor',
+    DetailEnhance = 'detailEnhance',
+    EnhanceDetails = 'enhanceDetails',
+    // Effects
+    Orton = 'orton',
+    Vignette = 'vignette',
+    Autumn = 'autumn'
+}
+
 export namespace BeautyPanel {
 
     export const layers = {
         get soft() {
-            return getLayerByCode('soft');
+            return getLayerByCode(E_Layer.Soft);
         },
         get detail() {
-            return getLayerByCode('detail');
+            return getLayerByCode(E_Layer.Detail);
         },
         get detailBlackWhite() {
-            return getLayerByCode('detailBlackWhite');
+            return getLayerByCode(E_Layer.DetailBlackWhite);
         },
         get detailColor() {
-            return getLayerByCode('detailColor');
+            return getLayerByCode(E_Layer.DetailColor);
         },
         get detailEnhance() {
-            return getLayerByCode('detailEnhance');
+            return getLayerByCode(E_Layer.DetailEnhance);
         },
         get levels() {
-            return getLayerByCode('levels');
+            return getLayerByCode(E_Layer.Levels);
         },
         get enhanceDetails() {
-            return getLayerByCode('enhanceDetails');
+            return getLayerByCode(E_Layer.EnhanceDetails);
         },
         get dodgeAndBurnGray() {
-            return getLayerByCode('dodgeAndBurnGray');
+            return getLayerByCode(E_Layer.DodgeAndBurnGray);
         },
         get orton() {
-            return getLayerByCode('orton');
+            return getLayerByCode(E_Layer.Orton);
         },
         get vignette() {
-            return getLayerByCode('vignette');
+            return getLayerByCode(E_Layer.Vignette);
         },
         get dark() {
-            return getLayerByCode('dark');
+            return getLayerByCode(E_Layer.Dark);
         },
         get bright() {
-            return getLayerByCode('bright');
+            return getLayerByCode(E_Layer.Bright);
         },
         get autumn() {
-            return getLayerByCode('autumn');
+            return getLayerByCode(E_Layer.Autumn);
         }
     }
 
-    export function getLayerNameByCode(code: string): string {
+    export function getLayerName(code: E_Layer): string {
         return layerNames[code];
     }
 
-    function getLayerByCode(code: string): Layer | undefined {
-        const name = getLayerNameByCode(code);;
+    function getLayerByCode(code: E_Layer): Layer | undefined {
+        const name = getLayerName(code);;
         return app.activeDocument.layers.find(layer => layer.name.toLowerCase() === name.toLowerCase());
     }
 
