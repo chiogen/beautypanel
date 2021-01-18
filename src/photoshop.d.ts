@@ -125,7 +125,7 @@ declare module 'photoshop' {
         
     }
     export interface SaveOptions {
-        embedColorProfile: boolean
+        embedColorProfile?: boolean
     }
     export interface LayerCreateOptions {
         name: string
@@ -153,7 +153,7 @@ declare module 'photoshop' {
         readonly currentTool: Tool
         eventNotifier: (event: unknown, descriptor: unknown) => void
 
-        batchPlay(commands: Array<ActionDescriptor>, options: any): Promise<Array<Object & { message?: string}>>
+        readonly batchPlay: BatchPlay
         bringToFront(): void
         createDocument(options?: DocumentCreateOptions): Promise<Document | null>
         open(entry?: File): Promise<Document>
@@ -180,11 +180,12 @@ declare module 'photoshop' {
         _value?: any
     }
 
+    export type BatchPlay = (commands: Array<ActionDescriptor>, options: any) => Promise<Array<Object & { message?: string}>>;
 
     export const app: Photoshop;
 
     export const action: {
-        batchPlay(descriptors: ActionDescriptor[], options: Object): Promise<Object[]>
+        readonly batchPlay: BatchPlay
     };
 
 }
