@@ -106,8 +106,8 @@ export namespace LayerUtils {
         const result = await app.batchPlay([descriptor], {});
 
         for (const item of result) {
-            if (result.message) {
-                app.showAlert(result.message);
+            if (item.message) {
+                app.showAlert(item.message);
             }
         }
         
