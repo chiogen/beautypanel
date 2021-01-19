@@ -1,4 +1,4 @@
-import { ActionDescriptor, app, Layer } from "photoshop";
+import { ActionDescriptor, app, Document, Layer } from "photoshop";
 
 export namespace DocumentUtils {
 
@@ -40,6 +40,25 @@ export namespace DocumentUtils {
         };
 
         await app.batchPlay([descriptor], {});
+    }
+
+    export async function mergeLayers(document: Document, layers: Layer[]): Promise<Layer> {
+
+        // The last layer will be the remaining layer, where all is merged to
+        const lastLayer = layers[layers.length - 1];
+
+        for (const layer of layers) {
+            if (layer !== lastLayer) {
+                lastLayer.moveAbove(layer);
+            }
+        }
+
+        for (const layer of document.layers) {
+            layer.visible = layers.includes(layer);
+        }
+
+        app.activeDocument.mergeVisibleLayers()
+        return lastLayer;
     }
 
 }

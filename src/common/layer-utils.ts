@@ -42,7 +42,7 @@ export namespace LayerUtils {
 
     export async function applyCalculation(source1: Layer, source2: Layer, channel: string, invert: boolean, mode: string, scale: number, offset: number) {
 
-        const descriptor: ActionDescriptor =  {
+        const descriptor: ActionDescriptor = {
             _obj: "calculation",
             _target: {
                 _ref: "layer",
@@ -110,9 +110,27 @@ export namespace LayerUtils {
                 app.showAlert(item.message);
             }
         }
-        
+
         // Usually, the now active layer is the new layer
         return app.activeDocument.activeLayers[0];
+    }
+
+    export async function applySurfaceBlur(layer: Layer, radius: number, threshold: number) {
+        const descriptor: ActionDescriptor = {
+            _obj: "surfaceBlur",
+            _target: {
+                _ref: 'layer',
+                _id: layer._id
+            },
+            radius: pixels(radius),
+            threshold: threshold
+        };
+
+        await app.batchPlay([descriptor], {});
+    }
+
+    export async function createRvlaMask(layer: Layer) {
+        
     }
 
 }
