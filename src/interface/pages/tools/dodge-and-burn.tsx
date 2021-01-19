@@ -16,7 +16,7 @@ export const DodgeAndBurn = () =>
             </div>
             <div className="flex-buttons">
                 <sp-action-button className="white">{i18next.t('dodgeAndBurn.white')}</sp-action-button>
-                <sp-action-button className="gray">{i18next.t('dodgeAndBurn.gray')}</sp-action-button>
+                <sp-action-button className="gray" onClick={executeDodgeAndBurnGray}>{i18next.t('dodgeAndBurn.gray')}</sp-action-button>
                 <sp-action-button className="black">{i18next.t('dodgeAndBurn.black')}</sp-action-button>
             </div>
             <div className="flex-buttons">
@@ -24,8 +24,7 @@ export const DodgeAndBurn = () =>
                 <sp-action-button>Stamp</sp-action-button>
             </div>
         </div>
-    </div>
-    ;
+    </div>;
 
 async function executeDodgeAndBurnGradient(e: React.MouseEvent<HTMLButtonElement>) {
     try {
@@ -79,6 +78,64 @@ async function executeDodgeAndBurnGradient(e: React.MouseEvent<HTMLButtonElement
 
         // Select brush to start painting
         AppUtils.selectTool('paintbrushTool');
+
+    } catch (err) {
+        const message = err.message || err;
+        app.showAlert(message);
+    }
+}
+async function executeDodgeAndBurnGray(e: React.MouseEvent<HTMLButtonElement>) {
+    try {
+
+        const document = app.activeDocument;
+
+        // Preparations
+        await DocumentUtils.checkBitsPerChannel();
+
+        // Get maybe existing layers
+        let layer = BeautyPanel.layers.dodgeAndBurnGray;
+
+        // Delete layers if they exist and the user has permitted it
+        if (layer) {
+            if (confirm('Create new layers?')) {
+                layer.delete();
+                layer = undefined;
+            }
+        }
+
+        if (!layer) {
+
+            // Create new layer with blendmode SoftLight
+            layer = await document.backgroundLayer.duplicate(undefined, BeautyPanel.getLayerName(E_Layer.DodgeAndBurnGray));
+            layer.blendMode = 'softLight';
+        
+            // Fill layer with gray color (Don't know the actions in photoshop)
+            const descriptor: ActionDescriptor = {
+                _obj: 'fillContents'
+            }
+
+        }
+
+        // Select brush to start painting
+        AppUtils.selectTool('paintbrushTool');
+
+    } catch (err) {
+        const message = err.message || err;
+        app.showAlert(message);
+    }
+}
+
+async function onBrushButtonClicked(e: React.MouseEvent<HTMLButtonElement>) {
+    try {
+
+    } catch (err) {
+        const message = err.message || err;
+        app.showAlert(message);
+    }
+
+}
+async function onStampButtonClicked(e: React.MouseEvent<HTMLButtonElement>) {
+    try {
 
     } catch (err) {
         const message = err.message || err;
