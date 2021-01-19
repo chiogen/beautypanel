@@ -173,11 +173,12 @@ declare module 'photoshop' {
         [key: string]: any
     }
     export interface ActionTargetReference {
-        _ref: string
+        _ref?: string
         _id?: number
         _name?: string
         _enum?: string
         _value?: any
+        _property?: string
     }
 
     export type BatchPlay = (commands: Array<ActionDescriptor>, options: any) => Promise<Array<Object & { message?: string}>>;

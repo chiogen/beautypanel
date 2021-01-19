@@ -1,9 +1,50 @@
+import i18next from "i18next";
 import { ActionDescriptor, app, Document, Layer } from "photoshop";
+import { showConfirmDialog } from "./dialog";
 
 export namespace DocumentUtils {
 
-    export async function checkBitsPerChannel() {
-        // Not implemented yet
+    export async function getBitsPerChannel(document: Document): Promise<number> {
+        const descriptor: ActionDescriptor = {
+            _obj: "get",
+            _target: [
+                {
+                    _property: "depth"
+                },
+                {
+                    _ref: "document",
+                    _id: document._id
+                }
+            ]
+        };
+
+        const [result] = await app.batchPlay([descriptor], {});
+        return (result as any).depth as number;
+    }
+
+    export async function checkBitsPerChannel(document: Document) {
+
+        const bitsPerChannel = await getBitsPerChannel(document);
+        if (bitsPerChannel >= 16) {
+            return;
+        }
+
+        const message = i18next.t('requestBitsPerChannelConvert');
+
+        const convert = await showConfirmDialog(message);
+
+        if (convert) {
+
+            const descriptor: ActionDescriptor = {
+                _obj: 'convertMode',
+                depth: 16,
+                merge: false
+            };
+
+            await app.batchPlay([descriptor], {});
+
+        }
+
     }
 
     export async function selectNoLayers() {

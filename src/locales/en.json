@@ -56,5 +56,6 @@
     "opacity": "Opacity",
     "hardness": "Hardness",
     "zoom": "Zoom (%)",
-    "zoomFit": "Fit"
+    "zoomFit": "Fit",
+    "requestBitsPerChannelConvert": "The picture is in 8 bit mode. This is not ideal for the BeautyPanel. Convert to 16 bit now?"
 }

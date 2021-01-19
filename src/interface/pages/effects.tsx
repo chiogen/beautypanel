@@ -37,7 +37,7 @@ async function enhanceDetails(e: React.MouseEvent<HTMLButtonElement>) {
         document.backgroundLayer.locked = true;
 
         // Preparations
-        DocumentUtils.checkBitsPerChannel();
+        await DocumentUtils.checkBitsPerChannel(document);
 
         // Delete layers if they exist and the user has permitted it
         if (BeautyPanel.layers.enhanceDetails) {
