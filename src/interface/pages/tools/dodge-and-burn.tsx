@@ -29,7 +29,8 @@ export const DodgeAndBurn = () =>
 async function executeDodgeAndBurnGradient(e: React.MouseEvent<HTMLButtonElement>) {
     try {
 
-        await DocumentUtils.checkBitsPerChannel();
+        const document = app.activeDocument;
+        await DocumentUtils.checkBitsPerChannel(document);
 
         // Get maybe existing layers
         let bright = BeautyPanel.layers.bright;
@@ -90,7 +91,7 @@ async function executeDodgeAndBurnGray(e: React.MouseEvent<HTMLButtonElement>) {
         const document = app.activeDocument;
 
         // Preparations
-        await DocumentUtils.checkBitsPerChannel();
+        await DocumentUtils.checkBitsPerChannel(document);
 
         // Get maybe existing layers
         let layer = BeautyPanel.layers.dodgeAndBurnGray;

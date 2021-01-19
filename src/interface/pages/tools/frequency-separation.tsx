@@ -29,9 +29,9 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
 
         button.disabled = true;
 
-        await DocumentUtils.checkBitsPerChannel();
-        
         const document = app.activeDocument;
+        await DocumentUtils.checkBitsPerChannel(document);
+        
         const referenceLayer = document.backgroundLayer;
 
         // Get maybe existing layers
@@ -86,7 +86,7 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
         });
 
     } catch (err) {
-        app.showAlert("Error at executeFrequencySeparation(): " + err?.message ?? err)
+        app.showAlert(err?.message ?? err)
     } finally {
         button.disabled = false;
     }
