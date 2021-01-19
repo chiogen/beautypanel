@@ -37,6 +37,10 @@ export namespace DocumentUtils {
 
             const descriptor: ActionDescriptor = {
                 _obj: 'convertMode',
+                _target: {
+                    _ref: 'document',
+                    _id: document._id
+                },
                 depth: 16,
                 merge: false
             };
