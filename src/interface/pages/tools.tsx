@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { Page } from '../../enums';
 import { DodgeAndBurn } from './tools/dodge-and-burn';
 import { FrequencySeparation } from './tools/frequency-separation';
 import { Hardness } from './tools/hardness';

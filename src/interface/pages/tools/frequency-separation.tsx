@@ -14,8 +14,8 @@ export const FrequencySeparation = () =>
         <div id="frequency-separation">
             <sp-action-button onClick={executeFrequencySeparation}>{i18next.t('frequencySeparation.short')}</sp-action-button>
             <div>
-                <sp-action-button>{i18next.t('frequencySeparation.details')}</sp-action-button>
-                <sp-action-button>{i18next.t('frequencySeparation.soft')}</sp-action-button>
+                <sp-action-button onClick={setLayerDetails}>{i18next.t('frequencySeparation.details')}</sp-action-button>
+                <sp-action-button onClick={setLayerSoft}>{i18next.t('frequencySeparation.soft')}</sp-action-button>
             </div>
         </div>
     </div>
@@ -60,35 +60,73 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
         // Interpolate brightness (on soft layer)
         await LayerUtils.applyMedianNoise(soft, 10);
 
-        // Picture calculation
+        // // Picture calculation
         await DocumentUtils.setActiveLayers([detail]);
-        await LayerUtils.applyCalculation(detail, soft, /*'RGB '*/ "red", true, "add", 2, 0);
+
+        await LayerUtils.applyCalculation(detail, soft, "red", true, "add", 2, 0);
+        return;
         detail.blendMode = 'linearLight';
 
-        // Create adjustment layer (levels)
+        // // Create adjustment layer (levels)
         await DocumentUtils.setActiveLayers([detail]);
         levels = await LayerUtils.createContrastLayer(120, 132);
         levels.name = BeautyPanel.getLayerName(E_Layer.Levels);
 
-        // Update layer visibility
+        // // Update layer visibility
         referenceLayer.visible = false;
         soft.visible = false;
 
-        // Focus detail layer
+        // // Focus detail layer
         await DocumentUtils.setActiveLayers([detail]);
 
-        // Set Brush as current tool
-        // Set brush hardness to 100%
-        // Set brush opacity to 100%
+        // // Set Brush as current tool
+        // // Set brush hardness to 100%
+        // // Set brush opacity to 100%
         await AppUtils.selectTool('cloneStampTool', {
             hardness: percent(100),
             opacity: percent(100)
         });
 
     } catch (err) {
-        app.showAlert(err?.message ?? err)
+        console.error(err);
+        app.showAlert(err.message || err)
     } finally {
         button.disabled = false;
     }
 
+}
+
+async function setLayerDetails() {
+    try {
+
+        const layer = BeautyPanel.layers.detail;
+
+        if (layer) {
+            await DocumentUtils.setActiveLayers([layer]);
+        } else {
+            const layerName = BeautyPanel.getLayerName(E_Layer.Detail);
+            await app.showAlert(`Layer '${layerName}' not found.`);
+        }
+
+    } catch (err) {
+        console.error(err);
+        app.showAlert(err.message || err)
+    }
+}
+
+async function setLayerSoft() {
+    try {
+
+        const layer = BeautyPanel.layers.soft;
+        if (layer) {
+            await DocumentUtils.setActiveLayers([layer]);
+        } else {
+            const layerName = BeautyPanel.getLayerName(E_Layer.Soft);
+            await app.showAlert(`Layer '${layerName}' not found.`)
+        }
+
+    } catch (err) {
+        console.error(err);
+        app.showAlert(err.message || err)
+    }
 }

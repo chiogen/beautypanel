@@ -12,7 +12,13 @@ export namespace LayerUtils {
             }
         }
 
-        return app.batchPlay([descriptor], {});
+        const result = await app.batchPlay([descriptor], {});
+
+        for (const item of result) {
+            if (item.message) {
+                await app.showAlert(item.message);
+            }
+        }
     }
 
     export async function invert(layer: Layer) {
@@ -24,7 +30,13 @@ export namespace LayerUtils {
             }
         }
 
-        return app.batchPlay([descriptor], {});
+        const result = await app.batchPlay([descriptor], {});
+
+        for (const item of result) {
+            if (item.message) {
+                await app.showAlert(item.message);
+            }
+        }
     }
 
     export async function applyMedianNoise(layer: Layer, radius: number) {
@@ -37,51 +49,137 @@ export namespace LayerUtils {
             radius: pixels(radius)
         }
 
-        return app.batchPlay([descriptor], {});
+        const result = await app.batchPlay([descriptor], {});
+
+        for (const item of result) {
+            if (item.message) {
+                await app.showAlert(item.message);
+            }
+        }
     }
 
     export async function applyCalculation(source1: Layer, source2: Layer, channel: string, invert: boolean, mode: string, scale: number, offset: number) {
 
+        // make {
+        //     "new": {
+        //      "_class": "channel"
+        //     },
+        //     "using": {
+        //      "_obj": "calculation",
+        //      "to": {
+        //       "_ref": [
+        //        {
+        //         "_ref": "channel",
+        //         "_enum": "channel",
+        //         "_value": "red"
+        //        },
+        //        {
+        //         "_ref": "layer",
+        //         "_name": "Soft"
+        //        }
+        //       ]
+        //      },
+        //      "calculation": {
+        //       "_enum": "calculationType",
+        //       "_value": "add"
+        //      },
+        //      "scale": 1,
+        //      "offset": 0,
+        //      "opacity": {
+        //       "_unit": "percentUnit",
+        //       "_value": 90
+        //      },
+        //      "source2": {
+        //       "_ref": "channel",
+        //       "_enum": "channel",
+        //       "_value": "red"
+        //      },
+        //      "invertSource2": true
+        //     },
+        //     "_isCommand": true
+        //    }
+
+        // const descriptor: ActionDescriptor = {
+        //     _obj: "calculation",
+        //     _target: {
+        //         _ref: "layer",
+        //         _id: source1._id
+        //     },
+        //     to: {
+        //         _ref: "channel",
+        //         _enum: "channel",
+        //         _value: "red"
+        //     },
+        //     invert,
+        //     calculation: {
+        //         _enum: "calculationType",
+        //         _value: mode
+        //     },
+        //     scale,
+        //     offset,
+        //     // Target descriptor
+        //     source2: {
+        //         _ref: [
+        //             {
+        //                 _ref: "channel",
+        //                 _enum: "channel",
+        //                 _value: "red"
+        //             },
+        //             {
+        //                 _ref: "layer",
+        //                 _id: source2._id
+        //             }
+        //         ]
+        //     },
+        //     invertSource2: invert
+        // }
+
         const descriptor: ActionDescriptor = {
-            _obj: "calculation",
-            _target: {
-                _ref: "layer",
-                _id: source1._id
+            _obj: "make",
+            new: {
+                _class: "channel"
             },
-            to: {
-                _ref: "channel",
-                _enum: "channel",
-                _value: "red"
+            using: {
+                _obj: "calculation",
+                _target: {
+                    _ref: "layer",
+                    _id: source1._id
+                },
+                to: {
+                    _ref: "channel",
+                    _enum: "channel",
+                    _value: "red"
+                },
+                invert,
+                calculation: {
+                    _enum: "calculationType",
+                    _value: mode
+                },
+                scale,
+                offset,
+                source2: {
+                    _ref: [
+                        {
+                            _ref: "channel",
+                            _enum: "channel",
+                            _value: "red"
+                        },
+                        {
+                            _ref: "layer",
+                            _id: source2._id
+                        }
+                    ]
+                },
+                invertSource2: invert
             },
-            invert,
-            calculation: {
-                _enum: "calculationType",
-                _value: mode
-            },
-            scale,
-            offset,
-            // Target descriptor
-            source2: {
-                _ref: [
-                    {
-                        _ref: "channel",
-                        _enum: "channel",
-                        _value: "red"
-                    },
-                    {
-                        _ref: "layer",
-                        _id: source2._id
-                    }
-                ]
-            },
-            invertSource2: invert
+            _isCommand: true
         }
 
         const result = await app.batchPlay([descriptor], {});
 
         for (const item of result) {
             if (item.message) {
-                app.showAlert(item.message);
+                await app.showAlert(item.message);
             }
         }
 
@@ -107,7 +205,7 @@ export namespace LayerUtils {
 
         for (const item of result) {
             if (item.message) {
-                app.showAlert(item.message);
+                await app.showAlert(item.message);
             }
         }
 
@@ -126,11 +224,17 @@ export namespace LayerUtils {
             threshold: threshold
         };
 
-        await app.batchPlay([descriptor], {});
+        const result = await app.batchPlay([descriptor], {});
+
+        for (const item of result) {
+            if (item.message) {
+                await app.showAlert(item.message);
+            }
+        }
     }
 
     export async function createRvlaMask(layer: Layer) {
-        
+
     }
 
 }
