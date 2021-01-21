@@ -6,7 +6,7 @@ import { opacity as defaultPresets } from './default-presets.json'
 
 export const Opacity = () => 
     <div className="section">
-        <h3 className="title">${i18next.t('opacity')}</h3>
+        <h3 className="title">{i18next.t('opacity')}</h3>
         <div className="flex-buttons">
             <sp-action-button data-index="0" onClick={onOpacityPresetClick}>{getPresetValue(0)}%</sp-action-button>
             <sp-action-button data-index="1" onClick={onOpacityPresetClick}>{getPresetValue(1)}%</sp-action-button>
