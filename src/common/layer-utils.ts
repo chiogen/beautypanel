@@ -141,9 +141,10 @@ export namespace LayerUtils {
             },
             using: {
                 _obj: "calculation",
-                _target: {
-                    _ref: "layer",
-                    _id: source1._id
+                to: {
+                    _ref: "channel",
+                    _enum: "channel",
+                    _value: "red"
                 },
                 invert,
                 calculation: {
@@ -163,7 +164,7 @@ export namespace LayerUtils {
                 invertSource2: invert
             },
             _isCommand: true
-        }
+        };
 
         const result = await app.batchPlay([descriptor], {});
 
