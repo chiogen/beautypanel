@@ -30,7 +30,7 @@ const app = {
                 'node_modules',
             ],
             preferConst: true,
-            namedExports: false
+            namedExports: true
         }),
         // Stylesheets
         scss({

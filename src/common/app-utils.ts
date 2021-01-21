@@ -14,7 +14,33 @@ export namespace AppUtils {
             }
         };
 
-        await app.batchPlay([descriptor], {});
+        const result = await app.batchPlay([descriptor], {});
+
+        for (const item of result) {
+            if (item.message)
+                await app.showAlert(item.message);
+        }
+    }
+
+    export async function setToolOptions(options: Object) {
+
+        const descriptor: ActionDescriptor = {
+            _obj: 'set',
+            _target: {
+                _ref: app.currentTool.id
+            },
+            to: {
+                ...options
+            }
+        };
+
+        const result = await app.batchPlay([descriptor], {});
+
+        for (const item of result) {
+            if (item.message)
+                await app.showAlert(item.message);
+        }
+
     }
 
 }
