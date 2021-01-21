@@ -145,11 +145,6 @@ export namespace LayerUtils {
                     _ref: "layer",
                     _id: source1._id
                 },
-                to: {
-                    _ref: "channel",
-                    _enum: "channel",
-                    _value: "red"
-                },
                 invert,
                 calculation: {
                     _enum: "calculationType",
@@ -159,11 +154,6 @@ export namespace LayerUtils {
                 offset,
                 source2: {
                     _ref: [
-                        {
-                            _ref: "channel",
-                            _enum: "channel",
-                            _value: "red"
-                        },
                         {
                             _ref: "layer",
                             _id: source2._id

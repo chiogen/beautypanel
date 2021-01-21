@@ -62,9 +62,7 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
 
         // // Picture calculation
         await DocumentUtils.setActiveLayers([detail]);
-
         await LayerUtils.applyCalculation(detail, soft, "red", true, "add", 2, 0);
-        return;
         detail.blendMode = 'linearLight';
 
         // // Create adjustment layer (levels)
