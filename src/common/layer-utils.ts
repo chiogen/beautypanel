@@ -118,7 +118,7 @@ export namespace LayerUtils {
 
     }
 
-    export async function createContrastLayer(rangeStart: number, rangeEnd: number): Promise<Layer> {
+    export async function createContrastLayer(source: Layer, rangeStart: number, rangeEnd: number): Promise<Layer> {
 
         const descriptor: ActionDescriptor = {
             _obj: "make",
@@ -134,7 +134,10 @@ export namespace LayerUtils {
             }
         }
 
-        const result = await app.batchPlay([descriptor], {});
+        const result = await app.batchPlay([
+            DocumentUtils.setActiveLayersDescriptor([source]),
+            descriptor
+        ], {});
 
         for (const item of result) {
             if (item.message) {

@@ -60,7 +60,7 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
         // Interpolate brightness (on soft layer)
         await LayerUtils.applyMedianNoise(soft, 10);
 
-        // // Picture calculation
+        // Image calculation
         await LayerUtils.applyImageEvent({
             source: soft,
             target: detail,
@@ -73,8 +73,7 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
         detail.blendMode = 'linearLight';
 
         // // Create adjustment layer (levels)
-        await DocumentUtils.setActiveLayers([detail]);
-        levels = await LayerUtils.createContrastLayer(120, 132);
+        levels = await LayerUtils.createContrastLayer(detail, 120, 132);
         levels.name = BeautyPanel.getLayerName(E_Layer.Levels);
 
         // // Update layer visibility
