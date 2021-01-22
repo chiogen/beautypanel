@@ -1,4 +1,5 @@
-import { ActionDescriptor, app, Layer } from "photoshop";
+import { ActionDescriptor, app, Layer, PercentValue } from "photoshop";
+import { DocumentUtils } from "./document-utils";
 import { pixels } from "./type-utils";
 
 export namespace LayerUtils {
@@ -58,115 +59,56 @@ export namespace LayerUtils {
         }
     }
 
-    export async function applyCalculation(source1: Layer, source2: Layer, channel: string, invert: boolean, mode: string, scale: number, offset: number) {
-
-        // make {
-        //     "new": {
-        //      "_class": "channel"
-        //     },
-        //     "using": {
-        //      "_obj": "calculation",
-        //      "to": {
-        //       "_ref": [
-        //        {
-        //         "_ref": "channel",
-        //         "_enum": "channel",
-        //         "_value": "red"
-        //        },
-        //        {
-        //         "_ref": "layer",
-        //         "_name": "Soft"
-        //        }
-        //       ]
-        //      },
-        //      "calculation": {
-        //       "_enum": "calculationType",
-        //       "_value": "add"
-        //      },
-        //      "scale": 1,
-        //      "offset": 0,
-        //      "opacity": {
-        //       "_unit": "percentUnit",
-        //       "_value": 90
-        //      },
-        //      "source2": {
-        //       "_ref": "channel",
-        //       "_enum": "channel",
-        //       "_value": "red"
-        //      },
-        //      "invertSource2": true
-        //     },
-        //     "_isCommand": true
-        //    }
-
-        // const descriptor: ActionDescriptor = {
-        //     _obj: "calculation",
-        //     _target: {
-        //         _ref: "layer",
-        //         _id: source1._id
-        //     },
-        //     to: {
-        //         _ref: "channel",
-        //         _enum: "channel",
-        //         _value: "red"
-        //     },
-        //     invert,
-        //     calculation: {
-        //         _enum: "calculationType",
-        //         _value: mode
-        //     },
-        //     scale,
-        //     offset,
-        //     // Target descriptor
-        //     source2: {
-        //         _ref: [
-        //             {
-        //                 _ref: "channel",
-        //                 _enum: "channel",
-        //                 _value: "red"
-        //             },
-        //             {
-        //                 _ref: "layer",
-        //                 _id: source2._id
-        //             }
-        //         ]
-        //     },
-        //     invertSource2: invert
-        // }
+    export type ImageCalculationType = 'normal' |
+        'add' | 'subtract' |
+        'darken' | 'multiply' | 'colorBurn' | 'linearBurn' | 'darkerColor' |
+        'lighten' | 'screen' | 'colorDodge' | 'linearDodge' | 'linearDodgeAdd' | 'lighterColor' |
+        'overlay' | 'softLight' | 'hardLight' | 'vividLight' | 'linearLight' | 'pinLight' | 'hardMix' |
+        'difference' | 'exclusion' | 'divide';
+    export interface ApplyImageEventOptions {
+        source: Layer
+        target: Layer
+        channel: string
+        scale: number
+        offset: number
+        opacity?: PercentValue
+        calculationType: ImageCalculationType
+    }
+    export async function applyImageEvent(options: ApplyImageEventOptions) {
 
         const descriptor: ActionDescriptor = {
-            _obj: "make",
-            new: {
-                _class: "channel"
-            },
-            using: {
-                _obj: "calculation",
-                to: {
-                    _ref: "channel",
-                    _enum: "channel",
-                    _value: "red"
-                },
-                invert,
-                calculation: {
-                    _enum: "calculationType",
-                    _value: mode
-                },
-                scale,
-                offset,
-                source2: {
-                    _ref: [
+            _obj: "applyImageEvent",
+            with: {
+                "_obj": "calculation",
+                "to": {
+                    "_ref": [
+                        {
+                            _ref: "channel",
+                            _enum: "channel",
+                            _value: options.channel
+                        },
                         {
                             _ref: "layer",
-                            _id: source2._id
+                            _id: options.source._id
                         }
                     ]
                 },
-                invertSource2: invert
+                invert: true,
+                calculation: {
+                    "_enum": "calculationType",
+                    "_value": options.calculationType
+                },
+                scale: 2,
+                offset: 0
             },
             _isCommand: true
-        };
+        }
 
-        const result = await app.batchPlay([descriptor], {});
+        const result = await app.batchPlay([
+            DocumentUtils.setActiveLayersDescriptor([options.target]),
+            descriptor
+        ], {});
+
 
         for (const item of result) {
             if (item.message) {

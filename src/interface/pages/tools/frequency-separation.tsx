@@ -1,6 +1,6 @@
 import * as React from 'react'
 import i18next from "i18next";
-import { app } from 'photoshop';
+import { ActionDescriptor, app, Layer } from 'photoshop';
 import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
 import { LayerUtils } from '../../../common/layer-utils';
 import { DocumentUtils } from '../../../common/document-utils';
@@ -8,7 +8,7 @@ import { confirm } from '../../dialogues/confirm';
 import { AppUtils } from '../../../common/app-utils';
 import { percent } from '../../../common/type-utils';
 
-export const FrequencySeparation = () => 
+export const FrequencySeparation = () =>
     <div className="section">
         <h3 className="title">{i18next.t('frequencySeparation.long')}</h3>
         <div id="frequency-separation">
@@ -19,7 +19,7 @@ export const FrequencySeparation = () =>
             </div>
         </div>
     </div>
-;
+    ;
 
 export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonElement>) {
 
@@ -31,12 +31,12 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
 
         const document = app.activeDocument;
         await DocumentUtils.checkBitsPerChannel(document);
-        
+
         const referenceLayer = document.backgroundLayer;
 
         // Get maybe existing layers
         let { detail, soft, levels } = BeautyPanel.layers;
-        
+
         // Delete layers if they exist and the user has permitted it
         if (detail || soft || levels) {
             if (confirm('Create new layers?')) {
@@ -61,8 +61,15 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
         await LayerUtils.applyMedianNoise(soft, 10);
 
         // // Picture calculation
-        await DocumentUtils.setActiveLayers([detail]);
-        await LayerUtils.applyCalculation(detail, soft, "red", true, "add", 2, 0);
+        await LayerUtils.applyImageEvent({
+            source: soft,
+            target: detail,
+            channel: 'RGB',
+            calculationType: 'add',
+            offset: 0,
+            scale: 2,
+            opacity: percent(100)
+        });
         detail.blendMode = 'linearLight';
 
         // // Create adjustment layer (levels)

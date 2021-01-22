@@ -66,15 +66,12 @@ export namespace DocumentUtils {
         ], {})
     }
 
-    export async function setActiveLayers(layers: Layer[]): Promise<void> {
-
-        if (layers.length === 0)
-            return;
+    export function setActiveLayersDescriptor(layers: Layer[]): ActionDescriptor {
 
         const layerIds = layers.map(x => x._id);
         const firstLayer = layers[0];
 
-        const descriptor: ActionDescriptor = {
+        return {
             _obj: 'select',
             _target: {
                 _ref: 'layer',
@@ -83,8 +80,16 @@ export namespace DocumentUtils {
             makeVisible: false,
             layerID: layerIds
         };
+    }
+    export async function setActiveLayers(layers: Layer[]): Promise<void> {
 
-        await app.batchPlay([descriptor], {});
+        if (layers.length === 0)
+            return;
+
+        const descriptor = setActiveLayersDescriptor(layers);
+        await app.batchPlay([
+            descriptor
+        ], {});
     }
 
     export async function mergeLayers(document: Document, layers: Layer[]): Promise<Layer> {
