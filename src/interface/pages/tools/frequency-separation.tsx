@@ -33,6 +33,7 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
         await DocumentUtils.checkBitsPerChannel(document);
 
         const referenceLayer = document.backgroundLayer;
+        referenceLayer.visible = true;
 
         // Get maybe existing layers
         let { detail, soft, levels } = BeautyPanel.layers;
@@ -51,10 +52,12 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
         if (!soft) {
             const name = BeautyPanel.getLayerName(E_Layer.Soft);
             soft = await referenceLayer.duplicate(undefined, name);
+            soft.visible = true;
         }
         if (!detail) {
             const name = BeautyPanel.getLayerName(E_Layer.Detail);
             detail = await referenceLayer.duplicate(undefined, name);
+            detail.visible = true;
         }
 
         // Interpolate brightness (on soft layer)

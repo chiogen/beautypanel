@@ -33,6 +33,8 @@ async function executeDodgeAndBurnGradient(e: React.MouseEvent<HTMLButtonElement
         const document = app.activeDocument;
         await DocumentUtils.checkBitsPerChannel(document);
 
+        document.backgroundLayer.visible = true;
+
         // Get maybe existing layers
         let bright = BeautyPanel.layers.bright;
         let dark = BeautyPanel.layers.dark;
