@@ -4,6 +4,7 @@ import * as React from 'react'
 import { BeautyPanel, E_Layer } from '../../common/beautypanel';
 import { DocumentUtils } from '../../common/document-utils';
 import { LayerUtils } from '../../common/layer-utils';
+import { createVignette } from './effects/vignette'
 
 type Props = {
     isActive: boolean
@@ -87,17 +88,6 @@ async function strengthenDetails(e: React.MouseEvent<HTMLButtonElement>) {
 }
 
 async function createOrthonEffect(e: React.MouseEvent<HTMLButtonElement>) {
-    try {
-
-
-
-    } catch (err) {
-        const message = err.message || err;
-        app.showAlert(message);
-    }
-}
-
-async function createVignette(e: React.MouseEvent<HTMLButtonElement>) {
     try {
 
 
