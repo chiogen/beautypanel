@@ -5,6 +5,7 @@ import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
 import { DocumentUtils } from '../../../common/document-utils';
 import { LayerUtils } from '../../../common/layer-utils';
 import { AppUtils } from '../../../common/app-utils';
+import { confirm } from '../../dialogues/confirm';
 
 export const DodgeAndBurn = () =>
     <div className="section">
@@ -20,8 +21,8 @@ export const DodgeAndBurn = () =>
                 <sp-action-button className="black">{i18next.t('dodgeAndBurn.black')}</sp-action-button>
             </div>
             <div className="flex-buttons">
-                <sp-action-button>Brush</sp-action-button>
-                <sp-action-button>Stamp</sp-action-button>
+                <sp-action-button onClick={onBrushButtonClicked}>Brush</sp-action-button>
+                <sp-action-button onClick={onStampButtonClicked}>Stamp</sp-action-button>
             </div>
         </div>
     </div>;
@@ -59,6 +60,7 @@ async function executeDodgeAndBurnGradient(e: React.MouseEvent<HTMLButtonElement
             )
             await LayerUtils.invert(bright);
         }
+        bright.visible = true;
         bright.blendMode = 'luminosity';
 
         // ============================================ //
@@ -73,6 +75,7 @@ async function executeDodgeAndBurnGradient(e: React.MouseEvent<HTMLButtonElement
                     [255, 255]
                 ]
             );
+            dark.visible = true;
             await LayerUtils.invert(dark);
         }
         dark.blendMode = 'luminosity';
@@ -128,7 +131,7 @@ async function executeDodgeAndBurnGray(e: React.MouseEvent<HTMLButtonElement>) {
 
 async function onBrushButtonClicked(e: React.MouseEvent<HTMLButtonElement>) {
     try {
-
+        await AppUtils.selectTool('paintbrushTool');
     } catch (err) {
         const message = err.message || err;
         app.showAlert(message);
@@ -137,10 +140,10 @@ async function onBrushButtonClicked(e: React.MouseEvent<HTMLButtonElement>) {
 }
 async function onStampButtonClicked(e: React.MouseEvent<HTMLButtonElement>) {
     try {
-
+        await AppUtils.selectTool('cloneStampTool');
     } catch (err) {
         const message = err.message || err;
-        app.showAlert(message);
+        await app.showAlert(message);
     }
 }
 
@@ -166,9 +169,15 @@ async function addCurvedAdjustmentLayer(name: string, curve: Array<number[]>): P
                 curve: curveArgument(curve)
             }
         ]
+    };
+
+    const result = await app.batchPlay([descriptor], {});
+    for (const item of result) {
+        if (item.message) {
+            await app.showAlert(item.message);
+        }
     }
 
-    await app.batchPlay([descriptor], {});
     return layer;
 }
 function curveArgument(curve: Array<number[]>) {
@@ -178,5 +187,5 @@ function curveArgument(curve: Array<number[]>) {
             horizontal: x,
             vertical: y
         }
-    })
+    });
 }

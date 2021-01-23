@@ -171,6 +171,33 @@ export namespace LayerUtils {
 
     export async function createRvlaMask(layer: Layer) {
 
+        const descriptor: ActionDescriptor = {
+            _obj: 'make',
+            new: {
+                "_class": "channel"
+            },
+            at: {
+                _ref: "channel",
+                _enum: "channel",
+                _value: "mask"
+            },
+            using: {
+                _enum: "userMaskEnabled",
+                _value: "revealAll"
+            }
+        }
+
+        const result = await app.batchPlay([
+            DocumentUtils.setActiveLayersDescriptor([layer]),
+            descriptor
+        ], {});
+
+        for (const item of result) {
+            if (item.message) {
+                await app.showAlert(item.message);
+            }
+        }
+
     }
 
 }

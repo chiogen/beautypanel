@@ -66,7 +66,7 @@ export namespace DocumentUtils {
         ], {})
     }
 
-    export function setActiveLayersDescriptor(layers: Layer[]): ActionDescriptor {
+    export function setActiveLayersDescriptor(layers: Layer[], makeVisible: boolean = true): ActionDescriptor {
 
         const layerIds = layers.map(x => x._id);
         const firstLayer = layers[0];
@@ -77,7 +77,7 @@ export namespace DocumentUtils {
                 _ref: 'layer',
                 _id: firstLayer._id
             },
-            makeVisible: false,
+            makeVisible: makeVisible,
             layerID: layerIds
         };
     }
