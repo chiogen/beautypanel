@@ -22,6 +22,10 @@ declare module 'photoshop' {
         _unit: "pixelsUnit",
         _value: number
     };
+    export type PointsValue = {
+        _unit: "pointsUnit",
+        _value: number
+    }
     export type AngleValue = unknown;
     export type AnchorPosition = unknown;
     export type ResampleMethod = "nearestNeighbor" | "bilinear" | "bicubic" | "bicubicSmoother" | "bicubicSharper" | "bicubicAutomatic" | "preserveDetailsUpscale" | "deepUpscale";
