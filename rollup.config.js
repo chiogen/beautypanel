@@ -14,7 +14,7 @@ const app = {
         'src/beautypanel.ts'
     ],
     output: {
-        file: 'index.js',
+        file: 'ccx/index.js',
         format: 'cjs'
     },
     plugins: [
@@ -34,7 +34,7 @@ const app = {
         }),
         // Stylesheets
         scss({
-            output: 'index.css',
+            output: 'ccx/index.css',
             includePaths: ['node_modules'],
             compiler: require('sass'),
             watch: 'src/styles'
