@@ -118,5 +118,7 @@ dist
 
 
 # Build files
-index.js
+ccx/index.js
+ccx/index.css
+
 *.ccx
