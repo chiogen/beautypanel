@@ -3,7 +3,7 @@
   "id": "com.chiogen.beautypanel",
   "name": "Beautypanel",
   "version": "1.0.0",
-  "main": "index.html",
+  "main": "index.js",
   "host": [
     {
       "app": "PS",
