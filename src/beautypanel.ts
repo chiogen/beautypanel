@@ -8,7 +8,7 @@ localizationLoaded.then(() => {
     addDocumentLoadedCallback(() => {
         renderApp();
     });
-    
+        
     renderApp();
 })
 

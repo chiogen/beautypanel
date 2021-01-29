@@ -171,9 +171,6 @@ declare module 'photoshop' {
         _obj?: string
         _target?: ActionTargetReference | Array<ActionTargetReference>
         _options?: Object
-        synchronousExecution?: boolean
-        modalBehavior?: 'wait' | 'execute' | 'fail'
-        historyStateInfo?: 'none' | { name: string, target: ActionTargetReference }
         [key: string]: any
     }
     export interface ActionTargetReference {
@@ -184,8 +181,13 @@ declare module 'photoshop' {
         _value?: any
         _property?: string
     }
+    export interface BatchPlayOptions {
+        synchronousExecution?: boolean
+        modalBehavior?: 'wait' | 'execute' | 'fail'
+        historyStateInfo?: 'none' | { name: string, target: ActionTargetReference }
+    }
 
-    export type BatchPlay = (commands: Array<ActionDescriptor>, options: any) => Promise<Array<Object & { message?: string}>>;
+    export type BatchPlay = (commands: Array<ActionDescriptor>, options: BatchPlayOptions) => Promise<Array<Object & { message?: string}>>;
 
     export const app: Photoshop;
 

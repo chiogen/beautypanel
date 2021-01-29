@@ -95,7 +95,8 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
         // // Set brush opacity to 100%
         await AppUtils.selectTool('cloneStampTool', {
             hardness: percent(100),
-            opacity: percent(100)
+            opacity: percent(100),
+            scattering: false
         });
 
     } catch (err) {
