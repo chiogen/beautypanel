@@ -18,7 +18,7 @@ export const Opacity = () =>
 
 async function onOpacityPresetClick(e: React.MouseEvent<HTMLButtonElement>) {
     const button = e.currentTarget as HTMLButtonElement;
-    const index = parseInt(button.dataset.index);
+    const index = parseInt(button.dataset.index!);
 
     if (e.button === 0) {
         await applyOpacityPreset(index);

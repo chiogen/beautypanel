@@ -28,12 +28,18 @@ export const DodgeAndBurn = () =>
     </div>;
 
 async function executeDodgeAndBurnGradient(e: React.MouseEvent<HTMLButtonElement>) {
+
+    if (!app.activeDocument) {
+        return;
+    }
+
     try {
 
         const document = app.activeDocument;
         await DocumentUtils.checkBitsPerChannel(document);
 
-        document.backgroundLayer.visible = true;
+        const sourceLayer = document.backgroundLayer ?? document.layers[0];
+        sourceLayer.visible = true;
 
         // Get maybe existing layers
         let bright = BeautyPanel.layers.bright;
@@ -52,6 +58,7 @@ async function executeDodgeAndBurnGradient(e: React.MouseEvent<HTMLButtonElement
         // Create adjustment layer "Bright"
         if (!bright) {
             bright = await addCurvedAdjustmentLayer(
+                sourceLayer,
                 BeautyPanel.getLayerName(E_Layer.Bright),
                 [
                     [0, 0],
@@ -69,6 +76,7 @@ async function executeDodgeAndBurnGradient(e: React.MouseEvent<HTMLButtonElement
         // Create adjustment layer "Dark"
         if (!dark) {
             dark = await addCurvedAdjustmentLayer(
+                sourceLayer,
                 BeautyPanel.getLayerName(E_Layer.Dark),
                 [
                     [0, 0],
@@ -77,9 +85,9 @@ async function executeDodgeAndBurnGradient(e: React.MouseEvent<HTMLButtonElement
                     [255, 255]
                 ]
             );
-            dark.visible = true;
             await LayerUtils.invert(dark);
         }
+        dark.visible = true;
         dark.blendMode = 'luminosity';
 
         // Select brush to start painting
@@ -91,6 +99,11 @@ async function executeDodgeAndBurnGradient(e: React.MouseEvent<HTMLButtonElement
     }
 }
 async function executeDodgeAndBurnGray(e: React.MouseEvent<HTMLButtonElement>) {
+
+    if (!app.activeDocument) {
+        return;
+    }
+
     try {
 
         const document = app.activeDocument;
@@ -112,7 +125,7 @@ async function executeDodgeAndBurnGray(e: React.MouseEvent<HTMLButtonElement>) {
         if (!layer) {
 
             // Create new layer with blendmode SoftLight
-            layer = await document.backgroundLayer.duplicate(undefined, BeautyPanel.getLayerName(E_Layer.DodgeAndBurnGray));
+            layer = await document.backgroundLayer!.duplicate(undefined, BeautyPanel.getLayerName(E_Layer.DodgeAndBurnGray));
             layer.blendMode = 'softLight';
         
             // Fill layer with gray color (Don't know the actions in photoshop)
@@ -149,9 +162,9 @@ async function onStampButtonClicked(e: React.MouseEvent<HTMLButtonElement>) {
     }
 }
 
-async function addCurvedAdjustmentLayer(name: string, curve: Array<number[]>): Promise<Layer> {
+async function addCurvedAdjustmentLayer(sourceLayer: Layer, name: string, curve: Array<number[]>): Promise<Layer> {
 
-    const layer = await app.activeDocument.backgroundLayer.duplicate(undefined, name);
+    const layer = await sourceLayer.duplicate(undefined, name);
     await DocumentUtils.setActiveLayers([layer]);
 
     const descriptor: ActionDescriptor = {

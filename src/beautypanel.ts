@@ -8,6 +8,8 @@ localizationLoaded.then(() => {
     addDocumentLoadedCallback(() => {
         renderApp();
     });
+    
+    renderApp();
 })
 
 app.eventNotifier = (event, descriptor) => {

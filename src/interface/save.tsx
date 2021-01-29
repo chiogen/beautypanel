@@ -15,8 +15,8 @@ export class SavePage extends React.Component<Props> {
             style.display = 'none';
         }
 
-        const width = app.activeDocument.width;
-        const height = app.activeDocument.height;
+        const width = app.activeDocument?.width ?? 0;
+        const height = app.activeDocument?.height ?? 0;
 
         return <div className="page" style={style}>
             <div className="section">

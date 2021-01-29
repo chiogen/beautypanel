@@ -23,6 +23,10 @@ export const FrequencySeparation = () =>
 
 export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonElement>) {
 
+    if (!app.activeDocument) {
+        return;
+    }
+
     const button = (e.currentTarget || e.target) as HTMLButtonElement
 
     try {
@@ -32,7 +36,7 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
         const document = app.activeDocument;
         await DocumentUtils.checkBitsPerChannel(document);
 
-        const referenceLayer = document.backgroundLayer;
+        const referenceLayer = document.backgroundLayer ?? document.layers[0];
         referenceLayer.visible = true;
 
         // Get maybe existing layers

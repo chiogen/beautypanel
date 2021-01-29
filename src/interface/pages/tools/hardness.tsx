@@ -33,7 +33,7 @@ export const Hardness = () =>
 async function onHardnessPresetClick(e: React.MouseEvent<HTMLButtonElement>) {
 
     const button = e.currentTarget as HTMLButtonElement;
-    const index = parseInt(button.dataset.index);
+    const index = parseInt(button.dataset.index!);
 
     if (e.button === 0) {
         await applyHardnessPreset(index);
