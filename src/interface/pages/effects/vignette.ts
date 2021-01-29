@@ -13,17 +13,20 @@ export enum VignetteType {
  * Create a simle vignette using https://helpx.adobe.com/de/photoshop/how-to/create-vignette-with-layer-mask.html
  */
 export async function createVignette(e: React.MouseEvent<HTMLButtonElement>) {
+
+    if (!app.activeDocument)
+        return;
+
     try {
 
         const document = app.activeDocument;
-        const referenceLayer = app.activeDocument.backgroundLayer;
-
-        referenceLayer.visible = true;
         await DocumentUtils.checkBitsPerChannel(document);
+        
+        const referenceLayer = document.backgroundLayer ?? document.layers[0];
+        referenceLayer.visible = true;
 
         // Options
         let layer = BeautyPanel.layers.vignette;
-        const opacity = 25;
 
         // Delete existing layer
         if (layer) {
