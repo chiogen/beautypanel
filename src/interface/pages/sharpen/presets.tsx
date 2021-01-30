@@ -1,48 +1,39 @@
-import * as React from 'react'
-import i18next from 'i18next';
-
-const presetsStyle: React.CSSProperties = {
-    display: 'flex'
-}
+import * as React from "react"
+import i18next from "i18next";
+import { Heading } from "@adobe/react-spectrum";
 
 export const Presets = () => 
-    <div className="section">
-        <h3 className="title">{i18next.t('sharpen.presets')}</h3>
-        <div style={presetsStyle}>
+    <div className="section presets">
+        <Heading >{i18next.t("sharpen.presets")}</Heading>
+        <div className="buttons">
             <sp-action-button>
                 0.5
                 <br />
                 35%
-            </sp-action-button>
-            
+            </sp-action-button>            
             <sp-action-button>
                 1
                 <br />
                 100%
-            </sp-action-button>
-            
+            </sp-action-button>            
             <sp-action-button>
                 1.5
                 <br />
                 100%
-            </sp-action-button>
-            
-            <sp-action-button>
-                1
+            </sp-action-button>            
+            <sp-action-button>                1
                 <br />
                 200%
-            </sp-action-button>
-            
+            </sp-action-button>            
             <sp-action-button>
                 1.5
                 <br />
                 200%
-            </sp-action-button>
-            
+            </sp-action-button>            
             <sp-action-button>
-                2
+                <span>2</span>
                 <br />
-                200%
+                <span>200%</span>
             </sp-action-button>
         </div>
     </div>

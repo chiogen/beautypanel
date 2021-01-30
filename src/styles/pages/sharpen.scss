@@ -1,0 +1,26 @@
+#sharpen {
+
+    .filters {
+        sp-action-button {
+            width: 50%;
+        }
+    }
+
+    .options {
+        .checkbox {
+            margin-left: 1rem;
+        }
+    }
+
+    .presets {
+        .buttons {
+            display: flex;
+            > sp-action-button {
+                text-align: center;
+                flex-grow: 1;
+                height: 3rem;
+            }
+        }
+    }
+
+}

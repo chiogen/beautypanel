@@ -11,18 +11,17 @@ export function renderApp() {
 
         if (app.activeDocument) {
             ReactDOM.render(
-                <div key="app">
+                (<div key="app">
                     <Tabbar />
                     <Pages />
-                </div>,
-                rootEl
-            );
+                </div>)
+            , rootEl);
         } else {
             ReactDOM.render(
-                <div key="failstart">
+                (<div key="failstart">
                     <h3 style={{ textAlign: 'center' }}>Waiting for image...</h3>
-                </div>,
-                rootEl
+                </div>)
+                , rootEl
             );
         }
     } catch (err) {
