@@ -1,4 +1,4 @@
-import './styles/entry.scss';
+import './styles/index.scss';
 import { localizationLoaded } from './localization';
 import { app } from 'photoshop';
 import { renderApp } from './interface';

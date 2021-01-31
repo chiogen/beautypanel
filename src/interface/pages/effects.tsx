@@ -32,10 +32,17 @@ export class Effects extends React.Component<Props> {
 }
 
 async function enhanceDetails(e: React.MouseEvent<HTMLButtonElement>) {
+
+    if (!app.activeDocument)
+        return;
+
     try {
 
         const document = app.activeDocument;
-        document.backgroundLayer.locked = true;
+        const referenceLayer = document.backgroundLayer!;
+
+        referenceLayer.visible = true;
+        referenceLayer.locked = true;
 
         // Preparations
         await DocumentUtils.checkBitsPerChannel(document);
@@ -50,9 +57,9 @@ async function enhanceDetails(e: React.MouseEvent<HTMLButtonElement>) {
         }
 
         // Create reference layer
-        let tempLayer = await document.backgroundLayer.duplicate();
+        let tempLayer = await referenceLayer.duplicate();
         tempLayer.opacity = 1;
-        let tempLayer2 = await document.backgroundLayer.duplicate();
+        let tempLayer2 = await referenceLayer.duplicate();
         tempLayer = await DocumentUtils.mergeLayers(document, [tempLayer, tempLayer2]);
         
         // Invert reference layer
@@ -67,7 +74,7 @@ async function enhanceDetails(e: React.MouseEvent<HTMLButtonElement>) {
         enhanceDetails.blendMode = 'overlay';
         enhanceDetails.opacity = 50;
 
-        enhanceDetails.moveBelow(document.backgroundLayer);
+        // enhanceDetails.moveBelow(referenceLayer);
         await LayerUtils.createRvlaMask(enhanceDetails);
 
     } catch (err) {
