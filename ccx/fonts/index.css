@@ -1,6 +1,6 @@
 
 @font-face {
-    font-family: 'Riboto';
+    font-family: 'Roboto';
     font-style: normal;
     font-weight: 400;
     src: url(./Roboto-Regular.ttf) format('woff2');
@@ -12,6 +12,10 @@
     font-style: normal;
     font-weight: 400;
     src: url(./Material-Icons.woff2) format('woff2');
+}
+
+html {
+    font-family: Roboto;
 }
 .material-icons {
     font-family: 'Material Icons';
