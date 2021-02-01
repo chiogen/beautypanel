@@ -80,9 +80,9 @@ export namespace LayerUtils {
         const descriptor: ActionDescriptor = {
             _obj: "applyImageEvent",
             with: {
-                "_obj": "calculation",
-                "to": {
-                    "_ref": [
+                _obj: "calculation",
+                to: {
+                    _ref: [
                         {
                             _ref: "channel",
                             _enum: "channel",
@@ -96,19 +96,18 @@ export namespace LayerUtils {
                 },
                 invert: options.invert,
                 calculation: {
-                    "_enum": "calculationType",
-                    "_value": options.calculationType
+                    _enum: "calculationType",
+                    _value: options.calculationType
                 },
                 scale: 2,
                 offset: 0
             }
-        }
+        };
 
         const result = await app.batchPlay([
             DocumentUtils.setActiveLayersDescriptor([options.target]),
             descriptor
         ], {});
-
 
         for (const item of result) {
             if (item.message) {
