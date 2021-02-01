@@ -44,7 +44,11 @@ async function onHardnessPresetClick(e: React.MouseEvent<HTMLButtonElement>) {
 async function applyHardnessPreset(index: number) {
     const value = getPresetValue(index);
     await AppUtils.setToolOptions({
-        hardness: percent(value)
+        useScatter: false,
+        brush: {
+            _obj: "computedBrush",
+            hardness: percent(getPresetValue(index))
+        }
     });
 }
 

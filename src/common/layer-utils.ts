@@ -73,6 +73,7 @@ export namespace LayerUtils {
         offset: number
         opacity?: PercentValue
         calculationType: ImageCalculationType
+        invert: boolean
     }
     export async function applyImageEvent(options: ApplyImageEventOptions) {
 
@@ -93,15 +94,14 @@ export namespace LayerUtils {
                         }
                     ]
                 },
-                invert: true,
+                invert: options.invert,
                 calculation: {
                     "_enum": "calculationType",
                     "_value": options.calculationType
                 },
                 scale: 2,
                 offset: 0
-            },
-            _isCommand: true
+            }
         }
 
         const result = await app.batchPlay([
@@ -146,7 +146,7 @@ export namespace LayerUtils {
         }
 
         // Usually, the now active layer is the new layer
-        return app.activeDocument.activeLayers[0];
+        return app.activeDocument!.activeLayers[0];
     }
 
     export async function applySurfaceBlur(layer: Layer, radius: number, threshold: number) {

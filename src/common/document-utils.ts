@@ -81,12 +81,12 @@ export namespace DocumentUtils {
             layerID: layerIds
         };
     }
-    export async function setActiveLayers(layers: Layer[]): Promise<void> {
+    export async function setActiveLayers(layers: Layer[], makeVisible: boolean = true): Promise<void> {
 
         if (layers.length === 0)
             return;
 
-        const descriptor = setActiveLayersDescriptor(layers);
+        const descriptor = setActiveLayersDescriptor(layers, makeVisible);
         await app.batchPlay([
             descriptor
         ], {});
@@ -107,7 +107,7 @@ export namespace DocumentUtils {
             layer.visible = layers.includes(layer);
         }
 
-        app.activeDocument.mergeVisibleLayers()
+        document.mergeVisibleLayers()
         return lastLayer;
     }
 

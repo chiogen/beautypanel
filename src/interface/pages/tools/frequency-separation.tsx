@@ -1,12 +1,13 @@
 import * as React from 'react'
 import i18next from "i18next";
-import { ActionDescriptor, app, Layer } from 'photoshop';
+import { app, Layer } from 'photoshop';
 import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
 import { LayerUtils } from '../../../common/layer-utils';
 import { DocumentUtils } from '../../../common/document-utils';
 import { confirm } from '../../dialogues/confirm';
 import { AppUtils } from '../../../common/app-utils';
 import { percent } from '../../../common/type-utils';
+import { getOpacityPresetValue } from './opacity'
 
 export const FrequencySeparation = () =>
     <div className="section">
@@ -40,15 +41,15 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
         referenceLayer.visible = true;
 
         // Get maybe existing layers
-        let { detail, soft, levels } = BeautyPanel.layers;
+        let { detail, soft, contrast: contrast } = BeautyPanel.layers;
 
         // Delete layers if they exist and the user has permitted it
-        if (detail || soft || levels) {
+        if (detail || soft || contrast) {
             if (confirm('Create new layers?')) {
                 soft?.delete();
                 detail?.delete();
-                levels?.delete();
-                soft = detail = levels = undefined;
+                contrast?.delete();
+                soft = detail = contrast = undefined;
             }
         }
 
@@ -75,13 +76,14 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
             calculationType: 'add',
             offset: 0,
             scale: 2,
-            opacity: percent(100)
+            opacity: percent(100),
+            invert: true
         });
         detail.blendMode = 'linearLight';
 
-        // // Create adjustment layer (levels)
-        levels = await LayerUtils.createContrastLayer(detail, 120, 132);
-        levels.name = BeautyPanel.getLayerName(E_Layer.Levels);
+        // Create adjustment layer (levels)
+        contrast = await LayerUtils.createContrastLayer(detail, 120, 132);
+        contrast.name = BeautyPanel.getLayerName(E_Layer.Contrast);
 
         // // Update layer visibility
         referenceLayer.visible = false;
@@ -114,14 +116,32 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
 async function setLayerDetails() {
     try {
 
-        const layer = BeautyPanel.layers.detail;
+        const document = app.activeDocument;
+        const detail = BeautyPanel.layers.detail;
+        const contrast = BeautyPanel.layers.contrast;
 
-        if (layer) {
-            await DocumentUtils.setActiveLayers([layer]);
-        } else {
-            const layerName = BeautyPanel.getLayerName(E_Layer.Detail);
-            await app.showAlert(`Layer '${layerName}' not found.`);
+        if (!document)
+            return;
+        if (!detail || !contrast) {
+            app.showAlert('You must run FrequencySeparation first.');
+            return;
         }
+
+
+        for (const layer of document.layers) {
+            layer.visible = layer === contrast;
+        }
+
+        await DocumentUtils.setActiveLayers([detail], true);
+
+        await AppUtils.selectTool('cloneStampTool', {
+            opacity: percent(100),
+            useScatter: false,
+            brush: {
+                _obj: "computedBrush",
+                hardness: percent(100)
+            }
+        });
 
     } catch (err) {
         console.error(err);
@@ -132,13 +152,32 @@ async function setLayerDetails() {
 async function setLayerSoft() {
     try {
 
-        const layer = BeautyPanel.layers.soft;
-        if (layer) {
-            await DocumentUtils.setActiveLayers([layer]);
-        } else {
-            const layerName = BeautyPanel.getLayerName(E_Layer.Soft);
-            await app.showAlert(`Layer '${layerName}' not found.`)
+        const document = app.activeDocument;
+        const soft = BeautyPanel.layers.soft;
+        const contrast = BeautyPanel.layers.contrast;
+
+        if (!document)
+            return;
+        if (!soft || !contrast) {
+            app.showAlert('You must run FrequencySeparation first.');
+            return;
         }
+
+
+        for (const layer of document.layers) {
+            layer.visible = layer === contrast;
+        }
+
+        await DocumentUtils.setActiveLayers([soft], true);
+
+        await AppUtils.selectTool('cloneStampTool', {
+            opacity: percent(getOpacityPresetValue(1)),
+            useScatter: false,
+            brush: {
+                _obj: "computedBrush",
+                hardness: percent(0)
+            }
+        });
 
     } catch (err) {
         console.error(err);

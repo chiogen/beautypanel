@@ -5,7 +5,7 @@ export enum E_Layer {
     // Frequency Separation
     Soft = 'soft',
     Detail = 'detail',
-    Levels = 'levels',
+    Contrast = 'levels',
     // Dodge and Burn
     Bright = 'bright',
     Dark = 'dark',
@@ -30,6 +30,9 @@ export namespace BeautyPanel {
         get detail() {
             return getLayerByCode(E_Layer.Detail);
         },
+        get contrast() {
+            return getLayerByCode(E_Layer.Contrast);
+        },
         get detailBlackWhite() {
             return getLayerByCode(E_Layer.DetailBlackWhite);
         },
@@ -38,9 +41,6 @@ export namespace BeautyPanel {
         },
         get detailEnhance() {
             return getLayerByCode(E_Layer.DetailEnhance);
-        },
-        get levels() {
-            return getLayerByCode(E_Layer.Levels);
         },
         get enhanceDetails() {
             return getLayerByCode(E_Layer.EnhanceDetails);
@@ -71,7 +71,7 @@ export namespace BeautyPanel {
 
     function getLayerByCode(code: E_Layer): Layer | undefined {
         const name = getLayerName(code);;
-        return app.activeDocument.layers.find(layer => layer.name.toLowerCase() === name.toLowerCase());
+        return app.activeDocument?.layers.find(layer => layer.name.toLowerCase() === name.toLowerCase());
     }
 
 }
