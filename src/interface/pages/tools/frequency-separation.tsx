@@ -64,7 +64,7 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
         }
 
         // Interpolate brightness on soft layer
-        await LayerUtils.applyMedianFilter(soft, 9);
+        await LayerUtils.applyMedianFilter(soft, 10);
 
         // Image calculation
         await LayerUtils.applyImageEvent({
