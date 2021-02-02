@@ -57,16 +57,14 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
         if (!soft) {
             const name = BeautyPanel.getLayerName(E_Layer.Soft);
             soft = await referenceLayer.duplicate(undefined, name);
-            soft.visible = true;
         }
         if (!detail) {
             const name = BeautyPanel.getLayerName(E_Layer.Detail);
             detail = await referenceLayer.duplicate(undefined, name);
-            detail.visible = true;
         }
 
-        // Interpolate brightness (on soft layer)
-        await LayerUtils.applyMedianNoise(soft, 10);
+        // Interpolate brightness on soft layer
+        await LayerUtils.applyMedianFilter(soft, 9);
 
         // Image calculation
         await LayerUtils.applyImageEvent({
@@ -85,16 +83,16 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
         contrast = await LayerUtils.createContrastLayer(detail, 120, 132);
         contrast.name = BeautyPanel.getLayerName(E_Layer.Contrast);
 
-        // // Update layer visibility
+        // Update layer visibility
         referenceLayer.visible = false;
         soft.visible = false;
 
-        // // Focus detail layer
-        await DocumentUtils.setActiveLayers([detail]);
+        // Focus detail layer
+        await DocumentUtils.selectLayers([detail]);
 
-        // // Set Brush as current tool
-        // // Set brush hardness to 100%
-        // // Set brush opacity to 100%
+        // Set Brush as current tool
+        // Set brush hardness to 100%
+        // Set brush opacity to 100%
         await AppUtils.selectTool('cloneStampTool', {
             opacity: percent(100),
             useScatter: false,
@@ -132,7 +130,7 @@ async function setLayerDetails() {
             layer.visible = layer === contrast;
         }
 
-        await DocumentUtils.setActiveLayers([detail], true);
+        await DocumentUtils.selectLayers([detail], true);
 
         await AppUtils.selectTool('cloneStampTool', {
             opacity: percent(100),
@@ -168,7 +166,7 @@ async function setLayerSoft() {
             layer.visible = layer === contrast;
         }
 
-        await DocumentUtils.setActiveLayers([soft], true);
+        await DocumentUtils.selectLayers([soft], true);
 
         await AppUtils.selectTool('cloneStampTool', {
             opacity: percent(getOpacityPresetValue(1)),

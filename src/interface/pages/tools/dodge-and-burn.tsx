@@ -165,28 +165,35 @@ async function onStampButtonClicked(e: React.MouseEvent<HTMLButtonElement>) {
 async function addCurvedAdjustmentLayer(sourceLayer: Layer, name: string, curve: Array<number[]>): Promise<Layer> {
 
     const layer = await sourceLayer.duplicate(undefined, name);
-    await DocumentUtils.setActiveLayers([layer]);
 
-    const descriptor: ActionDescriptor = {
-        _obj: 'curves',
-        presetKind: {
-            _enum: "presetKindType",
-            _value: "presetKindCustom"
-        },
-        adjustment: [
-            {
-                _obj: "curvesAdjustment",
-                channel: {
-                    _ref: "channel",
-                    _enum: "channel",
-                    _value: "composite"
-                },
-                curve: curveArgument(curve)
+    const result = await app.batchPlay([
+        {
+            _obj: 'select',
+            _target: {
+                _ref: 'layer',
+                _id: layer._id
             }
-        ]
-    };
-
-    const result = await app.batchPlay([descriptor], {});
+        },
+        {
+            _obj: 'curves',
+            presetKind: {
+                _enum: "presetKindType",
+                _value: "presetKindCustom"
+            },
+            adjustment: [
+                {
+                    _obj: "curvesAdjustment",
+                    channel: {
+                        _ref: "channel",
+                        _enum: "channel",
+                        _value: "composite"
+                    },
+                    curve: curveArgument(curve)
+                }
+            ]
+        }
+    ], {});
+    
     for (const item of result) {
         if (item.message) {
             await app.showAlert(item.message);

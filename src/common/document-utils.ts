@@ -81,7 +81,7 @@ export namespace DocumentUtils {
             layerID: layerIds
         };
     }
-    export async function setActiveLayers(layers: Layer[], makeVisible: boolean = true): Promise<void> {
+    export async function selectLayers(layers: Layer[], makeVisible: boolean = true): Promise<void> {
 
         if (layers.length === 0)
             return;

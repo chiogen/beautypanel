@@ -40,17 +40,23 @@ export namespace LayerUtils {
         }
     }
 
-    export async function applyMedianNoise(layer: Layer, radius: number) {
+    export async function applyMedianFilter(layer: Layer, radius: number) {
         const descriptor: ActionDescriptor = {
             _obj: "median",
-            _target: {
-                _ref: 'layer',
-                _id: layer._id
-            },
             radius: pixels(radius)
         }
 
-        const result = await app.batchPlay([descriptor], {});
+        const result = await app.batchPlay([
+            {
+                _obj: 'select',
+                _target: {
+                    _ref: 'layer',
+                    _id: layer._id
+                },
+                makeVisible: true
+            },
+            descriptor
+        ]);
 
         for (const item of result) {
             if (item.message) {
@@ -105,7 +111,14 @@ export namespace LayerUtils {
         };
 
         const result = await app.batchPlay([
-            DocumentUtils.setActiveLayersDescriptor([options.target]),
+            {
+                _obj: 'select',
+                _target: {
+                    _ref: 'layer',
+                    _id: options.target._id
+                },
+                makeVisible: true
+            },
             descriptor
         ], {});
 
@@ -119,23 +132,60 @@ export namespace LayerUtils {
 
     export async function createContrastLayer(source: Layer, rangeStart: number, rangeEnd: number): Promise<Layer> {
 
-        const descriptor: ActionDescriptor = {
+        const createLevelsLayer: ActionDescriptor = {
             _obj: "make",
-            _target: {
-                _ref: "adjustmentLayer"
-            },
+            _target: [
+                {
+                    "_ref": "adjustmentLayer"
+                }
+            ],
             using: {
                 _obj: "adjustmentLayer",
                 type: {
-                    _obj: "brightnessEvent",
-                    useLegacy: false
+                    _obj: "levels",
+                    presetKind: {
+                        _enum: "presetKindType",
+                        _value: "presetKindDefault"
+                    }
                 }
+            }
+        };
+        const addInput: ActionDescriptor = {
+            _obj: "set",
+            _target: [
+                {
+                    _ref: "adjustmentLayer",
+                    _enum: "ordinal",
+                    _value: "targetEnum"
+                }
+            ],
+            to: {
+                _obj: "levels",
+                presetKind: {
+                    _enum: "presetKindType",
+                    _value: "presetKindCustom"
+                },
+                adjustment: [
+                    {
+                        _obj: "levelsAdjustment",
+                        channel: {
+                            _ref: "channel",
+                            _enum: "channel",
+                            _value: "composite"
+                        },
+                        input: [
+                            rangeStart,
+                            rangeEnd
+                        ]
+                    }
+                ]
             }
         }
 
         const result = await app.batchPlay([
             DocumentUtils.setActiveLayersDescriptor([source]),
-            descriptor
+            createLevelsLayer,
+            addInput
         ], {});
 
         for (const item of result) {
