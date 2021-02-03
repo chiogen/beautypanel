@@ -1,11 +1,11 @@
+import i18next from "i18next";
 import { app, Layer } from "photoshop";
-import { layerNames } from "./layer-names";
 
 export enum E_Layer {
     // Frequency Separation
     Soft = 'soft',
     Detail = 'detail',
-    Contrast = 'levels',
+    Contrast = 'contrast',
     // Dodge and Burn
     Bright = 'bright',
     Dark = 'dark',
@@ -66,7 +66,7 @@ export namespace BeautyPanel {
     }
 
     export function getLayerName(code: E_Layer): string {
-        return layerNames[code];
+        return i18next.t('layerNames.' + code) as string;
     }
 
     function getLayerByCode(code: E_Layer): Layer | undefined {

@@ -58,5 +58,20 @@
     "hardness": "Härte",
     "zoom": "Zoom (%)",
     "zoomFit": "Fit",
-    "requestBitsPerChannelConvert": "Das Bild liegt im 8 Bit Modus vor? Das ist nicht ideal für das BeautyPanel. Soll es in den 16 Bit Modue konvertiert werden?"
+    "requestBitsPerChannelConvert": "Das Bild liegt im 8 Bit Modus vor? Das ist nicht ideal für das BeautyPanel. Soll es in den 16 Bit Modue konvertiert werden?",
+    "layerNames": {
+        "soft": "Soft",
+        "detail": "Detail",
+        "detailBlackWhite": "Detail Black/White",
+        "detailColor": "Detail Color",
+        "detailEnhance": "Detail Enhance",
+        "contrast": "Contrast",
+        "enhanceDetails": "Enhance Details",
+        "dodgeAndBurnGray": "Dodge and Burn - Gray",
+        "orthon": "Orthon Effekt",
+        "vignette": "Vignette",
+        "dark": "Dunkel",
+        "bright": "Hell",
+        "autumn": "Herbst Effekt"
+    }
 }
