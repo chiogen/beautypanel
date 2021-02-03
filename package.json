@@ -29,7 +29,6 @@
   "dependencies": {
     "@adobe/react-spectrum": "^3.7.0",
     "@material-ui/core": "^4.11.3",
-    "@spectrum-web-components/rule": "^0.3.3",
     "@vaadin/vaadin-core": "^17.0.11",
     "htm": "^3.0.4",
     "i18next": "^19.8.4",
