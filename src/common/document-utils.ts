@@ -71,15 +71,20 @@ export namespace DocumentUtils {
         const layerIds = layers.map(x => x._id);
         const firstLayer = layers[0];
 
-        return {
+        const descriptor: ActionDescriptor = {
             _obj: 'select',
             _target: {
                 _ref: 'layer',
                 _id: firstLayer._id
             },
-            makeVisible: makeVisible,
             layerID: layerIds
         };
+
+        if (typeof makeVisible === 'boolean') {
+            descriptor.makeVisible = makeVisible;
+        }
+
+        return descriptor;
     }
     export async function selectLayers(layers: Layer[], makeVisible: boolean = true): Promise<void> {
 
