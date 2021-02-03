@@ -54,13 +54,13 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
         }
 
         // Ensure the required layers exist
-        if (!soft) {
-            const name = BeautyPanel.getLayerName(E_Layer.Soft);
-            soft = await referenceLayer.duplicate(undefined, name);
-        }
         if (!detail) {
             const name = BeautyPanel.getLayerName(E_Layer.Detail);
             detail = await referenceLayer.duplicate(undefined, name);
+        }
+        if (!soft) {
+            const name = BeautyPanel.getLayerName(E_Layer.Soft);
+            soft = await referenceLayer.duplicate(undefined, name);
         }
 
         // Interpolate brightness on soft layer
