@@ -183,7 +183,7 @@ export namespace LayerUtils {
         }
 
         const result = await app.batchPlay([
-            DocumentUtils.setActiveLayersDescriptor([source]),
+            DocumentUtils._selectLayers([source]),
             createLevelsLayer,
             addInput
         ], {});
@@ -237,7 +237,7 @@ export namespace LayerUtils {
         }
 
         const result = await app.batchPlay([
-            DocumentUtils.setActiveLayersDescriptor([layer]),
+            DocumentUtils._selectLayers([layer]),
             descriptor
         ], {});
 

@@ -66,7 +66,7 @@ export namespace DocumentUtils {
         ], {})
     }
 
-    export function setActiveLayersDescriptor(layers: Layer[], makeVisible: boolean = true): ActionDescriptor {
+    export function _selectLayers(layers: Layer[], makeVisible: boolean = false): ActionDescriptor {
 
         const layerIds = layers.map(x => x._id);
         const firstLayer = layers[0];
@@ -83,12 +83,12 @@ export namespace DocumentUtils {
 
         return descriptor;
     }
-    export async function selectLayers(layers: Layer[], makeVisible: boolean = true): Promise<void> {
+    export async function selectLayers(layers: Layer[], makeVisible: boolean = false): Promise<void> {
 
         if (layers.length === 0)
             return;
 
-        const descriptor = setActiveLayersDescriptor(layers, makeVisible);
+        const descriptor = _selectLayers(layers, makeVisible);
         await app.batchPlay([
             descriptor
         ], {});
