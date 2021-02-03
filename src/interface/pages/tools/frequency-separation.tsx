@@ -125,12 +125,13 @@ async function setLayerDetails() {
             return;
         }
 
-
         for (const layer of document.layers) {
-            layer.visible = layer === contrast;
+            layer.visible = false;
         }
 
-        await DocumentUtils.selectLayers([detail], true);
+        await DocumentUtils.selectLayers([detail]);
+        contrast.visible = true;
+        detail.visible = true;
 
         await AppUtils.selectTool('cloneStampTool', {
             opacity: percent(100),
@@ -163,10 +164,12 @@ async function setLayerSoft() {
 
 
         for (const layer of document.layers) {
-            layer.visible = layer === contrast;
+            layer.visible = false;
         }
 
-        await DocumentUtils.selectLayers([soft], true);
+        await DocumentUtils.selectLayers([soft]);
+        contrast.visible = true;
+        soft.visible = true;
 
         await AppUtils.selectTool('cloneStampTool', {
             opacity: percent(getOpacityPresetValue(1)),
