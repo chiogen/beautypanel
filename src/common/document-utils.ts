@@ -77,12 +77,9 @@ export namespace DocumentUtils {
                 _ref: 'layer',
                 _id: firstLayer._id
             },
+            makeVisible: makeVisible,
             layerID: layerIds
         };
-
-        if (typeof makeVisible === 'boolean') {
-            descriptor.makeVisible = makeVisible;
-        }
 
         return descriptor;
     }
