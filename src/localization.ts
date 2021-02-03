@@ -1,7 +1,14 @@
+import * as uxp from 'uxp'
 import i18next from 'i18next'
 import * as resources from './locales/index'
 
+const supportedLanguages = ['en', 'de'];
+
 function detectLanguage(): string {
+    const uiLocale = uxp.host.uiLocale.substring(0, 2).toLowerCase();
+    if (supportedLanguages.includes(uiLocale)) {
+        return uiLocale;
+    }
     return 'en';
 }
 
@@ -29,12 +36,3 @@ export const localizationLoaded = new Promise<void>((fulfill) => {
 
     fulfill();
 });
-
-
-// Apply localizations to static html elements
-localizationLoaded.then(() => {
-    document.body.querySelectorAll<HTMLElement>('[locale]').forEach(element => {
-        const key = element.getAttribute('locale');
-        element.innerHTML = i18next.t(key);
-    });
-})
