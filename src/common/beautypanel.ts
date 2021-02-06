@@ -18,7 +18,8 @@ export enum E_Layer {
     // Effects
     Orton = 'orton',
     Vignette = 'vignette',
-    Autumn = 'autumn'
+    Autumn = 'autumn',
+    Spring = 'sring'
 }
 
 export namespace BeautyPanel {
@@ -70,7 +71,7 @@ export namespace BeautyPanel {
     }
 
     function getLayerByCode(code: E_Layer): Layer | undefined {
-        const name = getLayerName(code);;
+        const name = getLayerName(code);
         return app.activeDocument?.layers.find(layer => layer.name.toLowerCase() === name.toLowerCase());
     }
 
