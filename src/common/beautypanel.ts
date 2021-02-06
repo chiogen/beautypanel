@@ -19,7 +19,7 @@ export enum E_Layer {
     Orton = 'orton',
     Vignette = 'vignette',
     Autumn = 'autumn',
-    Spring = 'sring'
+    Spring = 'spring'
 }
 
 export namespace BeautyPanel {
@@ -69,9 +69,11 @@ export namespace BeautyPanel {
     export function getLayerName(code: E_Layer): string {
         return i18next.t('layerNames.' + code) as string;
     }
-
-    function getLayerByCode(code: E_Layer): Layer | undefined {
+    export function getLayerByCode(code: E_Layer): Layer | undefined {
         const name = getLayerName(code);
+        return getLayerByName(name);
+    }
+    export function getLayerByName(name: string) {
         return app.activeDocument?.layers.find(layer => layer.name.toLowerCase() === name.toLowerCase());
     }
 

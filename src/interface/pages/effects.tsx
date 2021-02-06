@@ -4,7 +4,7 @@ import * as React from 'react'
 import { BeautyPanel, E_Layer } from '../../common/beautypanel';
 import { DocumentUtils } from '../../common/document-utils';
 import { LayerUtils } from '../../common/layer-utils';
-import { createSeasonEffect, createSpringEffect } from './effects/season';
+import { createAutumnEffect, createSeasonEffect, createSpringEffect } from './effects/season';
 import { createVignette } from './effects/vignette'
 
 type Props = {
@@ -26,7 +26,7 @@ export class Effects extends React.Component<Props> {
             <sp-action-button onClick={strengthenDetails}>{i18next.t('effects.strengthenDetails')}</sp-action-button>
             <sp-action-button onClick={createOrthonEffect}>{i18next.t('effects.orton')}</sp-action-button>
             <sp-action-button onClick={createVignette}>{i18next.t('effects.vignette')}</sp-action-button>
-            <sp-action-button onClick={createSeasonEffect}>{i18next.t('effects.autumn')}</sp-action-button>
+            <sp-action-button onClick={createAutumnEffect}>{i18next.t('effects.autumn')}</sp-action-button>
             <sp-action-button onClick={createSpringEffect}>{i18next.t('effects.spring')}</sp-action-button>
         </div>
     }

@@ -35,8 +35,8 @@
         "strengthenDetails": "Strengthen Details",
         "orton": "Orton Effect",
         "vignette": "Vignette",
-        "autumn": "Season: Autumn -> Spring",
-        "spring": "Season: Spring -> Autumn"
+        "autumn": "Season: Spring -> Autumn",
+        "spring": "Season: Autumn -> SPring"
     },
     "savePage": {
         "currentPicture": "Current picture",

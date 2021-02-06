@@ -1,6 +1,7 @@
 import { ActionDescriptor, app, Document } from "photoshop";
 import { BeautyPanel, E_Layer } from "../../../common/beautypanel";
 import { percent } from "../../../common/type-utils";
+import { confirm } from "../../dialogues/confirm";
 
 
 export type ColorCorrectionColor = 'reds' | 'yellows' | 'greens' | 'cyans' | 'blues' | 'magentas' | 'whites' | 'neutrals' | 'blacks'
@@ -41,7 +42,7 @@ const springToAutumn: SeasonProfile = {
     ]
 }
 
-export async function createAutumnEffect() {
+export async function createAutumnEffect(_e: React.MouseEvent<HTMLButtonElement>) {
     try {
         await createSeasonEffect(BeautyPanel.getLayerName(E_Layer.Autumn), springToAutumn);
     } catch (err) {
@@ -49,9 +50,9 @@ export async function createAutumnEffect() {
     }
 }
 
-export async function createSpringEffect() {
+export async function createSpringEffect(_e: React.MouseEvent<HTMLButtonElement>) {
     try {
-        await createSeasonEffect(BeautyPanel.getLayerName(E_Layer.Autumn), springToAutumn);
+        await createSeasonEffect(BeautyPanel.getLayerName(E_Layer.Spring), springToAutumn);
     } catch (err) {
         app.showAlert(err.message)
     }
@@ -69,7 +70,7 @@ export async function createSeasonEffect(name: string, profile: SeasonProfile) {
         referenceLayer.visible = true;
         referenceLayer.locked = true;
 
-        let layer = BeautyPanel.layers.autumn
+        let layer = BeautyPanel.getLayerByName(name);
 
         // Check layers
         if (layer) {
