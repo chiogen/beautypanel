@@ -168,7 +168,6 @@ async function setLayerSoft() {
         }
 
         await DocumentUtils.selectLayers([soft]);
-        contrast.visible = true;
         soft.visible = true;
 
         await AppUtils.selectTool('cloneStampTool', {
