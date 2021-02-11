@@ -51,11 +51,8 @@ setAsyncInterval(async () => {
         const [toolData] = await app.batchPlay([
             brushDataDescriptor
         ]);
-        const { currentToolOptions, message } = toolData as any;
+        const { currentToolOptions } = toolData as any;
 
-        if (message) {
-            app.showAlert(message);
-        }
         if (currentToolOptions) {
             const action: UpdateToolDataAction = {
                 type: ActionType.UpdatePollData,
