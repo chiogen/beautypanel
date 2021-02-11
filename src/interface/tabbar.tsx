@@ -1,9 +1,10 @@
 import { Page } from "../enums";
-import { ActionType, store, TState } from "../store";
+import { store, TState } from "../store";
+import { ActionType } from '../store-action-types'
 import i18next from "i18next";
 import * as React from 'react'
 import { StatefulComponent } from "../components/base/stateful-component";
-import { AppBar, Tab, Tabs } from '@material-ui/core'
+import { Tab, Tabs } from '@material-ui/core'
 
 // ToDo: Make Tabbar a component
 const indexPageMap = [
