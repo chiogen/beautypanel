@@ -6,3 +6,9 @@ sp-action-button {
     border-radius: 7px;
     transition: 0.1s linear;
 }
+
+sp-button, sp-action-button {
+    &[data-active=true], &[active] {
+        background-color: #555;
+    }
+}

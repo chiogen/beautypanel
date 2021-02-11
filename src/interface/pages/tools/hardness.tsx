@@ -3,6 +3,9 @@ import i18next from "i18next";
 import { percent } from '../../../common/type-utils';
 import { hardness as defaultPresets } from './default-presets.json'
 import { AppUtils } from '../../../common/app-utils';
+import { StatefulComponent } from '../../../components/base/stateful-component';
+import { property } from '../../../decorators/react-property';
+import { store, TState } from '../../../store';
 
 let numberOfPresets = 5;
 let presets: Array<number> = new Array(numberOfPresets);
@@ -16,19 +19,50 @@ for (let i = 0; i < numberOfPresets; i++) {
     }
 }
 
+type State = {
+    hardness: number
+}
 
-export const Hardness = () => 
-    <div className="section">
-        <h2 className="title">{i18next.t('hardness')}</h2>
-        <div className="flex-buttons">
-            <sp-action-button data-index="0" onClick={onHardnessPresetClick}>{getPresetValue(0)}%</sp-action-button>
-            <sp-action-button data-index="1" onClick={onHardnessPresetClick}>{getPresetValue(1)}%</sp-action-button>
-            <sp-action-button data-index="2" onClick={onHardnessPresetClick}>{getPresetValue(2)}%</sp-action-button>
-            <sp-action-button data-index="3" onClick={onHardnessPresetClick}>{getPresetValue(3)}%</sp-action-button>
-            <sp-action-button data-index="4" onClick={onHardnessPresetClick}>{getPresetValue(4)}%</sp-action-button>					
-        </div>
-    </div>
-;
+export class CurrentToolHardness extends StatefulComponent<{}, State> {
+
+    @property
+    hardness: number
+
+    constructor(props) {
+        super(props);
+        const state = store.getState();
+        this.state = {
+            hardness: state.currentToolOptions.brush.hardness._value
+        };
+    }
+
+    render() {
+        return (
+            <div className="section">
+                <h2 className="title">{i18next.t('hardness')}</h2>
+                <div className="flex-buttons">
+                    {this.renderPresetButton(0)}
+                    {this.renderPresetButton(1)}
+                    {this.renderPresetButton(2)}
+                    {this.renderPresetButton(3)}
+                    {this.renderPresetButton(4)}
+                </div>
+            </div>
+        )
+    }
+
+    private renderPresetButton(index: number) {
+        const value = getPresetValue(index);
+        const isActive = Math.abs(value - this.hardness) < 1e-8;
+
+        return <sp-action-button data-index={index} data-active={isActive} onClick={onHardnessPresetClick}>{value}%</sp-action-button>;
+    }
+
+    stateChanged(state: TState) {
+        this.hardness = state.currentToolOptions.brush.hardness._value;
+    }
+
+}
 
 async function onHardnessPresetClick(e: React.MouseEvent<HTMLButtonElement>) {
 

@@ -19,25 +19,6 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
     @property
     currentTool: string
 
-    private get buttonBrushToolClasses() {
-        const classes: string[] = [];
-
-        if (this.currentTool === 'paintBrushTool') {
-            classes.push('active');
-        }
-
-        return classes.join(' ');
-    }
-    private get buttonCloneStampToolClasses() {
-        const classes: string[] = [];
-
-        if (this.currentTool === 'cloneStampTool') {
-            classes.push('active');
-        }
-
-        return classes.join(' ');
-    }
-
     constructor(props: {}) {
         super(props);
         const state = store.getState();
@@ -61,8 +42,8 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
                         <sp-action-button className="black">{i18next.t('dodgeAndBurn.black')}</sp-action-button>
                     </div>
                     <div className="current-tool-buttons flex-buttons">
-                        <sp-action-button className={this.buttonBrushToolClasses} onClick={onBrushButtonClicked}>Brush</sp-action-button>
-                        <sp-action-button className={this.buttonCloneStampToolClasses} onClick={onStampButtonClicked}>Stamp</sp-action-button>
+                        <sp-action-button data-active={this.currentTool === 'paintbrushTool'} onClick={onBrushButtonClicked}>Brush</sp-action-button>
+                        <sp-action-button data-active={this.currentTool === 'cloneStampTool'} onClick={onStampButtonClicked}>Stamp</sp-action-button>
                     </div>
                 </div>
             </div>

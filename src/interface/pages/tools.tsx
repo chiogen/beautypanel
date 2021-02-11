@@ -2,8 +2,8 @@ import * as React from 'react'
 import { store, TState } from '../../store';
 import { DodgeAndBurn } from './tools/dodge-and-burn';
 import { FrequencySeparation } from './tools/frequency-separation';
-import { Hardness } from './tools/hardness';
-import { Opacity } from './tools/opacity';
+import { CurrentToolHardness } from './tools/hardness';
+import { CurrentToolOpacity } from './tools/opacity';
 import { Zoom } from './tools/zoom';
 
 type Props = {
@@ -24,8 +24,8 @@ export class Tools extends React.Component<Props, State> {
         return <div className={classes.join(' ')} style={style}>
             {FrequencySeparation()}
             <DodgeAndBurn />
-            {Opacity()}
-            {Hardness()}
+            <CurrentToolOpacity />
+            <CurrentToolHardness />
             {Zoom()}
         </div>
     }

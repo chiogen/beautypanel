@@ -2,19 +2,56 @@ import i18next from "i18next";
 import * as React from 'react'
 import { AppUtils } from '../../../common/app-utils';
 import { percent } from '../../../common/type-utils';
+import { StatefulComponent } from "../../../components/base/stateful-component";
+import { property } from "../../../decorators/react-property";
+import { store, TState } from "../../../store";
 import { opacity as defaultPresets } from './default-presets.json'
 
-export const Opacity = () => 
-    <div className="section">
-        <h3 className="title">{i18next.t('opacity')}</h3>
-        <div className="flex-buttons">
-            <sp-action-button data-index="0" onClick={onOpacityPresetClick}>{getOpacityPresetValue(0)}%</sp-action-button>
-            <sp-action-button data-index="1" onClick={onOpacityPresetClick}>{getOpacityPresetValue(1)}%</sp-action-button>
-            <sp-action-button data-index="2" onClick={onOpacityPresetClick}>{getOpacityPresetValue(2)}%</sp-action-button>
-            <sp-action-button data-index="3" onClick={onOpacityPresetClick}>{getOpacityPresetValue(3)}%</sp-action-button>
-            <sp-action-button data-index="4" onClick={onOpacityPresetClick}>{getOpacityPresetValue(4)}</sp-action-button>
-        </div>
-    </div>
+type State = {
+    opacity: number
+}
+
+export class CurrentToolOpacity extends StatefulComponent<{}, State> {
+
+    @property
+    opacity: number
+
+    constructor(props) {
+        super(props);
+        const state = store.getState();
+        this.state = {
+            opacity: state.currentToolOptions.opacity
+        };
+    }
+
+    render() {
+        return (
+            <div className="section">
+                <h3 className="title">{i18next.t('opacity')}</h3>
+                <div className="flex-buttons">
+                    {this.renderPresetButton(0)}
+                    {this.renderPresetButton(1)}
+                    {this.renderPresetButton(2)}
+                    {this.renderPresetButton(3)}
+                    {this.renderPresetButton(4)}
+                </div>
+            </div>
+        )
+    }
+
+    private renderPresetButton(index: number) {
+
+        const value = getOpacityPresetValue(index);
+        const isActive = Math.abs(value - this.opacity) < 1e-8;
+
+        return <sp-action-button data-index={index} data-active={isActive} onClick={onOpacityPresetClick}>{value}%</sp-action-button>;
+    }
+
+    stateChanged(state: TState) {
+        this.opacity = state.currentToolOptions.opacity;
+    }
+
+}
 
 async function onOpacityPresetClick(e: React.MouseEvent<HTMLButtonElement>) {
     const button = e.currentTarget as HTMLButtonElement;
