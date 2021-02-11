@@ -6,26 +6,74 @@ import { DocumentUtils } from '../../../common/document-utils';
 import { LayerUtils } from '../../../common/layer-utils';
 import { AppUtils } from '../../../common/app-utils';
 import { confirm } from '../../dialogues/confirm';
+import { StatefulComponent } from '../../../components/base/stateful-component';
+import { store, TState } from '../../../store';
+import { property } from '../../../decorators/react-property';
 
-export const DodgeAndBurn = () =>
-    <div className="section">
-        <h3 className="title">Dodge and Burn</h3>
-        <div id="dodge-and-burn">
-            <div className="flex-buttons">
-                <sp-action-button onClick={executeDodgeAndBurnGradient}>{i18next.t('dodgeAndBurn.gradient')}</sp-action-button>
-                <sp-action-button>{i18next.t('dodgeAndBurn.default')}</sp-action-button>
+interface State {
+    currentTool: string
+}
+
+export class DodgeAndBurn extends StatefulComponent<{}, State> {
+
+    @property
+    currentTool: string
+
+    private get buttonBrushToolClasses() {
+        const classes: string[] = [];
+
+        if (this.currentTool === 'paintBrushTool') {
+            classes.push('active');
+        }
+
+        return classes.join(' ');
+    }
+    private get buttonCloneStampToolClasses() {
+        const classes: string[] = [];
+
+        if (this.currentTool === 'cloneStampTool') {
+            classes.push('active');
+        }
+
+        return classes.join(' ');
+    }
+
+    constructor(props: {}) {
+        super(props);
+        const state = store.getState();
+        this.state = {
+            currentTool: state.currentTool
+        };
+    }
+
+    render() {
+        return (
+            <div className="section">
+                <h3 className="title">Dodge and Burn</h3>
+                <div id="dodge-and-burn">
+                    <div className="flex-buttons">
+                        <sp-action-button onClick={executeDodgeAndBurnGradient}>{i18next.t('dodgeAndBurn.gradient')}</sp-action-button>
+                        <sp-action-button>{i18next.t('dodgeAndBurn.default')}</sp-action-button>
+                    </div>
+                    <div className="flex-buttons">
+                        <sp-action-button className="white">{i18next.t('dodgeAndBurn.white')}</sp-action-button>
+                        <sp-action-button className="gray" onClick={executeDodgeAndBurnGray}>{i18next.t('dodgeAndBurn.gray')}</sp-action-button>
+                        <sp-action-button className="black">{i18next.t('dodgeAndBurn.black')}</sp-action-button>
+                    </div>
+                    <div className="current-tool-buttons flex-buttons">
+                        <sp-action-button className={this.buttonBrushToolClasses} onClick={onBrushButtonClicked}>Brush</sp-action-button>
+                        <sp-action-button className={this.buttonCloneStampToolClasses} onClick={onStampButtonClicked}>Stamp</sp-action-button>
+                    </div>
+                </div>
             </div>
-            <div className="flex-buttons">
-                <sp-action-button className="white">{i18next.t('dodgeAndBurn.white')}</sp-action-button>
-                <sp-action-button className="gray" onClick={executeDodgeAndBurnGray}>{i18next.t('dodgeAndBurn.gray')}</sp-action-button>
-                <sp-action-button className="black">{i18next.t('dodgeAndBurn.black')}</sp-action-button>
-            </div>
-            <div className="flex-buttons">
-                <sp-action-button onClick={onBrushButtonClicked}>Brush</sp-action-button>
-                <sp-action-button onClick={onStampButtonClicked}>Stamp</sp-action-button>
-            </div>
-        </div>
-    </div>;
+        );
+    }
+
+    stateChanged(state: TState) {
+        this.currentTool = state.currentTool;
+    }
+
+}
 
 async function executeDodgeAndBurnGradient(e: React.MouseEvent<HTMLButtonElement>) {
 
@@ -127,7 +175,7 @@ async function executeDodgeAndBurnGray(e: React.MouseEvent<HTMLButtonElement>) {
             // Create new layer with blendmode SoftLight
             layer = await document.backgroundLayer!.duplicate(undefined, BeautyPanel.getLayerName(E_Layer.DodgeAndBurnGray));
             layer.blendMode = 'softLight';
-        
+
             // Fill layer with gray color (Don't know the actions in photoshop)
             const descriptor: ActionDescriptor = {
                 _obj: 'fillContents'
@@ -193,7 +241,7 @@ async function addCurvedAdjustmentLayer(sourceLayer: Layer, name: string, curve:
             ]
         }
     ], {});
-    
+
     for (const item of result) {
         if (item.message) {
             await app.showAlert(item.message);

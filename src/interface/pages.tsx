@@ -6,12 +6,16 @@ import { store, TState } from '../store';
 import { Page } from '../enums';
 import { Effects } from './pages/effects';
 import { SavePage } from './save';
+import { property } from '../decorators/react-property';
 
 type S = {
     page: Page
 }
 
 export class Pages extends StatefulComponent<{}, S> {
+
+    @property
+    page: Page
 
     constructor(props) {
         super(props);
@@ -33,10 +37,7 @@ export class Pages extends StatefulComponent<{}, S> {
     }
 
     protected stateChanged(state: TState) {
-        this.setState({
-            ...this.state,
-            page: state.page
-        });
+        this.page = state.page;
     }
 
 }

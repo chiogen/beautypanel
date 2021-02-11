@@ -4,13 +4,14 @@ import { setAsyncInterval } from "./common/set-async-interval";
 import { Page } from "./enums";
 import page, { PageAction } from './reducer/page'
 import currentTool, { CurrentToolAction } from './reducer/current-tool'
-import currentToolOptions, { CurrentToolOptionsAction } from './reducer/current-tool-options'
+import currentToolOptions, { CurrentToolOptionsAction, CurrentToolOptionsState } from './reducer/current-tool-options'
 import { UpdateToolDataAction } from "./reducer/shared-action-types";
 import { ActionType } from "./store-action-types";
 
 export interface TState {
     readonly page: Page
     readonly currentTool: string
+    readonly currentToolOptions: CurrentToolOptionsState
 }
 
 export type TAction = PageAction | UpdateToolDataAction | CurrentToolAction | CurrentToolOptionsAction;

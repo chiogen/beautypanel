@@ -5,6 +5,7 @@ import i18next from "i18next";
 import * as React from 'react'
 import { StatefulComponent } from "../components/base/stateful-component";
 import { Tab, Tabs } from '@material-ui/core'
+import { property } from "../decorators/react-property";
 
 // ToDo: Make Tabbar a component
 const indexPageMap = [
@@ -15,11 +16,14 @@ const indexPageMap = [
     Page.Settings
 ]
 
-export class Tabbar extends StatefulComponent {
+type State = {
+    page: Page
+}
 
-    state: {
-        page: Page
-    }
+export class Tabbar extends StatefulComponent<{}, State> {
+
+    @property
+    page: Page;
 
     texts: {
         tools: string
@@ -40,7 +44,7 @@ export class Tabbar extends StatefulComponent {
 
     render() {
 
-        const index = indexPageMap.indexOf(this.state.page);
+        const index = indexPageMap.indexOf(this.page);
 
         return (
             <Tabs value={index} onChange={this._onTabClick} >
@@ -62,9 +66,7 @@ export class Tabbar extends StatefulComponent {
     }
 
     protected stateChanged(state: TState) {
-        this.setState({
-            page: state.page
-        });
+        this.page = state.page;
     }
 
 }
