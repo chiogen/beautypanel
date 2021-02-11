@@ -36,7 +36,8 @@
         "strengthenDetails": "Details verstärken",
         "orton": "Orton Effect",
         "vignette": "Vignette",
-        "autumn": "Herbst Effect"
+        "autumn": "Season: Frühling -> Herbst",
+        "spring": "Season: Herbst -> Frühling"
     },
     "savePage": {
         "currentPicture": "Aktuelles Bild",
@@ -72,6 +73,7 @@
         "vignette": "Vignette",
         "dark": "Dunkel",
         "bright": "Hell",
-        "autumn": "Herbst Effekt"
+        "autumn": "Herbst Effekt",
+        "spring": "Frühling Effekt"
     }
 }
