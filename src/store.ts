@@ -3,18 +3,23 @@ import { combineReducers, createStore, Reducer, Store } from "redux";
 import { setAsyncInterval } from "./common/set-async-interval";
 import { Page } from "./enums";
 import page, { PageAction } from './reducer/page'
-import { UpdatePollDataAction } from "./reducer/shared-action-types";
+import currentTool, { CurrentToolAction } from './reducer/current-tool'
+import currentToolOptions, { CurrentToolOptionsAction } from './reducer/current-tool-options'
+import { UpdateToolDataAction } from "./reducer/shared-action-types";
 import { ActionType } from "./store-action-types";
 
 export interface TState {
     readonly page: Page
+    readonly currentTool: string
 }
 
-export type TAction = PageAction | UpdatePollDataAction;
+export type TAction = PageAction | UpdateToolDataAction | CurrentToolAction | CurrentToolOptionsAction;
 
 
 const reducer: Reducer<TState, TAction> = combineReducers({
-    page
+    page,
+    currentTool,
+    currentToolOptions
 });
 
 export const store: Store<TState, TAction> = createStore(reducer);
@@ -24,29 +29,42 @@ export const store: Store<TState, TAction> = createStore(reducer);
 setAsyncInterval(async () => {
     try {
 
-        const action: UpdatePollDataAction = {
-            type: ActionType.UpdatePollData,
-            currentTool: app.currentTool.id,
-            currentToolOptions: {
-                hardnes: -1,
-                opacity: -1
-            }
-        };
-
         // ToDo: Update current tool options (hardness, opacity) (will require executing batchplay);
 
         const brushDataDescriptor: ActionDescriptor = {
             _obj: 'get',
+            _target: [
+                {
+                    _property: "tool"
+                },
+                {
+                    _ref: "application",
+                    _enum: "ordinal",
+                    _value: "targetEnum"
+                }
+            ],
+            _options: {
+                dialogOptions: "dontDisplay"
+            }
         };
 
-        const [brushData] = await app.batchPlay([
+        const [toolData] = await app.batchPlay([
             brushDataDescriptor
         ]);
+        const { currentToolOptions, message } = toolData as any;
 
+        if (message) {
+            app.showAlert(message);
+        }
+        if (currentToolOptions) {
+            const action: UpdateToolDataAction = {
+                type: ActionType.UpdatePollData,
+                currentToolOptions
+            };
+            store.dispatch(action);
+        }
 
-        store.dispatch(action);
-
-    } catch(err) {
+    } catch (err) {
         app.showAlert(err.message || err);
     }
 }, 500);

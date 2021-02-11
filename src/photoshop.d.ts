@@ -27,6 +27,7 @@ declare module 'photoshop' {
         _value: number
     }
     export type AngleValue = unknown;
+    export type NumberValue = PercentValue | PixelValue | PointsValue;
     export type AnchorPosition = unknown;
     export type ResampleMethod = "nearestNeighbor" | "bilinear" | "bicubic" | "bicubicSmoother" | "bicubicSharper" | "bicubicAutomatic" | "preserveDetailsUpscale" | "deepUpscale";
 
