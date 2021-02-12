@@ -4,7 +4,7 @@ import { ActionDescriptor, app, Layer } from 'photoshop';
 import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
 import { DocumentUtils } from '../../../common/document-utils';
 import { LayerUtils } from '../../../common/layer-utils';
-import { AppUtils } from '../../../common/app-utils';
+import { selectTool } from '../../../common/app-utils';
 import { confirm } from '../../dialogues/confirm';
 import { StatefulComponent } from '../../../components/base/stateful-component';
 import { store, TState } from '../../../store';
@@ -120,7 +120,7 @@ async function executeDodgeAndBurnGradient(e: React.MouseEvent<HTMLButtonElement
         dark.blendMode = 'luminosity';
 
         // Select brush to start painting
-        AppUtils.selectTool('paintbrushTool');
+        selectTool('paintbrushTool');
 
     } catch (err) {
         const message = err.message || err;
@@ -165,7 +165,7 @@ async function executeDodgeAndBurnGray(e: React.MouseEvent<HTMLButtonElement>) {
         }
 
         // Select brush to start painting
-        AppUtils.selectTool('paintbrushTool');
+        selectTool('paintbrushTool');
 
     } catch (err) {
         const message = err.message || err;
@@ -175,7 +175,7 @@ async function executeDodgeAndBurnGray(e: React.MouseEvent<HTMLButtonElement>) {
 
 async function onBrushButtonClicked(e: React.MouseEvent<HTMLButtonElement>) {
     try {
-        await AppUtils.selectTool('paintbrushTool');
+        await selectTool('paintbrushTool');
     } catch (err) {
         const message = err.message || err;
         app.showAlert(message);
@@ -184,7 +184,7 @@ async function onBrushButtonClicked(e: React.MouseEvent<HTMLButtonElement>) {
 }
 async function onStampButtonClicked(e: React.MouseEvent<HTMLButtonElement>) {
     try {
-        await AppUtils.selectTool('cloneStampTool');
+        await selectTool('cloneStampTool');
     } catch (err) {
         const message = err.message || err;
         await app.showAlert(message);

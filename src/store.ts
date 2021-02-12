@@ -30,6 +30,9 @@ export const store: Store<TState, TAction> = createStore(reducer);
 setAsyncInterval(async () => {
     try {
 
+        // Wait for latest promise for setting tool options
+        await store.getState().currentToolOptions.promise;
+
         // ToDo: Update current tool options (hardness, opacity) (will require executing batchplay);
 
         const brushDataDescriptor: ActionDescriptor = {

@@ -5,7 +5,7 @@ import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
 import { LayerUtils } from '../../../common/layer-utils';
 import { DocumentUtils } from '../../../common/document-utils';
 import { confirm } from '../../dialogues/confirm';
-import { AppUtils } from '../../../common/app-utils';
+import { selectTool } from '../../../common/app-utils';
 import { percent } from '../../../common/type-utils';
 import { getOpacityPresetValue } from './opacity'
 
@@ -93,7 +93,7 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
         // Set Brush as current tool
         // Set brush hardness to 100%
         // Set brush opacity to 100%
-        await AppUtils.selectTool('cloneStampTool', {
+        await selectTool('cloneStampTool', {
             opacity: percent(100),
             useScatter: false,
             brush: {
@@ -133,7 +133,7 @@ async function setLayerDetails() {
         contrast.visible = true;
         detail.visible = true;
 
-        await AppUtils.selectTool('cloneStampTool', {
+        await selectTool('cloneStampTool', {
             opacity: percent(100),
             useScatter: false,
             brush: {
@@ -170,7 +170,7 @@ async function setLayerSoft() {
         await DocumentUtils.selectLayers([soft]);
         soft.visible = true;
 
-        await AppUtils.selectTool('cloneStampTool', {
+        await selectTool('cloneStampTool', {
             opacity: percent(getOpacityPresetValue(1)),
             useScatter: false,
             brush: {

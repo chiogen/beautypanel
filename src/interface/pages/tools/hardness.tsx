@@ -2,10 +2,11 @@ import * as React from 'react'
 import i18next from "i18next";
 import { percent } from '../../../common/type-utils';
 import { hardness as defaultPresets } from './default-presets.json'
-import { AppUtils } from '../../../common/app-utils';
+import { setToolOptions } from '../../../common/app-utils';
 import { StatefulComponent } from '../../../components/base/stateful-component';
 import { property } from '../../../decorators/react-property';
 import { store, TState } from '../../../store';
+import { ActionType } from '../../../store-action-types';
 
 let numberOfPresets = 5;
 let presets: Array<number> = new Array(numberOfPresets);
@@ -70,20 +71,12 @@ async function onHardnessPresetClick(e: React.MouseEvent<HTMLButtonElement>) {
     const index = parseInt(button.dataset.index!);
 
     if (e.button === 0) {
-        await applyHardnessPreset(index);
+        const value = getPresetValue(index);
+        store.dispatch({
+            type: ActionType.SetToolHardness,
+            value
+        });
     }
-
-}
-
-async function applyHardnessPreset(index: number) {
-    const value = getPresetValue(index);
-    await AppUtils.setToolOptions({
-        useScatter: false,
-        brush: {
-            _obj: "computedBrush",
-            hardness: percent(getPresetValue(index))
-        }
-    });
 }
 
 function getPresetValue(index: number): number {

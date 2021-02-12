@@ -1,10 +1,11 @@
 import i18next from "i18next";
 import * as React from 'react'
-import { AppUtils } from '../../../common/app-utils';
+import { setToolOptions } from '../../../common/app-utils';
 import { percent } from '../../../common/type-utils';
 import { StatefulComponent } from "../../../components/base/stateful-component";
 import { property } from "../../../decorators/react-property";
 import { store, TState } from "../../../store";
+import { ActionType } from "../../../store-action-types";
 import { opacity as defaultPresets } from './default-presets.json'
 
 type State = {
@@ -58,13 +59,20 @@ async function onOpacityPresetClick(e: React.MouseEvent<HTMLButtonElement>) {
     const index = parseInt(button.dataset.index!);
 
     if (e.button === 0) {
-        await applyOpacityPreset(index);
+        const value = getOpacityPresetValue(index);
+        // await setToolOptions({
+        //     opacity: percent(value)
+        // });
+        store.dispatch({
+            type: ActionType.SetToolOpacity,
+            value
+        });
     }
 }
 
 async function applyOpacityPreset(index: number) {
     const value = getOpacityPresetValue(index);
-    await AppUtils.setToolOptions({
+    await setToolOptions({
         opacity: percent(value)
     });
 }
