@@ -1,25 +1,16 @@
-import { PercentValue, PixelValue } from "photoshop";
-import { percent } from "../common/type-utils";
 import { ActionType } from "../store-action-types";
 import { UpdateToolDataAction } from "./shared-action-types";
 
-/**
- * Type is reduced to the main focus properties of this project. The actual object is way larger.
- */
 export interface CurrentToolOptionsState {
-    brush: {
-        hardness: PercentValue
-        roundness: PercentValue
-    }
+    hardness: number
+    roundness: number
     opacity: number
     useScatter: boolean
 }
 
 const initial: CurrentToolOptionsState = {
-    brush: {
-        hardness: percent(0),
-        roundness: percent(0)
-    },
+    hardness: -1,
+    roundness: -1,
     opacity: 0,
     useScatter: false
 };
@@ -29,7 +20,12 @@ export type CurrentToolOptionsAction = UpdateToolDataAction;
 export default function currentToolOptions(state: CurrentToolOptionsState = initial, action: CurrentToolOptionsAction): CurrentToolOptionsState {
     switch (action.type) {
         case ActionType.UpdatePollData:
-            return action.currentToolOptions;
+            return {
+                hardness: action.currentToolOptions.brush?.hardness?._value ?? -1,
+                roundness: action.currentToolOptions.brush?.roundness?._value ?? -1,
+                opacity: action.currentToolOptions.opacity,
+                useScatter: action.currentToolOptions.useScatter
+            };
         default:
             return state;
     }

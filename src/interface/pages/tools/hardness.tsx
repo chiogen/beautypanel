@@ -32,7 +32,7 @@ export class CurrentToolHardness extends StatefulComponent<{}, State> {
         super(props);
         const state = store.getState();
         this.state = {
-            hardness: state.currentToolOptions.brush.hardness._value
+            hardness: state.currentToolOptions.hardness
         };
     }
 
@@ -59,7 +59,7 @@ export class CurrentToolHardness extends StatefulComponent<{}, State> {
     }
 
     stateChanged(state: TState) {
-        this.hardness = state.currentToolOptions.brush.hardness._value;
+        this.hardness = state.currentToolOptions.hardness;
     }
 
 }
