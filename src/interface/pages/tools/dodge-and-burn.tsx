@@ -166,9 +166,7 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
                     return;
                 }
 
-
                 // Create new layer with blendmode SoftLight
-                // layer = await document.backgroundLayer!.duplicate(undefined, BeautyPanel.getLayerName(E_Layer.DodgeAndBurnGray));
                 layer = document.activeLayers[0];
                 layer.blendMode = 'softLight';
 
