@@ -21,7 +21,7 @@ export class Tools extends React.Component<Props, State> {
             style.display = 'none';
         }
 
-        return <div className={classes.join(' ')} style={style}>
+        return <div id="tools" className={classes.join(' ')} style={style}>
             {FrequencySeparation()}
             <DodgeAndBurn />
             <CurrentToolOpacity />
