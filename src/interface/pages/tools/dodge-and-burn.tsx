@@ -9,7 +9,8 @@ import { confirm } from '../../dialogues/confirm';
 import { StatefulComponent } from '../../../components/base/stateful-component';
 import { store, TState } from '../../../store';
 import { property } from '../../../decorators/react-property';
-import { percent } from '../../../common/type-utils';
+import { Color } from '../../../common/color';
+import { RGBColor } from '../../../common/rgb-color';
 
 interface State {
     currentTool: string,
@@ -115,23 +116,11 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
 
             if (!layer) {
 
-                const color = {
-                    _obj: 'RGBColor',
-                    red: 0,
-                    grain: 0,
-                    blue: 0
-                };
-
-                switch (this.color) {
-                    case 'white':
-                        color.red = color.grain = color.blue = 255;
-                        break;
-                    case 'gray':
-                        color.red = color.grain = color.blue = 128;
-                        break;
-                    case 'black':
-                        color.red = color.grain = color.blue = 0;
-                        break;
+                let color = RGBColor.gray;
+                if (this.color === 'white') {
+                    color = RGBColor.white;
+                } else if (this.color === 'black') {
+                    color = RGBColor.black;
                 }
 
                 const descriptor: ActionDescriptor = {
@@ -144,10 +133,7 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
                     using: {
                         _obj: 'contentLayer',
                         name: BeautyPanel.getLayerName(E_Layer.DodgeAndBurnGray),
-                        color: {
-                            _enum: 'color',
-                            _value: 'gray'
-                        },
+                        color: Color.gray,
                         type: {
                             _obj: 'solidColorLayer',
                             color

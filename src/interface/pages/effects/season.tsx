@@ -1,6 +1,6 @@
 import { ActionDescriptor, app, Document } from "photoshop";
 import { BeautyPanel, E_Layer } from "../../../common/beautypanel";
-import { percent } from "../../../common/type-utils";
+import { percent } from "../../../common/units.ts";
 import { confirm } from "../../dialogues/confirm";
 
 

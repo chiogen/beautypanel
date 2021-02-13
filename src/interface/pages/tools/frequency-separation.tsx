@@ -6,7 +6,7 @@ import { LayerUtils } from '../../../common/layer-utils';
 import { DocumentUtils } from '../../../common/document-utils';
 import { confirm } from '../../dialogues/confirm';
 import { selectTool } from '../../../common/app-utils';
-import { percent } from '../../../common/type-utils';
+import { percent } from '../../../common/units.ts';
 import { getOpacityPresetValue } from './opacity'
 
 export const FrequencySeparation = () =>

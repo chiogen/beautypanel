@@ -2,7 +2,7 @@ import { ActionDescriptor, app, Document, Layer } from "photoshop";
 import { BeautyPanel, E_Layer } from "../../../common/beautypanel";
 import { DocumentUtils } from "../../../common/document-utils";
 import { LayerUtils } from "../../../common/layer-utils";
-import { percent, pixels, points } from "../../../common/type-utils";
+import { percent, pixels, points } from "../../../common/units.ts";
 
 export enum VignetteType {
     Circle = 'circle',

@@ -1,7 +1,7 @@
 import i18next from "i18next";
 import * as React from 'react'
 import { setToolOptions } from '../../../common/app-utils';
-import { percent } from '../../../common/type-utils';
+import { percent } from '../../../common/units.ts';
 import { StatefulComponent } from "../../../components/base/stateful-component";
 import { property } from "../../../decorators/react-property";
 import { store, TState } from "../../../store";

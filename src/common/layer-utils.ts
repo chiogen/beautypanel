@@ -1,6 +1,6 @@
 import { ActionDescriptor, app, Layer, PercentValue } from "photoshop";
 import { DocumentUtils } from "./document-utils";
-import { pixels } from "./type-utils";
+import { pixels } from "./units.ts";
 
 export namespace LayerUtils {
 
