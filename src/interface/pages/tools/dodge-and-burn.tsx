@@ -9,6 +9,7 @@ import { confirm } from '../../dialogues/confirm';
 import { StatefulComponent } from '../../../components/base/stateful-component';
 import { store, TState } from '../../../store';
 import { property } from '../../../decorators/react-property';
+import { percent } from '../../../common/type-utils';
 
 interface State {
     currentTool: string
@@ -153,14 +154,46 @@ async function executeDodgeAndBurnGray(e: React.MouseEvent<HTMLButtonElement>) {
 
         if (!layer) {
 
-            // Create new layer with blendmode SoftLight
-            layer = await document.backgroundLayer!.duplicate(undefined, BeautyPanel.getLayerName(E_Layer.DodgeAndBurnGray));
-            layer.blendMode = 'softLight';
-
-            // Fill layer with gray color (Don't know the actions in photoshop)
             const descriptor: ActionDescriptor = {
-                _obj: 'fillContents'
+                _obj: 'make',
+                _target: [
+                    {
+                        _ref: "contentLayer"
+                    }
+                ],
+                using: {
+                    _obj: 'contentLayer',
+                    name: BeautyPanel.getLayerName(E_Layer.DodgeAndBurnGray),
+                    color: {
+                        _enum: 'color',
+                        _value: 'gray'
+                    },
+                    type: {
+                        _obj: 'solidColorLayer',
+                        color: {
+                            _obj: 'RGBColor',
+                            red: 0,
+                            grain: 0,
+                            blue: 0
+                        }
+                    }
+                },
+                _options: {
+                    dialogOptions: "dontDisplay"
+                }
+            };
+
+            const [result] = await app.batchPlay([descriptor]);
+            if (result.message) {
+                await app.showAlert(result.message);
+                return;
             }
+
+
+            // Create new layer with blendmode SoftLight
+            // layer = await document.backgroundLayer!.duplicate(undefined, BeautyPanel.getLayerName(E_Layer.DodgeAndBurnGray));
+            layer = document.activeLayers[0];
+            layer.blendMode = 'softLight';
 
         }
 
