@@ -158,8 +158,6 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
                     }
                 };
 
-                console.log(descriptor)
-
                 const [result] = await app.batchPlay([descriptor]);
                 if (result.message) {
                     await app.showAlert(result.message);
