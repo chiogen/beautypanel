@@ -60,6 +60,7 @@ declare module 'photoshop' {
     }
 
     export abstract class Layer extends Reference {
+        _docId: number
         name: string
         readonly bounds: Bounds
         readonly boundsNoEffects: Bounds

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import i18next from "i18next";
-import { percent } from '../../../common/units.ts';
+import { percent } from '../../../common/units';
 import { hardness as defaultPresets } from './default-presets.json'
 import { setToolOptions } from '../../../common/app-utils';
 import { StatefulComponent } from '../../../components/base/stateful-component';

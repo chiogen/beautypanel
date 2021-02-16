@@ -1,4 +1,7 @@
 import './styles/index.scss';
+
+import './common/prototype-pollution/layer'
+
 import { localizationLoaded } from './localization';
 import { app } from 'photoshop';
 import { renderApp } from './interface';

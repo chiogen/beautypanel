@@ -1,6 +1,6 @@
 import { app } from "photoshop";
 import { setToolOptions, _setToolOptions } from "../common/app-utils";
-import { percent } from "../common/units.ts";
+import { percent } from "../common/units";
 import { ActionType } from "../store-action-types";
 import { UpdateToolDataAction } from "./shared-action-types";
 

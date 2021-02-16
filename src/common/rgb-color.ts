@@ -1,5 +1,13 @@
+
+export interface IRGBColor {
+    _obj: 'RGBColor',
+    red: number,
+    grain: number
+    blue: number
+}
+
 export abstract class RGBColor {
-    static grayscale(scale: number) {
+    static grayscale(scale: number): IRGBColor {
         scale = Math.max(0, Math.min(scale, 255));
         return {
             _obj: 'RGBColor',

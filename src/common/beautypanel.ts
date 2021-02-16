@@ -9,7 +9,7 @@ export enum E_Layer {
     // Dodge and Burn
     Bright = 'bright',
     Dark = 'dark',
-    DodgeAndBurnGray = 'dodgeAndBurnGray',
+    DodgeAndBurn = 'dodgeAndBurnGray',
     // 
     DetailBlackWhite = 'detailBlackWhite',
     DetailColor = 'detailColor',
@@ -47,7 +47,7 @@ export namespace BeautyPanel {
             return getLayerByCode(E_Layer.EnhanceDetails);
         },
         get dodgeAndBurnGray() {
-            return getLayerByCode(E_Layer.DodgeAndBurnGray);
+            return getLayerByCode(E_Layer.DodgeAndBurn);
         },
         get orton() {
             return getLayerByCode(E_Layer.Orton);

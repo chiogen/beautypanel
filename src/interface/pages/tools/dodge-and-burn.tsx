@@ -1,16 +1,14 @@
 import * as React from 'react'
 import i18next from "i18next";
-import { ActionDescriptor, app, Layer } from 'photoshop';
+import { app, Layer } from 'photoshop';
 import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
 import { DocumentUtils } from '../../../common/document-utils';
 import { LayerUtils } from '../../../common/layer-utils';
-import { selectTool } from '../../../common/app-utils';
+import { selectTool, setForegroundColor } from '../../../common/app-utils';
 import { confirm } from '../../dialogues/confirm';
 import { StatefulComponent } from '../../../components/base/stateful-component';
 import { store, TState } from '../../../store';
 import { property } from '../../../decorators/react-property';
-import { Color } from '../../../common/color';
-import { RGBColor } from '../../../common/rgb-color';
 
 interface State {
     currentTool: string,
@@ -116,43 +114,15 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
 
             if (!layer) {
 
-                let color = RGBColor.gray;
-                if (this.color === 'white') {
-                    color = RGBColor.white;
-                } else if (this.color === 'black') {
-                    color = RGBColor.black;
-                }
-
-                const descriptor: ActionDescriptor = {
-                    _obj: 'make',
-                    _target: [
-                        {
-                            _ref: "contentLayer"
-                        }
-                    ],
-                    using: {
-                        _obj: 'contentLayer',
-                        name: BeautyPanel.getLayerName(E_Layer.DodgeAndBurnGray),
-                        color: Color.gray,
-                        type: {
-                            _obj: 'solidColorLayer',
-                            color
-                        }
-                    },
-                    _options: {
-                        dialogOptions: "dontDisplay"
-                    }
-                };
-
-                const [result] = await app.batchPlay([descriptor]);
-                if (result.message) {
-                    await app.showAlert(result.message);
-                    return;
-                }
-
-                // Create new layer with blendmode SoftLight
-                layer = document.activeLayers[0];
+                layer = await document.backgroundLayer!.duplicate(undefined, BeautyPanel.getLayerName(E_Layer.DodgeAndBurn));
                 layer.blendMode = 'softLight';
+
+                const topLayer = document.layers[0];
+                if (topLayer ===  document.backgroundLayer || topLayer !== layer) {
+                    layer.moveAbove(topLayer)
+                }
+
+                await setForegroundColor(128);
 
             }
 
@@ -245,6 +215,15 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
             const colorCode = button.dataset.color;
             if (colorCode) {
                 this.color = colorCode;
+
+                let grayscale = 128;
+                if (this.color === 'white') {
+                    grayscale = 255;
+                } else if (this.color === 'black') {
+                    grayscale = 0;
+                }
+
+                await setForegroundColor(grayscale);
             }
         } catch (err) {
             await app.showAlert(err);

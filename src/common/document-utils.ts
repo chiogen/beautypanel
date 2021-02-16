@@ -113,4 +113,19 @@ export namespace DocumentUtils {
         return lastLayer;
     }
 
+    export function _deleteLayer(layer: Layer): ActionDescriptor {
+        return {
+            _obj: "delete",
+            _target: [
+                {
+                    _ref: "layer",
+                    _id: layer._id
+                }
+            ],
+            layerID: [
+                layer._id
+            ]
+        }
+    }
+
 }
