@@ -1,5 +1,6 @@
-import './styles/index.scss';
+console.log('Loading Beautypanel...');
 
+import './styles/index.scss';
 import './common/prototype-pollution/layer'
 
 import { localizationLoaded } from './localization';

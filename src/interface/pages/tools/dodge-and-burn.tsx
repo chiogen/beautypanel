@@ -9,6 +9,7 @@ import { confirm } from '../../dialogues/confirm';
 import { StatefulComponent } from '../../../components/base/stateful-component';
 import { store, TState } from '../../../store';
 import { property } from '../../../decorators/react-property';
+import { percent } from '../../../common/units';
 
 interface State {
     currentTool: string,
@@ -114,20 +115,44 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
 
             if (!layer) {
 
-                layer = await document.backgroundLayer!.duplicate(undefined, BeautyPanel.getLayerName(E_Layer.DodgeAndBurn));
+                layer = await DocumentUtils.createNewLayer(BeautyPanel.getLayerName(E_Layer.DodgeAndBurn));
                 layer.blendMode = 'softLight';
 
                 const topLayer = document.layers[0];
-                if (topLayer ===  document.backgroundLayer || topLayer !== layer) {
+                if (topLayer === document.backgroundLayer || topLayer !== layer) {
                     layer.moveAbove(topLayer)
                 }
-
-                await setForegroundColor(128);
 
             }
 
             // Select brush to start painting
-            selectTool('paintbrushTool');
+            await selectTool('bucketTool');
+            await setForegroundColor(128);
+
+            const _fill = {
+                _obj: 'fill',
+                from: {
+                   _obj: "paint",
+                    horizontal: percent(50),
+                    vertical: percent(50)
+                },
+                tolerance: 100,
+                antiAlias: true,
+                using: {
+                    _enum: "fillContents",
+                    _value: "foregroundColor"
+                },
+                opacity: percent(50)
+            }
+            const [fillResult] = await app.batchPlay([_fill]);
+            if (fillResult.message) {
+                throw new Error(fillResult.message)
+            }
+
+            await selectTool('paintbrushTool');
+
+            this.color = 'white';
+            await setForegroundColor(255, 255, 255);
 
         } catch (err) {
             const message = err.message || err;
@@ -211,6 +236,12 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
 
     private async setColor(e: React.MouseEvent<HTMLButtonElement>) {
         try {
+
+            const layer = BeautyPanel.layers.dodgeAndBurnGray;
+            if (!layer) {
+                throw new Error('You must run Dodge&Burn first.')
+            }
+
             const button = e.target as HTMLButtonElement;
             const colorCode = button.dataset.color;
             if (colorCode) {
@@ -223,7 +254,11 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
                     grayscale = 0;
                 }
 
+                await selectTool('paintbrushTool');
                 await setForegroundColor(grayscale);
+
+                layer.visible = true;
+                await DocumentUtils.selectLayers([layer])
             }
         } catch (err) {
             await app.showAlert(err);

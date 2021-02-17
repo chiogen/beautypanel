@@ -66,6 +66,39 @@ export namespace DocumentUtils {
         ], {})
     }
 
+    export async function createNewLayer(name: string) {
+
+        if (!app.activeDocument) {
+            throw new Error('No active document.');
+        }
+
+        const [result] = await app.batchPlay([
+            _createNewLayer(name)
+        ]);
+
+        if (result.message) {
+            throw new Error(result.message);
+        }
+
+        console.log(result);
+        return app.activeDocument!.activeLayers[0];
+    }
+    export function _createNewLayer(name: string): ActionDescriptor {
+        return {
+            _obj: 'make',
+            _target: [
+                {
+                    _ref: "layer"
+                }
+            ],
+            using: {
+                _obj: "layer",
+                name
+            },
+            // layerID: 6
+        };
+    }
+
     export function _selectLayers(layers: Layer[], makeVisible: boolean = false): ActionDescriptor {
 
         const layerIds = layers.map(x => x._id);
