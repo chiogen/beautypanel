@@ -129,7 +129,7 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
             await selectTool('bucketTool');
             await setForegroundColor(128);
 
-            const _fill = {
+            const [fillResult] = await app.batchPlay([{
                 _obj: 'fill',
                 from: {
                    _obj: "paint",
@@ -143,8 +143,7 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
                     _value: "foregroundColor"
                 },
                 opacity: percent(50)
-            }
-            const [fillResult] = await app.batchPlay([_fill]);
+            }]);
             if (fillResult.message) {
                 throw new Error(fillResult.message)
             }
