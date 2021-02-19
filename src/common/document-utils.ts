@@ -80,7 +80,6 @@ export namespace DocumentUtils {
             throw new Error(result.message);
         }
 
-        console.log(result);
         return app.activeDocument!.activeLayers[0];
     }
     export function _createNewLayer(name: string): ActionDescriptor {
