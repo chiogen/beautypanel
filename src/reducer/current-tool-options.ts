@@ -1,12 +1,12 @@
-import { app } from "photoshop";
+import { ActionDescriptor } from "photoshop";
 import { setToolOptions, _setToolOptions } from "../common/app-utils";
 import { percent } from "../common/units";
 import { ActionType } from "../store-action-types";
 import { UpdateToolDataAction } from "./shared-action-types";
 
 export interface CurrentToolOptionsStateBase {
+    _descriptor: ActionDescriptor
     hardness: number
-    roundness: number
     opacity: number
 }
 export interface CurrentToolOptionsState extends CurrentToolOptionsStateBase {
@@ -26,9 +26,9 @@ export interface SetToolOptionsAction {
 }
 
 const initial: CurrentToolOptionsState = {
+    _descriptor: {} as ActionDescriptor,
     promise: undefined,
     hardness: -1,
-    roundness: -1,
     opacity: 0
 };
 
@@ -36,14 +36,18 @@ export type CurrentToolOptionsAction = UpdateToolDataAction | SetToolOpacityActi
 
 function updateToolOptions(state: CurrentToolOptionsState): CurrentToolOptionsState {
     state.promise = Promise.resolve(state.promise).then(
-        () => setToolOptions({
-            brush: {
-                _obj: "computedBrush",
-                hardness: percent(state.hardness)
-            },
-            opacity: percent(state.opacity),
-            useScatter: false
-        })
+        () => {
+            const descriptor = state._descriptor;
+
+            if (descriptor.brush) {
+                descriptor.brush.hardness = percent(state.hardness);
+            }
+
+            descriptor.opacity = state.opacity;
+            descriptor.useScatter = false;
+
+            return setToolOptions(descriptor)
+        }
     );
     return state;
 }
@@ -69,8 +73,8 @@ export default function currentToolOptions(state: CurrentToolOptionsState = init
             });
         case ActionType.UpdatePollData:
             return {
+                _descriptor: action.currentToolOptions,
                 hardness: action.currentToolOptions.brush?.hardness?._value ?? -1,
-                roundness: action.currentToolOptions.brush?.roundness?._value ?? -1,
                 opacity: action.currentToolOptions.opacity
             };
         default:
