@@ -4,7 +4,7 @@ import { app, Layer } from 'photoshop';
 import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
 import { DocumentUtils } from '../../../common/document-utils';
 import { LayerUtils } from '../../../common/layer-utils';
-import { selectTool, setForegroundColor } from '../../../common/app-utils';
+import { selectTool, setForegroundColor, _setForegroundColor } from '../../../common/app-utils';
 import { confirm } from '../../dialogues/confirm';
 import { StatefulComponent } from '../../../components/base/stateful-component';
 import { store, TState } from '../../../store';
@@ -129,29 +129,32 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
             await selectTool('bucketTool');
             await setForegroundColor(128);
 
-            const [fillResult] = await app.batchPlay([{
-                _obj: 'fill',
-                from: {
-                   _obj: "paint",
-                    horizontal: percent(50),
-                    vertical: percent(50)
-                },
-                tolerance: 100,
-                antiAlias: true,
-                using: {
-                    _enum: "fillContents",
-                    _value: "foregroundColor"
-                },
-                opacity: percent(50)
-            }]);
+            // Pick fill to center of image
+            const [fillResult] = await app.batchPlay([
+                {
+                    _obj: 'fill',
+                    from: {
+                        _obj: "paint",
+                        horizontal: percent(50),
+                        vertical: percent(50)
+                    },
+                    tolerance: 100,
+                    antiAlias: true,
+                    using: {
+                        _enum: "fillContents",
+                        _value: "foregroundColor"
+                    },
+                    opacity: percent(100)
+                }
+            ]);
             if (fillResult.message) {
                 throw new Error(fillResult.message)
             }
 
-            await selectTool('paintbrushTool');
 
-            this.color = 'white';
+            await selectTool('paintbrushTool');
             await setForegroundColor(255, 255, 255);
+            this.color = 'white';
 
         } catch (err) {
             const message = err.message || err;
