@@ -45,7 +45,9 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
         const value = getOpacityPresetValue(index);
         const isActive = Math.abs(value - this.opacity) < 1e-8;
 
-        return <sp-action-button data-index={index} data-active={isActive} onClick={onOpacityPresetClick}>{value}%</sp-action-button>;
+        return (
+            <sp-action-button data-index={index} data-active={isActive} onClick={onOpacityPresetClick} onContextMenu={onOpacityPresetContextMenu}>{value}%</sp-action-button>
+        );
     }
 
     stateChanged(state: TState) {
@@ -58,16 +60,24 @@ async function onOpacityPresetClick(e: React.MouseEvent<HTMLButtonElement>) {
     const button = e.currentTarget as HTMLButtonElement;
     const index = parseInt(button.dataset.index!);
 
+    if (e.button === 0 && e.altKey) {
+        return onOpacityPresetContextMenu(e);
+    }
+
     if (e.button === 0) {
         const value = getOpacityPresetValue(index);
-        // await setToolOptions({
-        //     opacity: percent(value)
-        // });
         store.dispatch({
             type: ActionType.SetToolOpacity,
             value
         });
     }
+}
+async function onOpacityPresetContextMenu(e: React.MouseEvent<HTMLButtonElement>) {
+    const button = e.currentTarget as HTMLButtonElement;
+    const index = parseInt(button.dataset.index!);
+
+
+
 }
 
 async function applyOpacityPreset(index: number) {
