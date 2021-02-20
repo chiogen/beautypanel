@@ -1,27 +1,29 @@
 import i18next from "i18next";
 import * as React from 'react'
-import { setToolOptions } from '../../../common/app-utils';
-import { percent } from '../../../common/units';
 import { StatefulComponent } from "../../../components/base/stateful-component";
 import { property } from "../../../decorators/react-property";
+import { PresetEditState } from "../../../reducer/preset-edit";
 import { store, TState } from "../../../store";
 import { ActionType } from "../../../store-action-types";
 import { opacity as defaultPresets } from './default-presets.json'
+import { Slider } from '@adobe/react-spectrum'
 
 type State = {
     opacity: number
+    presetEdit: PresetEditState | null
 }
 
 export class CurrentToolOpacity extends StatefulComponent<{}, State> {
 
-    @property
-    opacity: number
+    @property opacity: number
+    @property presetEdit: PresetEditState
 
     constructor(props) {
         super(props);
         const state = store.getState();
         this.state = {
-            opacity: state.currentToolOptions.opacity
+            opacity: state.currentToolOptions.opacity,
+            presetEdit: null
         };
     }
 
@@ -29,6 +31,7 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
         return (
             <div className="section">
                 <h3 className="title">{i18next.t('opacity')}</h3>
+                {this.renderPresetEdit()}
                 <div className="flex-buttons">
                     {this.renderPresetButton(0)}
                     {this.renderPresetButton(1)}
@@ -38,6 +41,20 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
                 </div>
             </div>
         )
+    }
+    private renderPresetEdit() {
+        if (!this.presetEdit)
+            return undefined;
+
+        const { index } = this.presetEdit ?? { index: 3 };
+        const label = i18next.t('opacityPreset', { index });
+        const currentValue = getOpacityPresetValue(index);
+
+        return <>
+            <preset-edit-dialog>
+                <sp-action-button onClick={this.applyPresetEdit.bind(this)}>OK</sp-action-button>
+            </preset-edit-dialog>
+        </>
     }
 
     private renderPresetButton(index: number) {
@@ -50,8 +67,21 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
         );
     }
 
+    private applyPresetEdit(_e: React.MouseEvent<HTMLButtonElement>) {
+
+        store.dispatch({
+            type: ActionType.EndPresetEdit
+        });
+    }
+
     stateChanged(state: TState) {
         this.opacity = state.currentToolOptions.opacity;
+        
+        if (state.presetEdit?.type === 'opacity') {
+            this.presetEdit = state.presetEdit;
+        } else {
+            this.presetEdit = null;
+        }
     }
 
 }
@@ -76,15 +106,14 @@ async function onOpacityPresetContextMenu(e: React.MouseEvent<HTMLButtonElement>
     const button = e.currentTarget as HTMLButtonElement;
     const index = parseInt(button.dataset.index!);
 
+    store.dispatch({
+        type: ActionType.StartPresetEdit,
+        edit: {
+            type: 'opacity',
+            index
+        }
+    })
 
-
-}
-
-async function applyOpacityPreset(index: number) {
-    const value = getOpacityPresetValue(index);
-    await setToolOptions({
-        opacity: percent(value)
-    });
 }
 
 export function getOpacityPresetValue(index: number): number {

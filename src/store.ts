@@ -5,6 +5,7 @@ import { Page } from "./enums";
 import page, { PageAction } from './reducer/page'
 import currentTool, { CurrentToolAction } from './reducer/current-tool'
 import currentToolOptions, { CurrentToolOptionsAction, CurrentToolOptionsState } from './reducer/current-tool-options'
+import presetEdit, { PresetEditState, PresetEditAction } from './reducer/preset-edit'
 import { UpdateToolDataAction } from "./reducer/shared-action-types";
 import { ActionType } from "./store-action-types";
 
@@ -12,28 +13,28 @@ export interface TState {
     readonly page: Page
     readonly currentTool: string
     readonly currentToolOptions: CurrentToolOptionsState
+    readonly presetEdit: PresetEditState
 }
 
-export type TAction = PageAction | UpdateToolDataAction | CurrentToolAction | CurrentToolOptionsAction;
+export type TAction = PageAction | UpdateToolDataAction | CurrentToolAction | CurrentToolOptionsAction | PresetEditAction;
 
 
 const reducer: Reducer<TState, TAction> = combineReducers({
     page,
     currentTool,
-    currentToolOptions
+    currentToolOptions,
+    presetEdit
 });
 
 export const store: Store<TState, TAction> = createStore(reducer);
 
 
 // Poll required app state data
-setAsyncInterval(async () => {
+async function poll() {
     try {
 
         // Wait for latest promise for setting tool options
         await store.getState().currentToolOptions.promise;
-
-        // ToDo: Update current tool options (hardness, opacity) (will require executing batchplay);
 
         const brushDataDescriptor: ActionDescriptor = {
             _obj: 'get',
@@ -68,4 +69,7 @@ setAsyncInterval(async () => {
     } catch (err) {
         app.showAlert(err.message || err);
     }
-}, 500);
+
+}
+
+setAsyncInterval(poll, 500);
