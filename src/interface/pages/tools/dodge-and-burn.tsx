@@ -9,7 +9,6 @@ import { confirm } from '../../dialogues/confirm';
 import { StatefulComponent } from '../../../components/base/stateful-component';
 import { store, TState } from '../../../store';
 import { property } from '../../../decorators/react-property';
-import { percent } from '../../../common/units';
 
 interface State {
     currentTool: string,
@@ -113,38 +112,28 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
                 }
             }
 
-            if (!layer) {
-
-                layer = await DocumentUtils.createNewLayer(BeautyPanel.getLayerName(E_Layer.DodgeAndBurn));
-                layer.blendMode = 'softLight';
-
-                const topLayer = document.layers[0];
-                if (topLayer === document.backgroundLayer || topLayer !== layer) {
-                    layer.moveAbove(topLayer)
-                }
-
-            }
-
-            // Select brush to start painting
-            await selectTool('bucketTool');
-            await setForegroundColor(128);
-
             // Pick fill to center of image
             const [fillResult] = await app.batchPlay([
                 {
-                    _obj: 'fill',
-                    from: {
-                        _obj: "paint",
-                        horizontal: percent(50),
-                        vertical: percent(50)
-                    },
-                    tolerance: 100,
-                    antiAlias: true,
+                    _obj: "make",
+                    _target: [
+                        {
+                            _ref: "layer"
+                        }
+                    ],
                     using: {
-                        _enum: "fillContents",
-                        _value: "foregroundColor"
-                    },
-                    opacity: percent(100)
+                        _obj: "layer",
+                        name: BeautyPanel.getLayerName(E_Layer.DodgeAndBurn),
+                        mode: {
+                            _enum: "blendMode",
+                            _value: "softLight"
+                        },
+                        fillNeutral: true,
+                        color: {
+                            _enum: "color",
+                            _value: "gray"
+                        }
+                    }
                 }
             ]);
             if (fillResult.message) {
