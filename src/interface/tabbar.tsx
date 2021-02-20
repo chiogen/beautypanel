@@ -48,11 +48,11 @@ export class Tabbar extends StatefulComponent<{}, State> {
 
         return (
             <Tabs value={index} onChange={this._onTabClick} >
-                <Tab label={this.texts.tools}></Tab>
-                <Tab label={this.texts.sharpen}></Tab>
-                <Tab label={this.texts.effects}></Tab>
-                <Tab label={this.texts.save}></Tab>
-                <Tab label={this.texts.settings}></Tab>
+                <Tab label={this.texts.tools} />
+                <Tab label={this.texts.sharpen} />
+                <Tab label={this.texts.effects} />
+                <Tab label={this.texts.save} />
+                <Tab label={this.texts.settings} />
             </Tabs>
         );
     }
