@@ -52,6 +52,7 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
 
         return <>
             <preset-edit-dialog>
+                <sp-slider></sp-slider>
                 <sp-action-button onClick={this.applyPresetEdit.bind(this)}>OK</sp-action-button>
             </preset-edit-dialog>
         </>

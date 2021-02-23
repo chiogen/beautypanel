@@ -14,7 +14,7 @@ const app = {
         'src/beautypanel.ts'
     ],
     output: {
-        file: 'ccx/index.js',
+        dir: 'ccx/js',
         format: 'cjs'
     },
     plugins: [

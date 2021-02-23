@@ -1,21 +1,18 @@
 console.log('Loading Beautypanel...');
 
 import './styles/index.scss';
-import './common/prototype-pollution/layer'
-
 import { localizationLoaded } from './localization';
-import { app } from 'photoshop';
-import { renderApp } from './interface';
-import { addDocumentLoadedCallback } from './common/active-document-observer';
 
-localizationLoaded.then(() => {
-    addDocumentLoadedCallback(() => {
-        renderApp();
-    });
-        
-    renderApp();
-})
+import { app } from 'photoshop';
 
 app.eventNotifier = (event, descriptor) => {
     console.log(event, JSON.stringify(descriptor, null, ' '));
 }
+
+localizationLoaded.then(async () => {
+
+    await import('./common/prototype-pollution/layer')
+    const { renderApp } = await import('./interface/index')
+
+    renderApp();
+})

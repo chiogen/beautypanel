@@ -67,7 +67,7 @@ async function poll() {
         }
 
     } catch (err) {
-        app.showAlert(err.message || err);
+        console.error(err.message || err);
     }
 
 }
