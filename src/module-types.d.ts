@@ -12,6 +12,9 @@ declare namespace JSX {
         // <preset-edit-dialog>
         'preset-edit-dialog': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>
 
+        // <preset-edit-dialog-slider>
+        'preset-edit-dialog-slider': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>
+
         // <sp-slider>
         'sp-slider': React.DetailedHTMLProps<any, HTMLElement>
 
