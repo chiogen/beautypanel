@@ -1,9 +1,7 @@
 import * as React from 'react'
 import i18next from "i18next";
 import { app } from 'photoshop'
-import { selectTool, _selectTool } from "../../../common/app-utils";
-import { ActionDescriptor } from 'photoshop';
-import { percent } from '../../../common/units';
+import { _selectTool } from "../../../common/app-utils";
 
 export const Zoom = () => (
     <div className="section">
@@ -137,6 +135,5 @@ async function getCurrentZoom(): Promise<number> {
         }
     ])
 
-    console.log((result as any).zoom._value)
     return (result as any).zoom._value;
 }
