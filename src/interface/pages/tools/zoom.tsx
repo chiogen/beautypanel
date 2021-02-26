@@ -3,6 +3,7 @@ import i18next from "i18next";
 import { app } from 'photoshop'
 import { selectTool, _selectTool } from "../../../common/app-utils";
 import { ActionDescriptor } from 'photoshop';
+import { percent } from '../../../common/units';
 
 export const Zoom = () => (
     <div className="section">
@@ -16,62 +17,126 @@ export const Zoom = () => (
     </div>
 );
 
-async function useZoomTool(actions: ActionDescriptor[]) {
-
-    const returnToolId = app.currentTool.id;
-
+async function zoomFit() {
     try {
+        if (!app.activeDocument)
+            return;
 
-        const results = await app.batchPlay([
-            _selectTool('zoomTool'),
-            ...actions
+        const [result] = await app.batchPlay([
+            {
+                _obj: "select",
+                _target: [
+                    {
+                        _ref: '$Mn ',
+                        _enum: "$MnIt",
+                        _value: "fitOnScreen",
+                    }
+                ]
+            }
         ]);
 
-        for (const result of results) {
-            if (result.message) {
-                throw new Error(result.message);
-            }
+        if (result.message) {
+            throw new Error(result.message);
         }
 
     } catch (err) {
         await app.showAlert(err.message);
-    } finally {
-        await selectTool(returnToolId);
+    }
+}
+
+async function zoomPixelPerfect() {
+    try {
+        if (!app.activeDocument)
+            return;
+
+        while (await getCurrentZoom() < 1) {
+            await zoomIn();
+        }
+
+        while (await getCurrentZoom() > 1) {
+            await zoomOut();
+        }
+
+    } catch (err) {
+        await app.showAlert(err.message);
+    }
+}
+
+async function zoomIn() {
+    try {
+        if (!app.activeDocument)
+            return;
+
+        const [result] = await app.batchPlay([
+            {
+                _obj: "select",
+                _target: [
+                    {
+                        _ref: '$Mn ',
+                        _enum: "$MnIt",
+                        _value: "zoomIn",
+                    }
+                ]
+            }
+        ]);
+
+        if (result.message) {
+            throw new Error(result.message);
+        }
+
+    } catch (err) {
+        await app.showAlert(err.message);
+    }
+}
+
+async function zoomOut() {
+    try {
+        if (!app.activeDocument)
+            return;
+
+        const [result] = await app.batchPlay([
+            {
+                _obj: "select",
+                _target: [
+                    {
+                        _ref: '$Mn ',
+                        _enum: "$MnIt",
+                        _value: "zoomOut",
+                    }
+                ]
+            }
+        ]);
+
+        if (result.message) {
+            throw new Error(result.message);
+        }
+
+    } catch (err) {
+        await app.showAlert(err.message);
+    }
+}
+
+async function getCurrentZoom(): Promise<number> {
+
+    if (!app.activeDocument) {
+        throw new Error('No document active.');
     }
 
-}
+    const [result] = await app.batchPlay([
+        {
+            _obj: 'get',
+            _target: [
+                {
+                    _property: 'zoom'
+                },
+                {
+                    _ref: 'document',
+                    _id: app.activeDocument._id
+                }
+            ]
+        }
+    ])
 
-function zoomFit(_e: React.MouseEvent<HTMLButtonElement>) {
-    return useZoomTool([{
-        _obj: 'invokeCommand',
-        commandID: 1192,
-        kcanDispatchWhileModal: true
-    }])
-}
-
-function zoomPixelPerfect(_e: React.MouseEvent<HTMLButtonElement>) {
-    return useZoomTool([{
-        _obj: 'invokeCommand',
-        commandID: 1190,
-        kcanDispatchWhileModal: true,
-        _isCommand: false
-    }])
-}
-
-function zoomIn(_e: React.MouseEvent<HTMLButtonElement>) {
-    return useZoomTool([{
-        _obj: 'invokeCommand',
-        commandID: 1004,
-        kcanDispatchWhileModal: true,
-        _isCommand: false
-    }])
-}
-
-function zoomOut(_e: React.MouseEvent<HTMLButtonElement>) {
-    return useZoomTool([{
-        _obj: 'invokeCommand',
-        commandID: 1005,
-        // kcanDispatchWhileModal: true,
-        _isCommand: false
-    }])
+    console.log((result as any).zoom._value)
+    return (result as any).zoom._value;
 }
