@@ -1,8 +1,8 @@
 
 export class PresetsManager<T> {
 
-    private name: string,
-    private defaultValues: T[]
+    private name: string;
+    private defaultValues: T[];
 
     constructor(name: string, defaultValues: T[]) {
         this.name = name;
