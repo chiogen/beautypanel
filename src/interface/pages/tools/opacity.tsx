@@ -13,7 +13,7 @@ type State = {
     presetEdit: PresetEditState | null
 }
 
-export const OpacityPresets = new PresetsManager<number>('opacity', defaultPresets)
+export const opacityPresets = new PresetsManager<number>('opacity', defaultPresets)
 
 
 export class CurrentToolOpacity extends StatefulComponent<{}, State> {
@@ -54,7 +54,7 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
 
         const index= this.presetEdit.index;
         const label = i18next.t('opacityPreset', { index });
-        const currentValue = this.presetEditValue ?? OpacityPresets.get(index);
+        const currentValue = this.presetEditValue ?? opacityPresets.get(index);
 
         return <>
             <preset-edit-dialog>
@@ -74,7 +74,7 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
 
     private renderPresetButton(index: number) {
 
-        const value = OpacityPresets.get(index);
+        const value = opacityPresets.get(index);
         const isActive = Math.abs(value - this.opacity) < 1e-8;
 
         const onClick = (e: React.MouseEvent<HTMLButtonElement>) => this.onOpacityPresetClick(e);
@@ -100,7 +100,7 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
         }
 
         if (e.button === 0) {
-            const value = OpacityPresets.get(index);
+            const value = opacityPresets.get(index);
             store.dispatch({
                 type: ActionType.SetToolOpacity,
                 value

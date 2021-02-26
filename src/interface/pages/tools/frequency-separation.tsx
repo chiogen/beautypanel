@@ -7,7 +7,7 @@ import { DocumentUtils } from '../../../common/document-utils';
 import { confirm } from '../../dialogues/confirm';
 import { selectTool } from '../../../common/app-utils';
 import { percent } from '../../../common/units';
-import { OpacityPresets } from './opacity'
+import { opacityPresets } from './opacity'
 
 export const FrequencySeparation = () =>
     <div className="section">
@@ -171,7 +171,7 @@ async function setLayerSoft() {
         soft.visible = true;
 
         await selectTool('cloneStampTool', {
-            opacity: percent(OpacityPresets.get(1)),
+            opacity: percent(opacityPresets.get(1)),
             useScatter: false,
             brush: {
                 _obj: "computedBrush",
