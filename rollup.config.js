@@ -5,6 +5,7 @@ import typescript from '@rollup/plugin-typescript'
 import json from '@rollup/plugin-json'
 import scss from 'rollup-plugin-scss'
 import babel from '@rollup/plugin-babel'
+import del from 'rollup-plugin-delete'
 
 const extensions = ['.js', '.ts'];
 
@@ -18,6 +19,7 @@ const app = {
         format: 'cjs'
     },
     plugins: [
+        del({ targets: 'ccx/js/*' }),
         // Allows node_modules resolution
         resolve({
             mainFields: ['jsnext:main', 'module', 'main'],
