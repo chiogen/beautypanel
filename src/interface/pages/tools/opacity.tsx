@@ -7,6 +7,7 @@ import { store, TState } from "../../../store";
 import { ActionType } from "../../../store-action-types";
 import { opacity as defaultPresets } from './default-presets.json'
 import { PresetsManager } from "../../../common/presets-manager";
+import { app } from "photoshop";
 
 type State = {
     opacity: number
@@ -17,8 +18,6 @@ export const opacityPresets = new PresetsManager<number>('opacity', defaultPrese
 
 
 export class CurrentToolOpacity extends StatefulComponent<{}, State> {
-
-    private readonly _sliderId = "opacity-preset-slider"
 
     @property opacity: number
     @property presetEdit: PresetEditState
@@ -53,23 +52,26 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
             return undefined;
 
         const index= this.presetEdit.index;
-        const label = i18next.t('opacityPreset', { index });
         const currentValue = this.presetEditValue ?? opacityPresets.get(index);
 
-        return <>
+        const onValueChanged = this._presetInputValueChanged.bind(this);
+        const onClick = this.applyPresetEdit.bind(this);
+
+        return <form>
             <preset-edit-dialog>
                 <preset-edit-dialog-slider>
-                    <span>0</span>
-                    <input type="range" min="0" max="100" onChange={this._presetInputValueChanged} />
-                    <span>100</span>
+                    <input type="number" min="0" max="100" value={currentValue} onInput={onValueChanged} />
+                    <span>%</span>
                 </preset-edit-dialog-slider>
-                <div className="current-value-label">{currentValue}%</div>
-                <sp-action-button onClick={this.applyPresetEdit.bind(this)}>OK</sp-action-button>
+                <sp-action-button onClick={onClick}>OK</sp-action-button>
             </preset-edit-dialog>
-        </>
+        </form>
     }
     private _presetInputValueChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.presetEditValue = parseInt(e.currentTarget.value);
+        let value = parseInt(e.currentTarget.value);
+        if (!Number.isNaN(value)) {
+            this.presetEditValue = value
+        }
     }
 
     private renderPresetButton(index: number) {
@@ -77,8 +79,8 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
         const value = opacityPresets.get(index);
         const isActive = Math.abs(value - this.opacity) < 1e-8;
 
-        const onClick = (e: React.MouseEvent<HTMLButtonElement>) => this.onOpacityPresetClick(e);
-        const onContextMenu = (e: React.MouseEvent<HTMLButtonElement>) => this.onOpacityPresetContextMenu(e);
+        const onClick = (e: React.MouseEvent<HTMLButtonElement>) => this.onPresetClick(e);
+        const onContextMenu = (e: React.MouseEvent<HTMLButtonElement>) => this.onPresetContextMenu(e);
 
         return (
             <sp-action-button data-index={index} data-active={isActive} onClick={onClick} onContextMenu={onContextMenu}>{value}%</sp-action-button>
@@ -86,20 +88,29 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
     }
 
     private applyPresetEdit(_e: React.MouseEvent<HTMLButtonElement>) {
+        if (!this.presetEdit)
+            return;
+
+        if (typeof this.presetEditValue !== 'number' || this.presetEditValue < 0 || this.presetEditValue > 100) {
+            app.showAlert('Invalid value: ' + this.presetEditValue);
+            return;
+        }
+
+        opacityPresets.set(this.presetEdit.index, this.presetEditValue!)
         store.dispatch({
             type: ActionType.EndPresetEdit
         });
     }
 
-    private async onOpacityPresetClick(e: React.MouseEvent<HTMLButtonElement>) {
+    private async onPresetClick(e: React.MouseEvent<HTMLButtonElement>) {
         const button = e.currentTarget as HTMLButtonElement;
-        const index = parseInt(button.dataset.index!);
 
         if (e.button === 0 && e.altKey) {
-            return this.onOpacityPresetContextMenu(e);
+            return this.onPresetContextMenu(e);
         }
 
         if (e.button === 0) {
+            const index = parseInt(button.dataset.index!);
             const value = opacityPresets.get(index);
             store.dispatch({
                 type: ActionType.SetToolOpacity,
@@ -108,7 +119,7 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
         }
     }
 
-    private async onOpacityPresetContextMenu(e: React.MouseEvent<HTMLButtonElement>) {
+    private async onPresetContextMenu(e: React.MouseEvent<HTMLButtonElement>) {
         const button = e.currentTarget as HTMLButtonElement;
         const index = parseInt(button.dataset.index!);
 

@@ -2,9 +2,10 @@ declare namespace JSX {
     interface IntrinsicElements {
 
         // <sp-checkbox>
-        'sp-action-button': React.DetailedHTMLProps<React.HTMLAttributes<HTMLButtonElement & {
-            active: boolean
-        }>, HTMLButtonElement>
+        'sp-action-button': React.DetailedHTMLProps<React.HTMLAttributes<HTMLButtonElement> &  {
+            active?: boolean
+            disabled?: boolean
+        }, HTMLButtonElement>
 
         // <sp-checkbox>
         'sp-checkbox': React.DetailedHTMLProps<React.HTMLAttributes<HTMLInputElement>, HTMLInputElement>
