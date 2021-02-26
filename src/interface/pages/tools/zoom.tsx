@@ -7,7 +7,7 @@ import { percent } from '../../../common/units';
 
 export const Zoom = () => (
     <div className="section">
-        <h3 className="title">${i18next.t('zoom')}</h3>
+        <h3 className="title">{i18next.t('zoom')}</h3>
         <div className="flex-buttons">
             <sp-action-button onClick={zoomFit}>{i18next.t('zoomFit')}</sp-action-button>
             <sp-action-button onClick={zoomOut}>-</sp-action-button>
