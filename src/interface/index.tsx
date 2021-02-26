@@ -6,12 +6,17 @@ import { Tabbar } from './tabbar';
 
 export function renderApp() {
     try {
+
+        const rootElement = document.getElementById('app');
+        const scrimElement = document.getElementById('loadingScrim');
+
         ReactDOM.render(<>
             <Tabbar />
-            <Pages />        
-        </>, document.getElementById('app'), () => {
-            document.getElementById('loadingScrim')?.remove();
+            <Pages />
+        </>, rootElement, () => {
+            scrimElement?.remove();
         });
+
     } catch (err) {
         console.error(err);
         app.showAlert(err.message);

@@ -18,6 +18,10 @@ const app = {
         dir: 'ccx/js',
         format: 'cjs'
     },
+    external: [
+        'photoshop',
+        'uxp'
+    ],
     plugins: [
         del({ targets: 'ccx/js/*' }),
         // Allows node_modules resolution
