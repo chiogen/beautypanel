@@ -1,24 +1,13 @@
 import * as React from 'react'
 import i18next from "i18next";
-import { percent } from '../../../common/units';
 import { hardness as defaultPresets } from './default-presets.json'
-import { setToolOptions } from '../../../common/app-utils';
 import { StatefulComponent } from '../../../components/base/stateful-component';
 import { property } from '../../../decorators/react-property';
 import { store, TState } from '../../../store';
 import { ActionType } from '../../../store-action-types';
+import { PresetsManager } from '../../../common/presets-manager';
 
-let numberOfPresets = 5;
-let presets: Array<number> = new Array(numberOfPresets);
-
-for (let i = 0; i < numberOfPresets; i++) {
-    let value = localStorage.getItem('opacity-preset-' + i);
-    if (value) {
-        presets[i] = parseFloat(value);
-    } else {
-        presets[i] = defaultPresets[i];
-    }
-}
+export const hardnessPresets = new PresetsManager<number>('hardness', defaultPresets);
 
 type State = {
     hardness: number
@@ -53,34 +42,30 @@ export class CurrentToolHardness extends StatefulComponent<{}, State> {
     }
 
     private renderPresetButton(index: number) {
-        const value = getPresetValue(index);
+        const value = hardnessPresets.get(index);
         const isActive = Math.abs(value - this.hardness) < 1e-8;
 
-        return <sp-action-button data-index={index} data-active={isActive} onClick={onHardnessPresetClick}>{value}%</sp-action-button>;
+        const onClick = (e: any) => this.onHardnessPresetClick(e);
+
+        return <sp-action-button data-index={index} data-active={isActive} onClick={onClick}>{value}%</sp-action-button>;
+    }
+
+    private async onHardnessPresetClick(e: React.MouseEvent<HTMLButtonElement>) {
+    
+        const button = e.currentTarget as HTMLButtonElement;
+        const index = parseInt(button.dataset.index!);
+    
+        if (e.button === 0) {
+            const value = hardnessPresets.get(index);
+            store.dispatch({
+                type: ActionType.SetToolHardness,
+                value
+            });
+        }
     }
 
     stateChanged(state: TState) {
         this.hardness = state.currentToolOptions.hardness;
     }
 
-}
-
-async function onHardnessPresetClick(e: React.MouseEvent<HTMLButtonElement>) {
-
-    const button = e.currentTarget as HTMLButtonElement;
-    const index = parseInt(button.dataset.index!);
-
-    if (e.button === 0) {
-        const value = getPresetValue(index);
-        store.dispatch({
-            type: ActionType.SetToolHardness,
-            value
-        });
-    }
-}
-
-function getPresetValue(index: number): number {
-    const key = 'hardness-preset-' + index;
-    let value = localStorage.getItem(key);
-    return value ? parseInt(value) : defaultPresets[index];
 }

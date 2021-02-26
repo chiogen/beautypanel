@@ -6,48 +6,14 @@ import { PresetEditState } from "../../../reducer/preset-edit";
 import { store, TState } from "../../../store";
 import { ActionType } from "../../../store-action-types";
 import { opacity as defaultPresets } from './default-presets.json'
-import { Slider } from '@material-ui/core'
+import { PresetsManager } from "../../../common/presets-manager";
 
 type State = {
     opacity: number
     presetEdit: PresetEditState | null
 }
 
-export abstract class OpacityPresets {
-
-    private static readonly _onChangedCallbacks = new Array<() => void>();
-
-    public static addOnChangedCallback(value: () => void) {
-        const callbacks = this._onChangedCallbacks;
-        
-        if (callbacks.includes(value)) {
-            return;
-        }
-
-        callbacks.push(value);
-        return () => {
-            const index = callbacks.indexOf(value);
-            if (index > -1) {
-                callbacks.splice(index, 1);
-            }
-        }
-    }
-
-    public static get(index: number) {
-        const key = 'opacity-preset-' + index;
-        let value = localStorage.getItem(key);
-        return value ? parseInt(value) : defaultPresets[index];
-    }
-    public static set(index: number, value: number) {
-
-    }
-    public static apply(index: number) {
-        store.dispatch({
-            type: ActionType.SetToolOpacity,
-            value: this.get(index)
-        });
-    }
-}
+export const OpacityPresets = new PresetsManager<number>('opacity', defaultPresets)
 
 
 export class CurrentToolOpacity extends StatefulComponent<{}, State> {
@@ -134,7 +100,11 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
         }
 
         if (e.button === 0) {
-            OpacityPresets.apply(index);
+            const value = OpacityPresets.get(index);
+            store.dispatch({
+                type: ActionType.SetToolOpacity,
+                value
+            });
         }
     }
 
