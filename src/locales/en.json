@@ -46,8 +46,8 @@
             "jpg": "JPG",
             "png": "PNG"
         },
-        "saveButtonText": "Save",
-        "saveToButtonText": "Save as",
+        "save": "Save",
+        "saveAs": "Save as",
         "saveScaledCopyTo": "Save copy as (scaled)",
         "saveScaledButtonText": "Save JPG 2048",
         "saveUnscaledCopyTo": "Save copy as (noscaled)",

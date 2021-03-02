@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Page } from '../../enums';
 import { Filter } from './sharpen/filter';
-import { Options } from './sharpen/options';
+import { SharpenOptions } from './sharpen/options';
 import { Presets } from './sharpen/presets';
 
 type Props = {
@@ -24,7 +24,7 @@ export class Sharpen extends React.Component<Props> {
 
         return <div id="sharpen" className={classes.join(' ')} style={style}>
             {Filter()}
-            {Options()}
+            <SharpenOptions />
             {Presets()}
         </div>;
     }

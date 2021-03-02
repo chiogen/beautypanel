@@ -4,7 +4,7 @@ import { Heading } from "@adobe/react-spectrum";
 
 export const Presets = () => 
     <div className="section presets">
-        <Heading >{i18next.t("sharpen.presets")}</Heading>
+        <Heading># {i18next.t("sharpen.presets")}</Heading>
         <div className="buttons">
             <sp-action-button>
                 0.5

@@ -9,7 +9,7 @@ import { selectTool } from '../../../common/app-utils';
 import { percent } from '../../../common/units';
 import { opacityPresets } from './opacity'
 
-export const FrequencySeparation = () =>
+export const FrequencySeparation = () => (
     <div className="section">
         <h3 className="title">{i18next.t('frequencySeparation.long')}</h3>
         <div id="frequency-separation">
@@ -20,7 +20,7 @@ export const FrequencySeparation = () =>
             </div>
         </div>
     </div>
-    ;
+);
 
 export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonElement>) {
 

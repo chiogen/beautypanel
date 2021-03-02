@@ -13,8 +13,8 @@ declare module 'photoshop' {
 
     export type Artboard = any
     export type LayerTypes = Layer;
-    export type PercentValue = { 
-        _unit: "percentUnit", 
+    export type PercentValue = {
+        _unit: "percentUnit",
         /** value between 0 and 100 */
         _value: number
     };
@@ -74,7 +74,7 @@ declare module 'photoshop' {
         visible: boolean
         delete(): void
         duplicate(targetDocument?: Document, name?: string): Promise<Layer>
-        flip(axis:  "horizontal" | "vertical" | "both"): Promise<void>
+        flip(axis: "horizontal" | "vertical" | "both"): Promise<void>
         link(targetLayer: Layer): Layer[]
         moveAbove(target: LayerTypes): void
         moveBelow(target: LayerTypes): void
@@ -125,12 +125,13 @@ declare module 'photoshop' {
         resizeCanvas(width: number, height: number, anchor?: AnchorPosition): Promise<void>
         resizeImage(width: number, height: number, resolution?: number, resampleMethod?: ResampleMethod): Promise<void>
         rotate(angles: number): Promise<void>
-        save(entry?: File, saveOptions?: SaveOptions): Promise<void>
+        save(entry: File, saveOptions?: SaveOptions): Promise<void>
     }
     export interface SaveDialogOptions {
-        
+
     }
     export interface SaveOptions {
+        entry?: Object
         embedColorProfile?: boolean
     }
     export interface LayerCreateOptions {

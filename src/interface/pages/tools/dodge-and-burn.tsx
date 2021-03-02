@@ -17,11 +17,8 @@ interface State {
 
 export class DodgeAndBurn extends StatefulComponent<{}, State> {
 
-    @property
-    currentTool: string
-
-    @property
-    color: string
+    @property currentTool: string
+    @property color: string
 
     constructor(props: {}) {
         super(props);
@@ -67,7 +64,7 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
                 <h3 className="title">Dodge and Burn</h3>
                 <div id="dodge-and-burn">
                     <div className="flex-buttons">
-                        <sp-action-button onClick={this.excecuteWithGradient.bind(this)}>{i18next.t('dodgeAndBurn.gradient')}</sp-action-button>
+                        <sp-action-button onClick={this.excecuteWithGradient.bind(this)}># {i18next.t('dodgeAndBurn.gradient')}</sp-action-button>
                         <sp-action-button onClick={this.execute.bind(this)}>{i18next.t('dodgeAndBurn.default')}</sp-action-button>
                     </div>
                     <div className="flex-buttons">

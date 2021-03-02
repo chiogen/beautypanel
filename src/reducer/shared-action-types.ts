@@ -1,6 +1,11 @@
-import { PercentValue, PixelValue } from "photoshop";
+import { Document } from "photoshop";
+import { PercentValue } from "photoshop";
 import type { ActionType } from "../store-action-types";
 
+export interface DocumentChangedAction {
+    type: ActionType.DocumentChanged
+    document: Document | null
+}
 export interface UpdateToolDataAction {
     type: ActionType.UpdatePollData
     currentToolOptions: {
