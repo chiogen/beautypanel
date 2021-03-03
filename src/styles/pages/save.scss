@@ -15,4 +15,18 @@
 
     }
 
+    .output-dir {
+        display: flex;
+        .spacer {
+            flex-grow: 1;
+        }
+        a {
+            margin-left: 1em;
+        }
+    }
+
+    a {
+        color: royalblue;
+    }
+
 }

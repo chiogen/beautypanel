@@ -3,6 +3,14 @@ declare module 'uxp' {
     export interface File {
 
     }
+    export interface Folder {
+        id: Object
+        isEntry: boolean
+        isFile: boolean
+        isFolder: boolean        
+        name: string
+        nativePath: string
+    }
 
     export interface DialogOpenOptions {
         openFile?: boolean
@@ -12,7 +20,7 @@ declare module 'uxp' {
         title?: string
         buttonLabel?: string
         /** Default value: ["*"] */
-        filters?: string[]
+        filters?: string[   ]
         showHiddenFiles?: boolean
         initialLocation?: string
     }
@@ -67,8 +75,8 @@ declare module 'uxp' {
             getEntryMetadata(e: unknown): Promise<unknown>
             getFileForOpening(options: DialogOpenOptions): Promise<File | undefined>
             getFileForSaving(name: string, options?: any): Promise<File | undefined>
-            getFolder(options: { initialDomain?: string, initialLocation?: string }): Promise<unknown>
-            getNativePath(e: unknown): Promise<unknown>
+            getFolder(options: { initialDomain?: string, initialLocation?: string }): Promise<Folder>
+            getNativePath(e: unknown): Promise<Folder>
             getPluginFolder(): Promise<Object>
             getTemporaryFolder(): Promise<Object>
             readFromFile(options: { entry: any, target: any, newName: any, overwrite: boolean }): Promise<unknown>

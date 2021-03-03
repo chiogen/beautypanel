@@ -34,6 +34,10 @@ export class SavePage extends React.Component<P, S> {
     texts: Texts
 
     get outputFolder() {
+        let userConfigValue = localStorage.getItem('saveOutputFolder');
+        if (userConfigValue) {
+            return userConfigValue;
+        }
         return options.defaultPaths.normal;
     }
 
@@ -85,15 +89,44 @@ export class SavePage extends React.Component<P, S> {
                 <div className="section">
                     <Heading>{texts.saveScaledCopyTo}</Heading>
                     <sp-action-button style={{ display: 'flex' }}>{texts.saveScaledButtonText}</sp-action-button>
-                    <div>Output directory</div>
+                    <div className="output-dir">
+                        <span>
+                            Output directory: 
+                            <a onClick={this.selectOutputFolder.bind(this)}>{this.outputFolder}</a>
+                        </span> 
+                    </div>
                 </div>
                 <div className="section">
                     <Heading>{texts.saveUnscaledCopyTo}</Heading>
                     <sp-action-button style={{ display: 'flex' }}>{texts.saveUnscaledButtonText}</sp-action-button>
-                    <div>Output directory</div>
+                    <div className="output-dir">
+                        <span>
+                            Output directory: 
+                            <a onClick={this.selectOutputFolder.bind(this)}>{this.outputFolder}</a>
+                        </span> 
+                    </div>
                 </div>
             </div>
         );
+    }
+
+    private async selectOutputFolder() {
+        try {
+
+            const folder = await storage.localFileSystem.getFolder({
+
+            });
+
+            if (!folder) {
+                return;
+            }
+
+            localStorage.setItem('saveOutputFolder', folder.name);
+            this.forceUpdate();
+
+        } catch(err) {
+            app.showAlert(err.message);
+        }
     }
 
     private async saveAs() {
@@ -112,33 +145,10 @@ export class SavePage extends React.Component<P, S> {
             const parsed = path.parse(this.activeDocument.path);
             const file = await storage.localFileSystem.getFileForSaving(parsed.name + '.jpg');
             if (!file) {
-                return
+                return;
             }
             
-            this.activeDocument.save(file)
-
-            // await app.batchPlay([
-            //     {
-            //         _obj: 'save',
-            //         as: {
-            //             _obj: "JPEG",
-            //             extendedQuality: 12,
-            //             matteColor: {
-            //                 _enum: "matteColor",
-            //                 _value: "none"
-            //             }
-            //         },
-            //         in: {
-            //             _path: "WoW_Wallpaper_2560x1440_-_Cinematic_1.jpg",
-            //             _kind: "local"
-            //         },
-            //         documentID: this.activeDocument._id,
-            //         saveStage: {
-            //             _enum: "saveStageType",
-            //             _value: "saveBegin"
-            //         }
-            //     }
-            // ])
+            this.activeDocument.save(file);
 
         } catch (err) {
             app.showAlert(err.message);
