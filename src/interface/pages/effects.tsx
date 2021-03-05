@@ -22,10 +22,10 @@ export class Effects extends React.Component<Props> {
         }
 
         return <div id="effects" className="page" style={style}>
-            <sp-action-button onClick={enhanceDetails}>{i18next.t('effects.enhanceDetails')}</sp-action-button>
-            <sp-action-button onClick={strengthenDetails}>{i18next.t('effects.strengthenDetails')}</sp-action-button>
-            <sp-action-button onClick={createOrthonEffect}>{i18next.t('effects.orton')}</sp-action-button>
-            <sp-action-button onClick={createVignette}>{i18next.t('effects.vignette')}</sp-action-button>
+            <sp-action-button onClick={enhanceDetails}># {i18next.t('effects.enhanceDetails')}</sp-action-button>
+            <sp-action-button onClick={strengthenDetails}># {i18next.t('effects.strengthenDetails')}</sp-action-button>
+            <sp-action-button onClick={createOrthonEffect}># {i18next.t('effects.orton')}</sp-action-button>
+            <sp-action-button onClick={createVignette}># {i18next.t('effects.vignette')}</sp-action-button>
             <sp-action-button onClick={createAutumnEffect}>{i18next.t('effects.autumn')}</sp-action-button>
             <sp-action-button onClick={createSpringEffect}>{i18next.t('effects.spring')}</sp-action-button>
         </div>
