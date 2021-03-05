@@ -78,17 +78,13 @@ export class SavePage extends React.Component<P, S> {
                         </div>
                     </div>
                     <div id="default-save-buttons">
-                        <sp-action-button style={{ display: 'flex' }}>
-                            {texts.save}
-                        </sp-action-button>
-                        <sp-action-button style={{ display: 'flex' }} onClick={saveAs}>
-                            {texts.saveAs}
-                        </sp-action-button>
+                        <sp-action-button style={{ display: 'flex' }}># {texts.save}</sp-action-button>
+                        <sp-action-button style={{ display: 'flex' }} onClick={saveAs}>{texts.saveAs}</sp-action-button>
                     </div>
                 </div>
                 <div className="section">
                     <Heading>{texts.saveScaledCopyTo}</Heading>
-                    <sp-action-button style={{ display: 'flex' }}>{texts.saveScaledButtonText}</sp-action-button>
+                    <sp-action-button style={{ display: 'flex' }}># {texts.saveScaledButtonText}</sp-action-button>
                     <div className="output-dir">
                         <span>
                             Output directory: 
@@ -98,7 +94,7 @@ export class SavePage extends React.Component<P, S> {
                 </div>
                 <div className="section">
                     <Heading>{texts.saveUnscaledCopyTo}</Heading>
-                    <sp-action-button style={{ display: 'flex' }}>{texts.saveUnscaledButtonText}</sp-action-button>
+                    <sp-action-button style={{ display: 'flex' }}># {texts.saveUnscaledButtonText}</sp-action-button>
                     <div className="output-dir">
                         <span>
                             Output directory: 
