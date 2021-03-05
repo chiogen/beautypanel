@@ -52,7 +52,10 @@
         "saveScaledCopyTo": "Kopie speichern unter (skaliert)",
         "saveScaledButtonText": "Speichern JPG 2048",
         "saveUnscaledCopyTo": "Kopie speichern unter (unskaliert)",
-        "saveUnscaledButtonText": "1:1 JPG"
+        "saveUnscaledButtonText": "1:1 JPG",
+        "messages": {
+            "quicksaveSuccess": "Bild gespeichert."
+        }
     },
     "options": "Optionen",
     "opacity": "Deckkraft",

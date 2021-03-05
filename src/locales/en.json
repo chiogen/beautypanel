@@ -51,7 +51,10 @@
         "saveScaledCopyTo": "Save copy as (scaled)",
         "saveScaledButtonText": "Save JPG 2048",
         "saveUnscaledCopyTo": "Save copy as (noscaled)",
-        "saveUnscaledButtonText": "1:1 JPG"
+        "saveUnscaledButtonText": "1:1 JPG",
+        "messages": {
+            "quicksaveSuccess": "Bild gespeichert."
+        }
     },
     "options": "Options",
     "saveJpg2048": "Save JPG 2048",

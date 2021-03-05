@@ -10,6 +10,8 @@ import options from './save.json'
 import { storage } from 'uxp';
 import * as path from '../common/path';
 
+const rFileSplit = /^(.+)\/([^\/]+)$/;
+
 type P = {
     isActive: boolean
 }
@@ -26,6 +28,9 @@ type Texts = {
     saveScaledButtonText: string
     saveUnscaledCopyTo: string
     saveUnscaledButtonText: string
+    messages: {
+        quicksaveSuccess: string
+    }
 }
 
 export class SavePage extends React.Component<P, S> {
@@ -61,13 +66,19 @@ export class SavePage extends React.Component<P, S> {
         const width = activeDocument?.width ?? 0;
         const height = activeDocument?.height ?? 0;
 
+        const quickSave = () => this.quickSave();
         const saveAs = () => this.saveAs();
+        const saveUnscaledCopy = () => this.saveUnscaledCopy();
+        const saveScaledCopy = () => this.saveScaledCopy();
 
         return (
             <div id="save" className="page" style={style}>
                 <div className="section">
                     <Heading>{i18next.t('savePage.currentPicture')}</Heading>
                     <div id="document-information">
+                        <div>
+                            <span>{activeDocument?.path ?? ''}</span>
+                        </div>
                         <div>
                             <span>{i18next.t('savePage.resolution')}</span>
                             <span>{width}x{height}</span>
@@ -78,28 +89,28 @@ export class SavePage extends React.Component<P, S> {
                         </div>
                     </div>
                     <div id="default-save-buttons">
-                        <sp-action-button style={{ display: 'flex' }}># {texts.save}</sp-action-button>
+                        <sp-action-button style={{ display: 'flex' }} onClick={quickSave}>{texts.save}</sp-action-button>
                         <sp-action-button style={{ display: 'flex' }} onClick={saveAs}>{texts.saveAs}</sp-action-button>
                     </div>
                 </div>
                 <div className="section">
                     <Heading>{texts.saveScaledCopyTo}</Heading>
-                    <sp-action-button style={{ display: 'flex' }}># {texts.saveScaledButtonText}</sp-action-button>
+                    <sp-action-button style={{ display: 'flex' }} onClick={saveScaledCopy}># {texts.saveScaledButtonText}</sp-action-button>
                     <div className="output-dir">
                         <span>
-                            Output directory: 
+                            Output directory:
                             <a onClick={this.selectOutputFolder.bind(this)}>{this.outputFolder}</a>
-                        </span> 
+                        </span>
                     </div>
                 </div>
                 <div className="section">
                     <Heading>{texts.saveUnscaledCopyTo}</Heading>
-                    <sp-action-button style={{ display: 'flex' }}># {texts.saveUnscaledButtonText}</sp-action-button>
+                    <sp-action-button style={{ display: 'flex' }} onClick={saveUnscaledCopy}># {texts.saveUnscaledButtonText}</sp-action-button>
                     <div className="output-dir">
                         <span>
-                            Output directory: 
+                            Output directory:
                             <a onClick={this.selectOutputFolder.bind(this)}>{this.outputFolder}</a>
-                        </span> 
+                        </span>
                     </div>
                 </div>
             </div>
@@ -109,9 +120,7 @@ export class SavePage extends React.Component<P, S> {
     private async selectOutputFolder() {
         try {
 
-            const folder = await storage.localFileSystem.getFolder({
-
-            });
+            const folder = await storage.localFileSystem.getFolder({});
 
             if (!folder) {
                 return;
@@ -120,7 +129,22 @@ export class SavePage extends React.Component<P, S> {
             localStorage.setItem('saveOutputFolder', folder.name);
             this.forceUpdate();
 
-        } catch(err) {
+        } catch (err) {
+            app.showAlert(err.message);
+        }
+    }
+
+    private async quickSave() {
+        try {
+
+            if (!this.activeDocument) {
+                return;
+            }
+
+            await this.activeDocument.save();
+            await app.showAlert(this.texts.messages.quicksaveSuccess)
+
+        } catch (err) {
             app.showAlert(err.message);
         }
     }
@@ -143,13 +167,30 @@ export class SavePage extends React.Component<P, S> {
             if (!file) {
                 return;
             }
-            
-            this.activeDocument.save(file);
+
+            await this.activeDocument.save(file);
+            await app.showAlert(this.texts.messages.quicksaveSuccess)
 
         } catch (err) {
             app.showAlert(err.message);
         }
 
+    }
+
+    private async saveScaledCopy() {
+        try {
+
+        } catch (err) {
+            app.showAlert(err.message);
+        }
+
+    }
+    private async saveUnscaledCopy() {
+        try {
+
+        } catch (err) {
+            app.showAlert(err.message);
+        }
     }
 
     stateChanged(state: TState) {
