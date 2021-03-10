@@ -4,11 +4,13 @@ import i18next from 'i18next'
 import { Heading } from '@adobe/react-spectrum';
 import { property } from '../decorators/react-property';
 import { Document } from 'photoshop';
-import { TState } from '../store';
-import { ActionType } from '../store-action-types';
 import options from './save.json'
 import { storage } from 'uxp';
-import * as path from '../common/path';
+import * as path from 'path';
+import { ActionDescriptor } from 'photoshop';
+import { shallowCompare } from '../common/shallow-compare';
+import { addDocumentLoadedCallback } from '../common/active-document-observer';
+import { createFileToken } from '../common/app-utils';
 
 const rFileSplit = /^(.+)\/([^\/]+)$/;
 
@@ -16,7 +18,7 @@ type P = {
     isActive: boolean
 }
 type S = {
-    activeDocument?: Document | null
+    activeDocument: Document | null
 }
 
 type Texts = {
@@ -35,8 +37,13 @@ type Texts = {
 
 export class SavePage extends React.Component<P, S> {
 
-    @property activeDocument: Document | null;
+    private _unregisterActiveDocumentObserver?: () => void
+
+    isFrozen: boolean = false;
     texts: Texts
+
+    @property activeDocument: Document | null;
+
 
     get outputFolder() {
         let userConfigValue = localStorage.getItem('saveOutputFolder');
@@ -54,6 +61,33 @@ export class SavePage extends React.Component<P, S> {
         };
     }
 
+    componentDidMount() {
+        super.componentDidMount?.call(this);
+
+        this._unregisterActiveDocumentObserver = addDocumentLoadedCallback(() => {
+            this.setState({
+                activeDocument: app.activeDocument
+            });
+        });
+    }
+    componentWillUnmount() {
+        if (this._unregisterActiveDocumentObserver) {
+            this._unregisterActiveDocumentObserver();
+            this._unregisterActiveDocumentObserver = undefined;
+        }
+
+        super.componentWillUnmount?.call(this);
+    }
+
+    shouldComponentUpdate(nextProps: Readonly<P>, nextState: Readonly<S>, _nextContext: any): boolean {
+
+        if (this.isFrozen) {
+            return false;
+        }
+
+        return shallowCompare(this, nextProps, nextState);
+    }
+
     render() {
 
         const style: React.CSSProperties = {};
@@ -61,7 +95,8 @@ export class SavePage extends React.Component<P, S> {
             style.display = 'none';
         }
 
-        const { texts, activeDocument } = this;
+        const activeDocument = app.activeDocument;
+        const { texts } = this;
 
         const width = activeDocument?.width ?? 0;
         const height = activeDocument?.height ?? 0;
@@ -120,7 +155,7 @@ export class SavePage extends React.Component<P, S> {
     private async selectOutputFolder() {
         try {
 
-            const folder = await storage.localFileSystem.getFolder({});
+            const folder = await storage.localFileSystem.getFolder();
 
             if (!folder) {
                 return;
@@ -137,11 +172,11 @@ export class SavePage extends React.Component<P, S> {
     private async quickSave() {
         try {
 
-            if (!this.activeDocument) {
+            if (!app.activeDocument) {
                 return;
             }
 
-            await this.activeDocument.save();
+            await app.activeDocument.save();
             await app.showAlert(this.texts.messages.quicksaveSuccess)
 
         } catch (err) {
@@ -153,22 +188,24 @@ export class SavePage extends React.Component<P, S> {
 
         try {
 
-            if (!this.activeDocument) {
+            if (!app.activeDocument) {
                 return;
             }
+
+            const document = app.activeDocument;
 
             let folder = this.outputFolder;
             if (!folder.endsWith('/')) {
                 folder += '/';
             }
 
-            const parsed = path.parse(this.activeDocument.path);
+            const parsed = path.parse(document.path);
             const file = await storage.localFileSystem.getFileForSaving(parsed.name + '.jpg');
             if (!file) {
                 return;
             }
 
-            await this.activeDocument.save(file);
+            await document.save(file);
             await app.showAlert(this.texts.messages.quicksaveSuccess)
 
         } catch (err) {
@@ -180,22 +217,166 @@ export class SavePage extends React.Component<P, S> {
     private async saveScaledCopy() {
         try {
 
+            if (!app.activeDocument) {
+                return;
+            }
+
+
+            this.isFrozen = true;
+
+            const document = app.activeDocument;
+
+            const { name, ext } = path.parse(document.path);
+
+            const folder = this.outputFolder;
+            const filePath = path.join(folder, name + '_scaled' + ext);
+
+            const sourceFileToken = createFileToken(document.path);
+            const targetFileToken = createFileToken(filePath);
+
+            // ToDO:
+            // Duplicate current document
+            const _saveCopy: ActionDescriptor = {
+                _obj: "save",
+                as: {
+                    _obj: "JPEG",
+                    extendedQuality: 12,
+                    matteColor: {
+                        _enum: "matteColor",
+                        _value: "none"
+                    }
+                },
+                in: {
+                    _path: targetFileToken,
+                    _kind: "local"
+                },
+                lowerCase: true,
+                saveStage: {
+                    _enum: "saveStageType",
+                    _value: "saveSucceeded"
+                }
+            }
+            const _openCopy: ActionDescriptor = {
+                "_obj": "open",
+                "null": {
+                    "_path": targetFileToken,
+                    "_kind": "local"
+                }
+            };
+
+            // Scale document
+            const _resizeCopy: ActionDescriptor = {
+
+            };
+
+            // Save scaled document
+            const _saveScaledCopy: ActionDescriptor = {
+                _obj: "save",
+                as: {
+                    _obj: "JPEG",
+                    extendedQuality: 12,
+                    matteColor: {
+                        _enum: "matteColor",
+                        _value: "none"
+                    }
+                },
+                in: {
+                    _path: targetFileToken,
+                    _kind: "local"
+                },
+                lowerCase: true,
+                saveStage: {
+                    _enum: "saveStageType",
+                    _value: "saveSucceeded"
+                }
+            };
+
+            // Close document
+            const _closeCopy: ActionDescriptor = {
+                _obj: "close",
+                documentID: app.activeDocument._id,
+            };
+            const _openSource: ActionDescriptor = {
+                _obj: "open",
+                "null": {
+                    _path: sourceFileToken,
+                    _kind: "local"
+                }
+            };
+
+            const results = await app.batchPlay([
+                _saveCopy,
+                // _resizeCopy,
+                // _saveScaledCopy,
+                // _closeCopy,
+                // _openSource
+            ]);
+
+            for (const result of results) {
+                if (result.message) {
+                    throw new Error(result.message);
+                }
+            }
+
+            await app.showAlert(this.texts.messages.quicksaveSuccess);
+
         } catch (err) {
             app.showAlert(err.message);
+        } finally {
+            this.isFrozen = false;
         }
 
     }
     private async saveUnscaledCopy() {
         try {
 
+            if (!app.activeDocument) {
+                return;
+            }
+
+            this.isFrozen = true;
+
+            const document = app.activeDocument;
+            const { name, ext } = path.parse(document.path);
+
+            const folder = this.outputFolder;
+            const filePath = path.join(folder, name + '_scaled' + ext);
+
+            const fileToken = storage.localFileSystem.createSessionToken({ isFile: true, isFolder: false, isEntry: true, name: filePath, nativePath: filePath });
+
+            const _saveCopy: ActionDescriptor = {
+                _obj: "save",
+                as: {
+                    _obj: "JPEG",
+                    extendedQuality: 12,
+                    matteColor: {
+                        _enum: "matteColor",
+                        _value: "none"
+                    }
+                },
+                in: {
+                    _path: fileToken,
+                    _kind: "local"
+                },
+                documentID: document._id,
+                lowerCase: true,
+                saveStage: {
+                    _enum: "saveStageType",
+                    _value: "saveSucceeded"
+                }
+            }
+
+            const [result] = await app.batchPlay([_saveCopy]);
+            if (result.message) {
+                throw new Error(result.message);
+            }
+
+            await app.showAlert(this.texts.messages.quicksaveSuccess);
+
         } catch (err) {
             app.showAlert(err.message);
-        }
-    }
-
-    stateChanged(state: TState) {
-        if (state.lastAction.type === ActionType.DocumentChanged) {
-            this.activeDocument = state.lastAction.document;
+        } finally {
+            this.isFrozen = false;
         }
     }
 

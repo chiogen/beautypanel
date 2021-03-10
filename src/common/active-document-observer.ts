@@ -4,12 +4,12 @@ export function addDocumentLoadedCallback(callback: (document: Document) => any)
 
     let previousDocumentPath: string | null | undefined = app.activeDocument?.path;
 
-    let handle = setInterval(() => {
+    let handle: number | undefined = setInterval(() => {
         if (app.activeDocument && app.activeDocument.path !== previousDocumentPath) {
             previousDocumentPath = app.activeDocument.path;
             callback(app.activeDocument);
         }
-    }, 500);
+    }, 500) as any;
 
     return () => {
         clearTimeout(handle);

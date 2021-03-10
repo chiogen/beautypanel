@@ -1,4 +1,5 @@
 import { ActionDescriptor, app } from "photoshop";
+import { storage } from "uxp";
 import { IRGBColor } from "./rgb-color";
 
 export async function selectTool(toolId: string, options?: Object): Promise<void> {
@@ -70,4 +71,14 @@ export function _setForegroundColor(r: number, g: number = r, b: number = r) {
         } as IRGBColor,
         source: "photoshopPicker"
     }
+}
+
+export function createFileToken(path: string) {
+    return storage.localFileSystem.createSessionToken({
+        isFile: true,
+        isFolder: false,
+        isEntry: true,
+        name: path,
+        nativePath: path
+    });
 }

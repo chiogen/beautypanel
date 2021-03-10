@@ -1,3 +1,4 @@
+
 declare module 'photoshop' {
 
     export type Bounds = {
@@ -125,7 +126,7 @@ declare module 'photoshop' {
         resizeCanvas(width: number, height: number, anchor?: AnchorPosition): Promise<void>
         resizeImage(width: number, height: number, resolution?: number, resampleMethod?: ResampleMethod): Promise<void>
         rotate(angles: number): Promise<void>
-        save(entry?: File, saveOptions?: SaveOptions): Promise<void>
+        save(entry?: import('uxp').Entry, saveOptions?: SaveOptions): Promise<void>
     }
     export interface SaveDialogOptions {
 

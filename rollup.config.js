@@ -27,7 +27,8 @@ const app = {
         // Allows node_modules resolution
         resolve({
             mainFields: ['jsnext:main', 'module', 'main'],
-            extensions: ['ts', 'tsx', '.mjs', '.js', 'jsx']
+            extensions: ['ts', 'tsx', '.mjs', '.js', 'jsx'],
+            preferBuiltins: false
         }),
         // Bundle JSON files
         json({

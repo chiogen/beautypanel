@@ -1,7 +1,20 @@
 declare module 'uxp' {
 
+    export interface Entry {
+        id: Object
+        isEntry: boolean
+        isFile: boolean
+        isFolder: boolean        
+        name: string
+        nativePath: string
+    }
     export interface File {
-
+        id: Object
+        isEntry: boolean
+        isFile: boolean
+        isFolder: boolean        
+        name: string
+        nativePath: string
     }
     export interface Folder {
         id: Object
@@ -10,6 +23,13 @@ declare module 'uxp' {
         isFolder: boolean        
         name: string
         nativePath: string
+    }
+
+    export interface CreateEntryOptions {
+        name: string
+        parent: string
+        mode?: string
+        readOnly: boolean
     }
 
     export interface DialogOpenOptions {
@@ -69,13 +89,13 @@ declare module 'uxp' {
             createSessionToken(e: unknown): Promise<unknown>
             getDataFolder(): Promise<string>
             getEntries(options: { folder: string }): Promise<unknown[]>
-            getEntry(options: { folder: string, filePath: string }): Promise<unknown>
+            getEntry(options: { folder: string, filePath: string }): Promise<Entry>
             getEntryForPersostentToken(e: any): Promise<unknown>
             getEntryForSessionToken(e: unknown): Promise<unknown>
             getEntryMetadata(e: unknown): Promise<unknown>
             getFileForOpening(options: DialogOpenOptions): Promise<File | undefined>
             getFileForSaving(name: string, options?: any): Promise<File | undefined>
-            getFolder(options: { initialDomain?: string, initialLocation?: string }): Promise<Folder>
+            getFolder(options?: { initialDomain?: string, initialLocation?: string }): Promise<Folder>
             getNativePath(e: unknown): Promise<Folder>
             getPluginFolder(): Promise<Object>
             getTemporaryFolder(): Promise<Object>
