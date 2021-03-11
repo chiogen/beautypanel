@@ -1,4 +1,4 @@
-import { app, Layer, Document } from 'photoshop'
+import { app, Layer } from 'photoshop'
 
 declare module 'photoshop' {
     export interface Layer {

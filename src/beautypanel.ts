@@ -4,7 +4,9 @@ import { app } from 'photoshop';
 import './styles/index.scss';
 import { localizationLoaded } from './localization';
 
+import './common/prototype-pollution/document';
 import './common/prototype-pollution/layer';
+
 import { renderApp } from './interface';
 import { addDocumentLoadedCallback } from './common/active-document-observer';
 

@@ -73,12 +73,20 @@ export function _setForegroundColor(r: number, g: number = r, b: number = r) {
     }
 }
 
-export function createFileToken(path: string) {
+export function createFileToken(nativePath: string) {
     return storage.localFileSystem.createSessionToken({
         isFile: true,
-        isFolder: false,
-        isEntry: true,
-        name: path,
-        nativePath: path
+        nativePath
     });
+}
+
+const cachedTokens = new Map<string, string>();
+/** Use token trick to get a file entry. */
+export async function createFileEntry(nativePath: string) {
+    let token = cachedTokens.get(nativePath);
+    if (!token) {
+        token = await createFileToken(nativePath);
+    }
+
+    return storage.localFileSystem.getEntryForSessionToken(token);
 }

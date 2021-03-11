@@ -1,30 +1,5 @@
 declare module 'uxp' {
 
-    export interface Entry {
-        id: Object
-        isEntry: boolean
-        isFile: boolean
-        isFolder: boolean        
-        name: string
-        nativePath: string
-    }
-    export interface File {
-        id: Object
-        isEntry: boolean
-        isFile: boolean
-        isFolder: boolean        
-        name: string
-        nativePath: string
-    }
-    export interface Folder {
-        id: Object
-        isEntry: boolean
-        isFile: boolean
-        isFolder: boolean        
-        name: string
-        nativePath: string
-    }
-
     export interface CreateEntryOptions {
         name: string
         parent: string
@@ -40,7 +15,7 @@ declare module 'uxp' {
         title?: string
         buttonLabel?: string
         /** Default value: ["*"] */
-        filters?: string[   ]
+        filters?: string[]
         showHiddenFiles?: boolean
         initialLocation?: string
     }
@@ -79,30 +54,9 @@ declare module 'uxp' {
         version: string
     };
 
-    export const storage: {
-        localFileSystem: {
-            isFileSystemProvider: boolean
-            supportedDomains: Array<symbol>
-            copyEntry(options: any): Promise<unknown>
-            createEntry(options: any): Promise<unknown>
-            createPersistentToken(e: unknown): Promise<unknown>
-            createSessionToken(e: unknown): Promise<unknown>
-            getDataFolder(): Promise<string>
-            getEntries(options: { folder: string }): Promise<unknown[]>
-            getEntry(options: { folder: string, filePath: string }): Promise<Entry>
-            getEntryForPersostentToken(e: any): Promise<unknown>
-            getEntryForSessionToken(e: unknown): Promise<unknown>
-            getEntryMetadata(e: unknown): Promise<unknown>
-            getFileForOpening(options: DialogOpenOptions): Promise<File | undefined>
-            getFileForSaving(name: string, options?: any): Promise<File | undefined>
-            getFolder(options?: { initialDomain?: string, initialLocation?: string }): Promise<Folder>
-            getNativePath(e: unknown): Promise<Folder>
-            getPluginFolder(): Promise<Object>
-            getTemporaryFolder(): Promise<Object>
-            readFromFile(options: { entry: any, target: any, newName: any, overwrite: boolean }): Promise<unknown>
-            writeToFile(options: { data: any, entry: any, format: any, append: boolean}): Promise<unknown>
-        }
-        domains: {
+    export namespace storage {
+
+        export const domains: {
             appLocalCache: symbol
             appLocalData: symbol
             appLocalLibrary: symbol
@@ -116,18 +70,113 @@ declare module 'uxp' {
             userPictures: symbol
             userVideos: symbol
         }
-        formats: {
+
+        export const formats: {
             binary: symbol
             utf8: symbol
         }
-        modes: {
+        export const modes: {
             readOnly: symbol
             readWrite: symbol
         }
-        types: {
+        export const types: {
             file: symbol
             folder: symbol
         }
-    };
+
+
+        export interface EntryMetadata {
+
+        }
+        export interface ReadFileOptions {
+            /**
+             * @default `formats.utf8`
+             */
+            format?: typeof formats.utf8 | typeof formats.binary
+        }
+        export interface WriteFileOptions {
+            /**
+             * @default `formats.utf8`
+             */
+            format?: typeof formats.utf8 | typeof formats.binary
+            /**
+             * if `true`, the data is writen to the end of the file
+             * @default false
+             */
+            append?: boolean
+        }
+
+        /** https://www.adobe.io/photoshop/uxp/uxp/reference-js/Modules/uxp/Persistent%20File%20Storage/Entry/ */
+        export abstract class Entry {
+            readonly id: Object
+            readonly isEntry: boolean
+            readonly isFile: boolean
+            readonly isFolder: boolean
+            readonly name: string
+            readonly nativePath: string
+            copyTo(folder: Folder, options?: { overwrite?: boolean }): Promise<unknown>
+            moveTo(folder: Folder, options?: { overwrite?: boolean, newName: string }): Promise<unknown>
+            delete(): Promise<void>
+            getMetadata(): Promise<EntryMetadata>
+        }
+        export abstract class File extends Entry {
+            id: Object
+            isEntry: boolean
+            isFile: boolean
+            isFolder: boolean
+            name: string
+            nativePath: string
+            mode: typeof modes.readOnly | typeof modes.readWrite
+            read(options?: ReadFileOptions): Promise<string | ArrayBuffer>;
+            write(data: string | ArrayBuffer, options?: WriteFileOptions): Promise<void>
+        }
+
+        export abstract class Folder extends Entry {
+            id: Object
+            isEntry: boolean
+            isFile: boolean
+            isFolder: boolean
+            name: string
+            nativePath: string
+        }
+
+        /** https://www.adobe.io/photoshop/uxp/uxp/reference-js/Modules/uxp/Persistent%20File%20Storage/FileSystemProvider/ */
+        export interface LocalFileSystemProvider {
+            isFileSystemProvider: boolean;
+            supportedDomains: Array<symbol>
+
+            getFileForOpening(options: {
+                initialDomain?: symbol
+                types?: Array<string>
+                intialLocation: File | Folder
+                allowMultiple?: boolean
+            }): Promise<File | Array<File>>;
+
+            getFileForSaving(options: {
+                /** the preferred initial location of the file picker. If not defined, the most recently used domain from a file picker is used instead. */
+                initialDomain?: symbol
+                /** array of valid file types that the user can choose to assign to a file. */
+                tyspes: Array<string>;
+            }): Promise<File>;
+
+            getFolder(options?: {
+                initialDomain?: symbol
+            }): Promise<Folder | null>;
+
+            getTemporaryFolder(): Promise<Folder>;
+
+            createSessionToken(entry: Partial<Entry>): Promise<string>
+            getEntryForSessionToken(token: string): Promise<Entry>
+            createPersistentToken(entry: Partial<Entry>): Promise<string>
+            getEntryForPersistentToken(topken: string): Promise<Entry>
+            
+            getFileForOpening(options: DialogOpenOptions): Promise<File | undefined>
+            getFileForSaving(name: string, options?: any): Promise<File | undefined>
+            getFolder(options?: { initialDomain?: string, initialLocation?: string }): Promise<Folder>
+
+        }
+
+        export const localFileSystem: LocalFileSystemProvider
+    }
 
 }

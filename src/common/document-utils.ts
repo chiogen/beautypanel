@@ -1,6 +1,7 @@
 import i18next from "i18next";
 import { ActionDescriptor, app, Document, Layer } from "photoshop";
 import { showConfirmDialog } from "./dialog";
+import { pixels } from "./units";
 
 export namespace DocumentUtils {
 
@@ -157,6 +158,25 @@ export namespace DocumentUtils {
             layerID: [
                 layer._id
             ]
+        }
+    }
+
+    export async function resizeImage(width: number): Promise<void> {
+        const descriptor: ActionDescriptor = {
+            _obj: "imageSize",
+            width: pixels(width),
+            scaleStyles: true,
+            constrainProportions: true,
+            interfaceIconFrameDimmed: {
+                _enum: "interpolationType",
+                _value: "automaticInterpolation"
+            }
+        };
+
+        const [ result ] = await app.batchPlay([descriptor]);
+
+        if (result.message) {
+            throw new Error(result.message);
         }
     }
 
