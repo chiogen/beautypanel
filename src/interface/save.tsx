@@ -46,12 +46,26 @@ export class SavePage extends React.Component<P, S> {
     @property activeDocument: Document | null;
 
 
-    get outputFolder() {
-        let userConfigValue = localStorage.getItem('saveOutputFolder');
+    get scaledCopyFolder() {
+        let scaledCopyFolder = localStorage.getItem('scaledCopyFolder');
+        if (scaledCopyFolder) {
+            return scaledCopyFolder;
+        }
+        return options.defaultPaths.scaled;
+    }
+    set scaledCopyFolder(value: string) {
+        localStorage.setItem('scaledCopyFolder', value);
+    }
+
+    get unscaledCopyFolder() {
+        let userConfigValue = localStorage.getItem('unscaledCopyFolder');
         if (userConfigValue) {
             return userConfigValue;
         }
-        return options.defaultPaths.normal;
+        return options.defaultPaths.unscaled;
+    }
+    set unscaledCopyFolder(value: string) {
+        localStorage.setItem('unscaledCopyFolder', value);
     }
 
     constructor(props: P) {
@@ -135,7 +149,7 @@ export class SavePage extends React.Component<P, S> {
                     <div className="output-dir">
                         <span>
                             Output directory:
-                            <a onClick={this.selectOutputFolder.bind(this)}>{this.outputFolder}</a>
+                            <a onClick={this.selectScaledOutputFolder.bind(this)}>{this.scaledCopyFolder}</a>
                         </span>
                     </div>
                 </div>
@@ -145,7 +159,7 @@ export class SavePage extends React.Component<P, S> {
                     <div className="output-dir">
                         <span>
                             Output directory:
-                            <a onClick={this.selectOutputFolder.bind(this)}>{this.outputFolder}</a>
+                            <a onClick={this.selectUnscaledOutputFolder.bind(this)}>{this.unscaledCopyFolder}</a>
                         </span>
                     </div>
                 </div>
@@ -153,7 +167,7 @@ export class SavePage extends React.Component<P, S> {
         );
     }
 
-    private async selectOutputFolder() {
+    private async selectScaledOutputFolder() {
         try {
 
             const folder = await storage.localFileSystem.getFolder();
@@ -162,7 +176,23 @@ export class SavePage extends React.Component<P, S> {
                 return;
             }
 
-            localStorage.setItem('saveOutputFolder', folder.name);
+            this.scaledCopyFolder = folder.nativePath;
+            this.forceUpdate();
+
+        } catch (err) {
+            app.showAlert(err.message);
+        }
+    }
+    private async selectUnscaledOutputFolder() {
+        try {
+
+            const folder = await storage.localFileSystem.getFolder();
+
+            if (!folder) {
+                return;
+            }
+
+            this.unscaledCopyFolder = folder.nativePath;
             this.forceUpdate();
 
         } catch (err) {
@@ -196,12 +226,6 @@ export class SavePage extends React.Component<P, S> {
             }
 
             const document = app.activeDocument;
-
-            let folder = this.outputFolder;
-            if (!folder.endsWith('/')) {
-                folder += '/';
-            }
-
             const parsed = path.parse(document.path);
 
             const file = await fs.getFileForSaving(parsed.name + '.jpg');
@@ -225,12 +249,11 @@ export class SavePage extends React.Component<P, S> {
                 return;
             }
 
-
             this.isFrozen = true;
 
             const { name, ext } = path.parse(app.activeDocument.path);
 
-            const folder = this.outputFolder;
+            const folder = this.scaledCopyFolder;
             const filePath = path.join(folder, name + '_scaled' + ext);
             const file = await createFileEntry(filePath);
 
@@ -263,8 +286,8 @@ export class SavePage extends React.Component<P, S> {
 
             const { name, ext } = path.parse(app.activeDocument.path);
 
-            const folder = this.outputFolder;
-            const filePath = path.join(folder, name + '_unscaled' + ext);
+            const folder = this.unscaledCopyFolder;
+            const filePath = path.join(folder, name + ext);
             const file = await createFileEntry(filePath);
 
             const copy = await app.activeDocument.duplicate();
