@@ -68,7 +68,7 @@ async function enhanceDetails(e: React.MouseEvent<HTMLButtonElement>) {
         const inverted = await tempLayer.duplicate();
         await LayerUtils.invert(inverted);
         inverted.blendMode = 'vividLight';
-        await LayerUtils.applySurfaceBlur(inverted, 24, 26);
+        await LayerUtils.surfaceBlur(inverted, 24, 26);
 
         // Merge layers and finalize action
         const enhanceDetails = await DocumentUtils.mergeLayers(document, [tempLayer, inverted]);

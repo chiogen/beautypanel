@@ -198,7 +198,7 @@ export namespace LayerUtils {
         return app.activeDocument!.activeLayers[0];
     }
 
-    export async function applySurfaceBlur(layer: Layer, radius: number, threshold: number) {
+    export async function surfaceBlur(layer: Layer, radius: number, threshold: number) {
         const descriptor: ActionDescriptor = {
             _obj: "surfaceBlur",
             _target: {
