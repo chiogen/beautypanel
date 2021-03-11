@@ -7,11 +7,11 @@ import { Document } from 'photoshop';
 import options from './save.json'
 import { storage } from 'uxp';
 import * as path from 'path';
-import { ActionDescriptor } from 'photoshop';
 import { shallowCompare } from '../common/shallow-compare';
 import { addDocumentLoadedCallback } from '../common/active-document-observer';
 import { createFileEntry, createFileToken } from '../common/app-utils';
 import { DocumentUtils } from '../common/document-utils';
+import { LayerUtils } from '../common/layer-utils';
 
 const rFileSplit = /^(.+)\/([^\/]+)$/;
 
@@ -238,6 +238,7 @@ export class SavePage extends React.Component<P, S> {
 
             if (copy) {
                 await DocumentUtils.resizeImage(2048);
+                await LayerUtils.unsharpMask();
                 await copy.save(file);
                 copy.closeWithoutSaving();
 
