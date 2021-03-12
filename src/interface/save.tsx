@@ -81,18 +81,26 @@ export class SavePage extends React.Component<P, S> {
     }
 
     render() {
+        try {
 
-        const style: React.CSSProperties = {};
-        if (!this.props.isActive) {
-            style.display = 'none';
+            const style: React.CSSProperties = {};
+            if (!this.props.isActive) {
+                style.display = 'none';
+            }
+
+            return (
+                <div id="save" className="page" style={style}>
+                    {this.renderCurrentPictureSection()}
+                    {this.renderCopyPictureSection()}
+                </div>
+            );
+
+        } catch (err) {
+            return <>
+                <h1>Save page failed to load:</h1>
+                <p>{err.message}</p>
+            </>;
         }
-
-        return (
-            <div id="save" className="page" style={style}>
-                {this.renderCurrentPictureSection()}
-                {this.renderCopyPictureSection()}
-            </div>
-        );
     }
     private renderCurrentPictureSection() {
 
@@ -135,7 +143,7 @@ export class SavePage extends React.Component<P, S> {
         const { texts } = this;
 
         const format = getLastSavedFormat();
-        const formatCode = format._obj ?? '';
+        const formatCode = format?._obj ?? '';
         const scaleWidth = String(getLastScaleWidth() ?? '');
 
         const saveFolder = getLastSavedPath();
@@ -148,8 +156,8 @@ export class SavePage extends React.Component<P, S> {
                 <Heading>{texts.saveScaledCopyTo}</Heading>
                 <sp-action-button style={{ display: 'flex' }} onClick={saveScaledCopy}>
                     {texts.saveScaledButtonText} {formatCode} {scaleWidth}
-                    </sp-action-button>
-                
+                </sp-action-button>
+
                 <Heading>{texts.saveUnscaledCopyTo}</Heading>
                 <sp-action-button style={{ display: 'flex' }} onClick={saveUnscaledCopy}>
                     {texts.saveUnscaledButtonText} {formatCode}
