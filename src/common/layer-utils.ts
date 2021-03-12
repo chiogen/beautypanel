@@ -1,6 +1,6 @@
 import { ActionDescriptor, app, Layer, PercentValue } from "photoshop";
 import { DocumentUtils } from "./document-utils";
-import { percent, pixels } from "./units";
+import { pixels } from "./units";
 
 export namespace LayerUtils {
 
@@ -247,29 +247,6 @@ export namespace LayerUtils {
             }
         }
 
-    }
-
-    export async function unsharpMask(amount?: number, radius?: number, threshold?: number) {
-        const descriptor: ActionDescriptor = {
-            _obj: "unsharpMask"
-        };
-
-        if (typeof amount === 'number') {
-            descriptor.amount = percent(amount);
-        }
-
-        if (typeof radius === 'number') {
-            descriptor.radius = pixels(radius);
-        }
-
-        if (typeof threshold === 'number') {
-            descriptor.threshold = threshold;
-        }
-
-        const [result] = await app.batchPlay([descriptor]);
-        if (result.message) {
-            throw new Error(result.message);
-        }
     }
 
 }

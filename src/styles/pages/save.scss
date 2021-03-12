@@ -19,14 +19,16 @@
 
     }
 
+    .actions {
+        display: flex;
+    }
+    sp-action-button  {
+        flex-grow: 1;
+    }
+
     .output-dir {
         display: flex;
-        .spacer {
-            flex-grow: 1;
-        }
-        a {
-            margin-left: 1em;
-        }
+        padding: 0.5rem;
     }
 
     a {

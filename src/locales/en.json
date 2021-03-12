@@ -48,12 +48,14 @@
         },
         "save": "Save",
         "saveAs": "Save as",
-        "saveScaledCopyTo": "Save copy as (scaled)",
-        "saveScaledButtonText": "Save JPG 2048",
-        "saveUnscaledCopyTo": "Save copy as (noscaled)",
-        "saveUnscaledButtonText": "1:1 JPG",
+        "saveScaledCopyTo": "Save copy (scaled)",
+        "saveScaledButtonText": "Save",
+        "saveUnscaledCopyTo": "Save copy (noscaled)",
+        "saveUnscaledButtonText": "1:1",
+        "outputFolder": "Output folder:",
         "messages": {
-            "quicksaveSuccess": "Bild gespeichert."
+            "quicksaveSuccess": "Image saved",
+            "copySaveSuccess": "Copy saved"
         }
     },
     "options": "Options",

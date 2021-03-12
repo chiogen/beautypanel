@@ -43,18 +43,16 @@
         "currentPicture": "Aktuelles Bild",
         "resolution": "Auflösung",
         "pictureTypeLabel": "Format",
-        "pictureType": {
-            "jpg": "JPG",
-            "png": "PNG"
-        },
         "save": "Speichern",
         "saveAs": "Speichern unter",
         "saveScaledCopyTo": "Kopie speichern unter (skaliert)",
-        "saveScaledButtonText": "Speichern JPG 2048",
+        "saveScaledButtonText": "Speichern",
         "saveUnscaledCopyTo": "Kopie speichern unter (unskaliert)",
-        "saveUnscaledButtonText": "1:1 JPG",
+        "saveUnscaledButtonText": "1:1",
+        "outputFolder": "Ausgabeordner:",
         "messages": {
-            "quicksaveSuccess": "Bild gespeichert."
+            "quicksaveSuccess": "Bild gespeichert.",
+            "copySaveSuccess": "Kopie erfolgreich gespeichert"
         }
     },
     "options": "Optionen",

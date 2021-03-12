@@ -1,7 +1,8 @@
 import i18next from "i18next";
 import { ActionDescriptor, app, Document, Layer } from "photoshop";
+import { DialogOptions } from "../enums/dialog-options";
 import { showConfirmDialog } from "./dialog";
-import { pixels } from "./units";
+import { percent, pixels } from "./units";
 
 export namespace DocumentUtils {
 
@@ -173,11 +174,40 @@ export namespace DocumentUtils {
             }
         };
 
-        const [ result ] = await app.batchPlay([descriptor]);
+        const [result] = await app.batchPlay([descriptor]);
 
         if (result.message) {
             throw new Error(result.message);
         }
     }
+
+    export async function unsharpMask(amount?: number, radius?: number, threshold?: number, dialogOptions: DialogOptions = DialogOptions.DontDisplay) {
+        const descriptor: ActionDescriptor = {
+            _obj: "unsharpMask",
+            _options: {
+                dialogOptions
+            }
+        };
+
+        if (typeof amount === 'number') {
+            descriptor.amount = percent(amount);
+        }
+
+        if (typeof radius === 'number') {
+            descriptor.radius = pixels(radius);
+        }
+
+        if (typeof threshold === 'number') {
+            descriptor.threshold = threshold;
+        }
+
+        const [result] = await app.batchPlay([descriptor]);
+        if (result.message) {
+            throw new Error(result.message);
+        }
+
+        return result;
+    }
+
 
 }

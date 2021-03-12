@@ -191,7 +191,11 @@ declare module 'photoshop' {
         historyStateInfo?: 'none' | { name: string, target: ActionTargetReference }
     }
 
-    export type BatchPlay = (commands: Array<ActionDescriptor>, options?: BatchPlayOptions) => Promise<Array<Object & { message?: string }>>;
+    export type BatchPlayResult = {
+        message?: string
+        [key: string]: any
+    }
+    export type BatchPlay = (commands: Array<ActionDescriptor>, options?: BatchPlayOptions) => Promise<Array<BatchPlayResult>>;
 
     export const app: Photoshop;
 

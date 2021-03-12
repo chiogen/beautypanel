@@ -9,9 +9,7 @@ import { storage } from 'uxp';
 import * as path from 'path';
 import { shallowCompare } from '../common/shallow-compare';
 import { addDocumentLoadedCallback } from '../common/active-document-observer';
-import { createFileEntry, createFileToken } from '../common/app-utils';
-import { DocumentUtils } from '../common/document-utils';
-import { LayerUtils } from '../common/layer-utils';
+import { getLastSavedFormat, getLastSavedPath, getLastScaleWidth, saveScaledCopy, saveUnscaledCopy } from '../modules/save';
 
 const rFileSplit = /^(.+)\/([^\/]+)$/;
 
@@ -31,8 +29,10 @@ type Texts = {
     saveScaledButtonText: string
     saveUnscaledCopyTo: string
     saveUnscaledButtonText: string
+    outputFolder: string
     messages: {
         quicksaveSuccess: string
+        copySaveSuccess: string
     }
 }
 
@@ -44,29 +44,6 @@ export class SavePage extends React.Component<P, S> {
     texts: Texts
 
     @property activeDocument: Document | null;
-
-
-    get scaledCopyFolder() {
-        let scaledCopyFolder = localStorage.getItem('scaledCopyFolder');
-        if (scaledCopyFolder) {
-            return scaledCopyFolder;
-        }
-        return options.defaultPaths.scaled;
-    }
-    set scaledCopyFolder(value: string) {
-        localStorage.setItem('scaledCopyFolder', value);
-    }
-
-    get unscaledCopyFolder() {
-        let userConfigValue = localStorage.getItem('unscaledCopyFolder');
-        if (userConfigValue) {
-            return userConfigValue;
-        }
-        return options.defaultPaths.unscaled;
-    }
-    set unscaledCopyFolder(value: string) {
-        localStorage.setItem('unscaledCopyFolder', value);
-    }
 
     constructor(props: P) {
         super(props);
@@ -116,6 +93,12 @@ export class SavePage extends React.Component<P, S> {
         const width = activeDocument?.width ?? 0;
         const height = activeDocument?.height ?? 0;
 
+        const format = getLastSavedFormat();
+        const formatCode = format._obj ?? '';
+        const scaleWidth = String(getLastScaleWidth() ?? '');
+
+        const saveFolder = getLastSavedPath();
+
         const quickSave = () => this.quickSave();
         const saveAs = () => this.saveAs();
         const saveUnscaledCopy = () => this.saveUnscaledCopy();
@@ -135,69 +118,26 @@ export class SavePage extends React.Component<P, S> {
                         </div>
                         <div>
                             <span>{i18next.t('savePage.pictureTypeLabel')}</span>
-                            <span>JPG</span>
+                            <span>{formatCode}</span>
                         </div>
                     </div>
-                    <div id="default-save-buttons">
+                    <div className="actions">
                         <sp-action-button style={{ display: 'flex' }} onClick={quickSave}>{texts.save}</sp-action-button>
                         <sp-action-button style={{ display: 'flex' }} onClick={saveAs}>{texts.saveAs}</sp-action-button>
                     </div>
                 </div>
                 <div className="section">
                     <Heading>{texts.saveScaledCopyTo}</Heading>
-                    <sp-action-button style={{ display: 'flex' }} onClick={saveScaledCopy}>{texts.saveScaledButtonText}</sp-action-button>
-                    <div className="output-dir">
-                        <span>
-                            Output directory:
-                            <a onClick={this.selectScaledOutputFolder.bind(this)}>{this.scaledCopyFolder}</a>
-                        </span>
-                    </div>
-                </div>
-                <div className="section">
+                    <sp-action-button style={{ display: 'flex' }} onClick={saveScaledCopy}>{texts.saveScaledButtonText} {formatCode} {scaleWidth}</sp-action-button>
+                    
                     <Heading>{texts.saveUnscaledCopyTo}</Heading>
-                    <sp-action-button style={{ display: 'flex' }} onClick={saveUnscaledCopy}>{texts.saveUnscaledButtonText}</sp-action-button>
+                    <sp-action-button style={{ display: 'flex' }} onClick={saveUnscaledCopy}>{texts.saveUnscaledButtonText} {formatCode}</sp-action-button>
                     <div className="output-dir">
-                        <span>
-                            Output directory:
-                            <a onClick={this.selectUnscaledOutputFolder.bind(this)}>{this.unscaledCopyFolder}</a>
-                        </span>
+                        <span> {this.texts.outputFolder} {saveFolder} </span>
                     </div>
                 </div>
             </div>
         );
-    }
-
-    private async selectScaledOutputFolder() {
-        try {
-
-            const folder = await storage.localFileSystem.getFolder();
-
-            if (!folder) {
-                return;
-            }
-
-            this.scaledCopyFolder = folder.nativePath;
-            this.forceUpdate();
-
-        } catch (err) {
-            app.showAlert(err.message);
-        }
-    }
-    private async selectUnscaledOutputFolder() {
-        try {
-
-            const folder = await storage.localFileSystem.getFolder();
-
-            if (!folder) {
-                return;
-            }
-
-            this.unscaledCopyFolder = folder.nativePath;
-            this.forceUpdate();
-
-        } catch (err) {
-            app.showAlert(err.message);
-        }
     }
 
     private async quickSave() {
@@ -245,28 +185,10 @@ export class SavePage extends React.Component<P, S> {
     private async saveScaledCopy() {
         try {
 
-            if (!app.activeDocument) {
-                return;
-            }
-
             this.isFrozen = true;
+            await saveScaledCopy();
 
-            const { name, ext } = path.parse(app.activeDocument.path);
-
-            const folder = this.scaledCopyFolder;
-            const filePath = path.join(folder, name + '_scaled' + ext);
-            const file = await createFileEntry(filePath);
-
-            const copy = await app.activeDocument.duplicate(name + '_scaled' + ext);
-
-            if (copy) {
-                await DocumentUtils.resizeImage(2048);
-                await LayerUtils.unsharpMask();
-                await copy.save(file);
-                copy.closeWithoutSaving();
-
-                await app.showAlert(this.texts.messages.quicksaveSuccess);
-            }
+            this.forceUpdate();
 
         } catch (err) {
             app.showAlert(err.message);
@@ -278,25 +200,10 @@ export class SavePage extends React.Component<P, S> {
     private async saveUnscaledCopy() {
         try {
 
-            if (!app.activeDocument) {
-                return;
-            }
-
             this.isFrozen = true;
+            await saveUnscaledCopy();
 
-            const { name, ext } = path.parse(app.activeDocument.path);
-
-            const folder = this.unscaledCopyFolder;
-            const filePath = path.join(folder, name + ext);
-            const file = await createFileEntry(filePath);
-
-            const copy = await app.activeDocument.duplicate();
-            if (copy) {
-                await copy.save(file);
-                copy.closeWithoutSaving();
-
-                await app.showAlert(this.texts.messages.quicksaveSuccess);
-            }
+            this.forceUpdate();
 
         } catch (err) {
             app.showAlert(err.message);

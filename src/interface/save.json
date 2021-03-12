@@ -1,7 +1,5 @@
 {
     "defaultPaths": {
-        "normal": "~/Pictures/Beautypanel",
-        "unscaled": "~/Pictures/Beautypanel/unscaled",
-        "scaled": "~/Pictures/Beautypanel/scaled"
+        "normal": "~/Pictures/Beautypanel"
     }
 }
