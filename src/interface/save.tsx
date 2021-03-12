@@ -87,11 +87,52 @@ export class SavePage extends React.Component<P, S> {
             style.display = 'none';
         }
 
+        return (
+            <div id="save" className="page" style={style}>
+                {this.renderCurrentPictureSection()}
+                {this.renderCopyPictureSection()}
+            </div>
+        );
+    }
+    private renderCurrentPictureSection() {
+
         const activeDocument = app.activeDocument;
         const { texts } = this;
 
         const width = activeDocument?.width ?? 0;
         const height = activeDocument?.height ?? 0;
+
+        const format = activeDocument?.path ? path.parse(activeDocument.path).ext : '';
+
+        const quickSave = () => this.quickSave();
+        const saveAs = () => this.saveAs();
+
+        return (
+            <div className="section">
+                <Heading>{i18next.t('savePage.currentPicture')}</Heading>
+                <div id="document-information">
+                    <div>
+                        <span>{activeDocument?.path ?? ''}</span>
+                    </div>
+                    <div>
+                        <span>{i18next.t('savePage.resolution')}</span>
+                        <span>{width}x{height}</span>
+                    </div>
+                    <div>
+                        <span>{i18next.t('savePage.pictureTypeLabel')}</span>
+                        <span>{format}</span>
+                    </div>
+                </div>
+                <div className="actions">
+                    <sp-action-button style={{ display: 'flex' }} onClick={quickSave}>{texts.save}</sp-action-button>
+                    <sp-action-button style={{ display: 'flex' }} onClick={saveAs}>{texts.saveAs}</sp-action-button>
+                </div>
+            </div>
+        )
+    }
+    private renderCopyPictureSection() {
+
+        const { texts } = this;
 
         const format = getLastSavedFormat();
         const formatCode = format._obj ?? '';
@@ -99,45 +140,26 @@ export class SavePage extends React.Component<P, S> {
 
         const saveFolder = getLastSavedPath();
 
-        const quickSave = () => this.quickSave();
-        const saveAs = () => this.saveAs();
         const saveUnscaledCopy = () => this.saveUnscaledCopy();
         const saveScaledCopy = () => this.saveScaledCopy();
 
         return (
-            <div id="save" className="page" style={style}>
-                <div className="section">
-                    <Heading>{i18next.t('savePage.currentPicture')}</Heading>
-                    <div id="document-information">
-                        <div>
-                            <span>{activeDocument?.path ?? ''}</span>
-                        </div>
-                        <div>
-                            <span>{i18next.t('savePage.resolution')}</span>
-                            <span>{width}x{height}</span>
-                        </div>
-                        <div>
-                            <span>{i18next.t('savePage.pictureTypeLabel')}</span>
-                            <span>{formatCode}</span>
-                        </div>
-                    </div>
-                    <div className="actions">
-                        <sp-action-button style={{ display: 'flex' }} onClick={quickSave}>{texts.save}</sp-action-button>
-                        <sp-action-button style={{ display: 'flex' }} onClick={saveAs}>{texts.saveAs}</sp-action-button>
-                    </div>
-                </div>
-                <div className="section">
-                    <Heading>{texts.saveScaledCopyTo}</Heading>
-                    <sp-action-button style={{ display: 'flex' }} onClick={saveScaledCopy}>{texts.saveScaledButtonText} {formatCode} {scaleWidth}</sp-action-button>
-                    
-                    <Heading>{texts.saveUnscaledCopyTo}</Heading>
-                    <sp-action-button style={{ display: 'flex' }} onClick={saveUnscaledCopy}>{texts.saveUnscaledButtonText} {formatCode}</sp-action-button>
-                    <div className="output-dir">
-                        <span> {this.texts.outputFolder} {saveFolder} </span>
-                    </div>
+            <div className="section">
+                <Heading>{texts.saveScaledCopyTo}</Heading>
+                <sp-action-button style={{ display: 'flex' }} onClick={saveScaledCopy}>
+                    {texts.saveScaledButtonText} {formatCode} {scaleWidth}
+                    </sp-action-button>
+                
+                <Heading>{texts.saveUnscaledCopyTo}</Heading>
+                <sp-action-button style={{ display: 'flex' }} onClick={saveUnscaledCopy}>
+                    {texts.saveUnscaledButtonText} {formatCode}
+                </sp-action-button>
+
+                <div className="output-dir">
+                    <span> {this.texts.outputFolder} {saveFolder} </span>
                 </div>
             </div>
-        );
+        )
     }
 
     private async quickSave() {

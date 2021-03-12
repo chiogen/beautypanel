@@ -2,7 +2,6 @@ import * as path from 'path'
 import i18next from "i18next";
 import { ActionDescriptor, app } from "photoshop";
 import { createFolderToken } from "../common/app-utils";
-import { DocumentUtils } from "../common/document-utils";
 import { pixels } from "../common/units";
 import { DialogOptions } from "../enums/dialog-options";
 
@@ -69,7 +68,10 @@ async function scaleImage(dialogOptions = DialogOptions.DontDisplay) {
     }
 
     console.log(result);
-    localStorage.setItem(key, JSON.stringify(result));
+    localStorage.setItem(key, JSON.stringify({
+        ...descriptor,
+        ...result
+    }));
 
 }
 async function unsharpMask(dialogOptions = DialogOptions.DontDisplay) {
@@ -89,12 +91,14 @@ async function unsharpMask(dialogOptions = DialogOptions.DontDisplay) {
         throw new Error(result.message);
     }
 
-    // I assume, this means aborted
     if (isEmptyDescriptor(result)) {
         throw new Error('abort');
     }
 
-    localStorage.setItem(key, JSON.stringify(result));
+    localStorage.setItem(key, JSON.stringify({
+        ...descriptor,
+        ...result
+    }));
 
 }
 async function saveCopy(dialogOptions = DialogOptions.DontDisplay) {

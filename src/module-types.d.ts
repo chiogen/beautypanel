@@ -36,5 +36,11 @@ declare namespace JSX {
         // <sp-slider>
         'sp-slider': React.DetailedHTMLProps<any, HTMLElement>
 
+        // <sp-menu>
+        'sp-menu': React.DetailedHTMLProps<any, HTMLElement>
+
+        // <sp-menu>
+        'sp-divider': React.DetailedHTMLProps<any, HTMLElement>
+
     }
 }
