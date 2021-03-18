@@ -40,31 +40,6 @@ export namespace LayerUtils {
         }
     }
 
-    export async function applyMedianFilter(layer: Layer, radius: number) {
-        const descriptor: ActionDescriptor = {
-            _obj: "median",
-            radius: pixels(radius)
-        }
-
-        const result = await app.batchPlay([
-            {
-                _obj: 'select',
-                _target: {
-                    _ref: 'layer',
-                    _id: layer._id
-                },
-                makeVisible: true
-            },
-            descriptor
-        ]);
-
-        for (const item of result) {
-            if (item.message) {
-                await app.showAlert(item.message);
-            }
-        }
-    }
-
     export type ImageCalculationType = 'normal' |
         'add' | 'subtract' |
         'darken' | 'multiply' | 'colorBurn' | 'linearBurn' | 'darkerColor' |

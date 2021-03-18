@@ -8,6 +8,7 @@ import { confirm } from '../../dialogues/confirm';
 import { selectTool } from '../../../common/app-utils';
 import { percent } from '../../../common/units';
 import { opacityPresets } from './opacity'
+import { filterMedianNoise } from '../../../modules/filter/noise/median';
 
 export const FrequencySeparation = () => (
     <div className="section">
@@ -64,7 +65,8 @@ export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonE
         }
 
         // Interpolate brightness on soft layer
-        await LayerUtils.applyMedianFilter(soft, 10);
+        await DocumentUtils.selectLayers([soft]);
+        await filterMedianNoise({ radius: 10 });
 
         // Image calculation
         await LayerUtils.applyImageEvent({
