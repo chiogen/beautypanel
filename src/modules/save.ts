@@ -15,13 +15,6 @@ function setLastSavedFormat(format: object) {
     localStorage.setItem('lastSavedFormat', JSON.stringify(format));
 }
 
-export function getLastSavedPath() {
-    return localStorage.getItem('lastSavedPath');
-}
-function setLastSavedPath(value: string) {
-    localStorage.setItem('lastSavedPath', value);
-}
-
 export function getLastScaleWidth() {
     const storageValue = localStorage.getItem('lastScaleImageDescriptor');
     if (storageValue) {
@@ -101,12 +94,18 @@ async function unsharpMask(dialogOptions = DialogOptions.DontDisplay) {
     }));
 
 }
-async function saveCopy(dialogOptions = DialogOptions.DontDisplay) {
+async function saveCopy(basePath: string, dialogOptions = DialogOptions.DontDisplay) {
+
+    const basePathToken = await createFolderToken(basePath);
 
     const descriptor: ActionDescriptor = {
         _obj: "save",
         _options: {
             dialogOptions
+        },
+        in: {
+            _path: basePathToken,
+            _kind: "local"
         },
         lowerCase: true
     }
@@ -114,15 +113,6 @@ async function saveCopy(dialogOptions = DialogOptions.DontDisplay) {
     const format = getLastSavedFormat();
     if (format) {
         descriptor.as = format;
-    }
-
-    const lastSavedPath = getLastSavedPath();
-    if (lastSavedPath) {
-        const token = await createFolderToken(lastSavedPath);
-        descriptor.in = {
-            _path: token,
-            _kind: "local"
-        };
     }
 
     const [result] = await app.batchPlay([descriptor])
@@ -137,10 +127,6 @@ async function saveCopy(dialogOptions = DialogOptions.DontDisplay) {
     if (result.as) {
         setLastSavedFormat(result.as);
     }
-    if (result.in) {
-        const { dir } = path.parse(result.in._path)
-        setLastSavedPath(dir);
-    }
 
 }
 
@@ -150,6 +136,7 @@ export async function saveScaledCopy() {
         return;
     }
 
+    const folder = path.parse(app.activeDocument.path).dir;
     const copy = await app.activeDocument.duplicate();
 
     try {
@@ -157,17 +144,20 @@ export async function saveScaledCopy() {
         if (copy) {
             await scaleImage(DialogOptions.Display);
             await unsharpMask(DialogOptions.Display);
-            await saveCopy(DialogOptions.Display);
+            await saveCopy(folder, DialogOptions.Display);
 
             const message = i18next.t('savePage.messages.copySaveSuccess');
             app.showAlert(message);
         }
 
     } catch (err) {
-        if (err.message === 'abort') {
+
+        const message = err.message || err;
+        if (message === 'abort') {
             app.showAlert('Abgebrochen');
             return;
         }
+
         throw err;
     } finally {
         copy?.closeWithoutSaving();
@@ -181,12 +171,13 @@ export async function saveUnscaledCopy() {
         return;
     }
 
+    const folder = path.parse(app.activeDocument.path).dir;
     const copy = await app.activeDocument.duplicate();
 
     try {
 
         if (copy) {
-            await saveCopy(DialogOptions.Display);
+            await saveCopy(folder, DialogOptions.Display);
 
             const message = i18next.t('savePage.messages.copySaveSuccess');
             app.showAlert(message);

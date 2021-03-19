@@ -9,7 +9,7 @@ import { storage } from 'uxp';
 import * as path from 'path';
 import { shallowCompare } from '../common/shallow-compare';
 import { addDocumentLoadedCallback } from '../common/active-document-observer';
-import { getLastSavedFormat, getLastSavedPath, getLastScaleWidth, saveScaledCopy, saveUnscaledCopy } from '../modules/save';
+import { getLastSavedFormat, getLastScaleWidth, saveScaledCopy, saveUnscaledCopy } from '../modules/save';
 
 const rFileSplit = /^(.+)\/([^\/]+)$/;
 
@@ -44,6 +44,14 @@ export class SavePage extends React.Component<P, S> {
     texts: Texts
 
     @property activeDocument: Document | null;
+
+
+    get copyOutputFolder() {
+        if (app.activeDocument?.path) {
+            return path.parse(app.activeDocument.path).dir;
+        }
+        return '';
+    }
 
     constructor(props: P) {
         super(props);
@@ -146,7 +154,7 @@ export class SavePage extends React.Component<P, S> {
         const formatCode = format?._obj ?? '';
         const scaleWidth = String(getLastScaleWidth() ?? '');
 
-        const saveFolder = getLastSavedPath();
+        const saveFolder = this.copyOutputFolder;
 
         const saveUnscaledCopy = () => this.saveUnscaledCopy();
         const saveScaledCopy = () => this.saveScaledCopy();
