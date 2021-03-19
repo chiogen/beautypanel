@@ -11,7 +11,7 @@ export const Filter = () => (
         <Heading>{i18next.t('sharpen.filters')}</Heading>
         <div className="flex-buttons">
             <sp-action-button onClick={_executeUnsharpMask}>{i18next.t('sharpen.unsharpen')}</sp-action-button>
-            <sp-action-button onClick={_executeSelectiveFilter}># {i18next.t('sharpen.selective')}</sp-action-button>
+            <sp-action-button onClick={_executeSelectiveFilter}>{i18next.t('sharpen.selective')}</sp-action-button>
         </div>
         <div className="flex-buttons">
             <sp-action-button onClick={_executeFreqSeparationFilter}># {i18next.t('sharpen.frequencySeparation')}</sp-action-button>
