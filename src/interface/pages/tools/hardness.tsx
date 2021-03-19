@@ -8,6 +8,7 @@ import { store, TState } from '../../../store';
 import { ActionType } from '../../../store-action-types';
 import { PresetsManager } from '../../../common/presets-manager';
 import { PresetEditState } from '../../../reducer/preset-edit';
+import { Heading } from '@react-spectrum/text';
 
 export const hardnessPresets = new PresetsManager<number>('hardness', defaultPresets);
 
@@ -49,26 +50,37 @@ export class CurrentToolHardness extends StatefulComponent<{}, State> {
         if (!this.presetEdit)
             return undefined;
 
+        const lineStyle: React.CSSProperties = {
+            display: "flex",
+            alignItems: "center"
+        }
+
         const index = this.presetEdit.index;
         const currentValue = this.presetEditValue ?? hardnessPresets.get(index);
 
         const onValueChanged = this._presetInputValueChanged.bind(this);
-        const onClick = this.applyPresetEdit.bind(this);
 
-        return <>
-            <preset-edit-dialog>
-                <preset-edit-dialog-slider>
-                    <input type="number" min="0" max="100" value={currentValue} onInput={onValueChanged} />
-                    <span>%</span>
-                </preset-edit-dialog-slider>
-                <sp-action-button onClick={onClick}>OK</sp-action-button>
-            </preset-edit-dialog>
-        </>
+        const cancel = () => this.cancelPresetEdit();
+        const submit = () => this.applyPresetEdit();
+
+
+        return (
+            <div className="dialog">
+                <Heading>Preset Edit</Heading>
+                    <div style={lineStyle}>
+                        <input type="number" min="0" max="100" value={currentValue} onInput={onValueChanged} /> <span>%</span>
+                    </div>
+                <div className="dialog-actions">
+                    <sp-action-button onClick={cancel}>{i18next.t('cancel')}</sp-action-button>
+                    <sp-action-button onClick={submit}>OK</sp-action-button>
+                </div>
+            </div>
+        );
     }
     private _presetInputValueChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
         this.presetEditValue = parseInt(e.currentTarget.value);
     }
-    private applyPresetEdit(_e: React.MouseEvent<HTMLButtonElement>) {
+    private applyPresetEdit() {
         if (!this.presetEdit)
             return;
 
@@ -78,6 +90,11 @@ export class CurrentToolHardness extends StatefulComponent<{}, State> {
         }
 
         hardnessPresets.set(this.presetEdit.index, this.presetEditValue!)
+        store.dispatch({
+            type: ActionType.EndPresetEdit
+        });
+    }
+    private cancelPresetEdit() {
         store.dispatch({
             type: ActionType.EndPresetEdit
         });

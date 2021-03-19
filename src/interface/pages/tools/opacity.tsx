@@ -8,6 +8,7 @@ import { ActionType } from "../../../store-action-types";
 import { opacity as defaultPresets } from './default-presets.json'
 import { PresetsManager } from "../../../common/presets-manager";
 import { app } from "photoshop";
+import { Heading } from "@react-spectrum/text";
 
 type State = {
     opacity: number
@@ -51,21 +52,31 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
         if (!this.presetEdit)
             return undefined;
 
+        const lineStyle: React.CSSProperties = {
+            display: "flex",
+            alignItems: "center"
+        }
+
         const index= this.presetEdit.index;
         const currentValue = this.presetEditValue ?? opacityPresets.get(index);
 
         const onValueChanged = this._presetInputValueChanged.bind(this);
-        const onClick = this.applyPresetEdit.bind(this);
 
-        return <form>
-            <preset-edit-dialog>
-                <preset-edit-dialog-slider>
-                    <input type="number" min="0" max="100" value={currentValue} onInput={onValueChanged} />
-                    <span>%</span>
-                </preset-edit-dialog-slider>
-                <sp-action-button onClick={onClick}>OK</sp-action-button>
-            </preset-edit-dialog>
-        </form>
+        const cancel = () => this.cancelPresetEdit();
+        const submit = () => this.applyPresetEdit();
+
+        return (
+            <div className="dialog">
+                <Heading>Preset Edit</Heading>
+                    <div style={lineStyle}>
+                        <input type="number" min="0" max="100" value={currentValue} onInput={onValueChanged} /> <span>%</span>
+                    </div>
+                <div className="dialog-actions">
+                    <sp-action-button onClick={cancel}>{i18next.t('cancel')}</sp-action-button>
+                    <sp-action-button onClick={submit}>OK</sp-action-button>
+                </div>
+            </div>
+        );
     }
     private _presetInputValueChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
         let value = parseInt(e.currentTarget.value);
@@ -87,9 +98,9 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
         );
     }
 
-    private applyPresetEdit(_e: React.MouseEvent<HTMLButtonElement>) {
+    private applyPresetEdit() {
         if (!this.presetEdit)
-            return;
+            return undefined;
 
         if (typeof this.presetEditValue !== 'number' || this.presetEditValue < 0 || this.presetEditValue > 100) {
             app.showAlert('Invalid value: ' + this.presetEditValue);
@@ -97,6 +108,11 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
         }
 
         opacityPresets.set(this.presetEdit.index, this.presetEditValue!)
+        store.dispatch({
+            type: ActionType.EndPresetEdit
+        });
+    }
+    private cancelPresetEdit() {
         store.dispatch({
             type: ActionType.EndPresetEdit
         });
