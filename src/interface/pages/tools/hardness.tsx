@@ -68,7 +68,7 @@ export class CurrentToolHardness extends StatefulComponent<{}, State> {
             <div className="dialog">
                 <Heading>Preset Edit</Heading>
                     <div style={lineStyle}>
-                        <input type="number" min="0" max="100" value={currentValue} onInput={onValueChanged} /> <span>%</span>
+                        <input type="number" min="0" max="100" defaultValue={currentValue} onInput={onValueChanged} /> <span>%</span>
                     </div>
                 <div className="dialog-actions">
                     <sp-action-button onClick={cancel}>{i18next.t('cancel')}</sp-action-button>
@@ -78,7 +78,7 @@ export class CurrentToolHardness extends StatefulComponent<{}, State> {
         );
     }
     private _presetInputValueChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.presetEditValue = parseInt(e.currentTarget.value);
+        this.presetEditValue = parseInt(e.currentTarget.value.replace(/,/, '.'));
     }
     private applyPresetEdit() {
         if (!this.presetEdit)

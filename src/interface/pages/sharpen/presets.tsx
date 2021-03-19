@@ -33,6 +33,8 @@ interface PresetEdit {
 export class Presets extends React.Component<{}, S> {
 
     private presets = new PresetsManager<UnsharpMaskPreset>('unsharpmask', _defaultPresets);
+    private _presetEditAmountValue?: number;
+    private _presetEditRadiusValue?: number;
 
     constructor(props: {}) {
         super(props);
@@ -56,17 +58,36 @@ export class Presets extends React.Component<{}, S> {
     }
 
     renderPresetEdit() {
+
         if (!this.state.presetEdit) {
             return undefined;
         }
 
+        const preset = this.state.presetEdit.preset;
+
         const lineStyle: React.CSSProperties = {
             display: "flex",
             alignItems: "center"
+        };
+        const inputStyles: React.CSSProperties = {
+
         }
 
         const cancel = () => this._cancelPresetEdit();
         const submit = () => this._submitPresetEdit();
+
+        const onAmountChanged = (e: React.ChangeEvent) => {
+            const element = e.target as HTMLInputElement;
+            if (this.state.presetEdit?.preset) {
+                preset.amount = parseFloat(element.value.replace(/,/, '.'));
+            }
+        };
+        const onRadiusChanged = (e: React.ChangeEvent) => {
+            const element = e.target as HTMLInputElement;
+            if (this.state.presetEdit?.preset) {
+                preset.radius = parseFloat(element.value.replace(/,/, '.'));
+            }
+        };
 
         return (
             <div className="dialog">
@@ -74,11 +95,11 @@ export class Presets extends React.Component<{}, S> {
                     <Heading>Preset Edit</Heading>
                     <div style={lineStyle}>
                         <span>Amount: </span>
-                        <input type="text" />%
+                        <input type="number" style={inputStyles} defaultValue={preset.amount} onChange={onAmountChanged} />%
                     </div>
                     <div style={lineStyle}>
                         <span>Radius: </span>
-                        <input type="text" />px
+                        <input type="number" style={inputStyles} defaultValue={preset.radius} onChange={onRadiusChanged} />px
                     </div>
                     <div className="dialog-actions">
                         <sp-action-button onClick={cancel}>{i18next.t('cancel')}</sp-action-button>
@@ -107,6 +128,9 @@ export class Presets extends React.Component<{}, S> {
 
         this.presets.set(edit.index, edit.preset);
 
+        this.setState({
+            presetEdit: null
+        });
     }
     private _cancelPresetEdit() {
         this.setState({
