@@ -61,6 +61,7 @@
     "hardness": "Härte",
     "zoom": "Zoom (%)",
     "zoomFit": "Fit",
+    "cancel": "Abbrechen",
     "requestBitsPerChannelConvert": "Das Bild liegt im 8 Bit Modus vor? Das ist nicht ideal für das BeautyPanel. Soll es in den 16 Bit Modue konvertiert werden?",
     "layerNames": {
         "soft": "Soft",

@@ -2,25 +2,34 @@
 export class PresetsManager<T> {
 
     private name: string;
-    private defaultValues: T[];
+    private values: T[];
 
     constructor(name: string, defaultValues: T[]) {
         this.name = name;
-        this.defaultValues = defaultValues;
+        this.values = defaultValues;
+        this.load();
     }
 
+    public load() {
+        const storageValue = localStorage.getItem(this.name + '-presets');
+        if (storageValue) {
+            this.values = JSON.parse(storageValue);
+        }        
+    }
+    public save() {
+        localStorage.setItem(this.name + '-presets', JSON.stringify(this.values));
+    }
+
+    public getAll() {
+        // Quick clone
+        return JSON.parse(JSON.stringify(this.values)) as T[];
+    }
     public get(index: number) {
-        const key = this.getStorageKey(index);
-        let value = localStorage.getItem(key);
-        return typeof value === 'string' ? JSON.parse(value) : this.defaultValues[index];
+        return this.values[index];
     }
-    private getStorageKey(index: number) {
-        return `preset-${this.name}-${index}`;
-    }
-
     public set(index: number, value: T) {
-        const key = this.getStorageKey(index);
-        localStorage.setItem(key, JSON.stringify(value));
+        this.values[index] = value;
+        this.save();
     }
 
 }

@@ -65,6 +65,7 @@
     "hardness": "Hardness",
     "zoom": "Zoom (%)",
     "zoomFit": "Fit",
+    "cancel": "Cancel",
     "requestBitsPerChannelConvert": "The picture is in 8 bit mode. This is not ideal for the BeautyPanel. Convert to 16 bit now?",
     "layerNames": {
         "soft": "Soft",

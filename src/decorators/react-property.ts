@@ -20,7 +20,14 @@ export function property(proto: any, name: string) {
             values.set(this, value);
 
             if (value !== oldValue) {
-                this.enqueueStateChange(name, value);
+                if (typeof this.enqueueStateChange === 'function') {
+                    this.enqueueStateChange(name, value);
+                } else {
+                    setTimeout(this.setState.bind(this), 0, {
+                        ...this.state,
+                        [name]: value
+                    });
+                }
             }
         }
     });
