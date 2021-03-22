@@ -40,7 +40,7 @@ const springToAutumn: SeasonProfile = {
             black: 100
         }
     ]
-}
+};
 
 export async function createAutumnEffect(_e: React.MouseEvent<HTMLButtonElement>) {
     try {
@@ -52,7 +52,10 @@ export async function createAutumnEffect(_e: React.MouseEvent<HTMLButtonElement>
 
 export async function createSpringEffect(_e: React.MouseEvent<HTMLButtonElement>) {
     try {
-        await createSeasonEffect(BeautyPanel.getLayerName(E_Layer.Spring), springToAutumn);
+
+        throw new Error('No profile defined.');
+
+        // await createSeasonEffect(BeautyPanel.getLayerName(E_Layer.Spring), springToAutumn);
     } catch (err) {
         app.showAlert(err.message)
     }
