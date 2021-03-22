@@ -10,6 +10,7 @@ import * as path from 'path';
 import { shallowCompare } from '../common/shallow-compare';
 import { addDocumentLoadedCallback } from '../common/active-document-observer';
 import { getLastSavedFormat, getLastScaleWidth, saveScaledCopy, saveUnscaledCopy } from '../modules/save';
+import { handleException } from '../common/errors/handle-error';
 
 const rFileSplit = /^(.+)\/([^\/]+)$/;
 
@@ -189,7 +190,7 @@ export class SavePage extends React.Component<P, S> {
             await app.showAlert(this.texts.messages.quicksaveSuccess)
 
         } catch (err) {
-            app.showAlert(err.message);
+            handleException(err);
         }
     }
 
@@ -215,7 +216,7 @@ export class SavePage extends React.Component<P, S> {
             await app.showAlert(this.texts.messages.quicksaveSuccess)
 
         } catch (err) {
-            app.showAlert(err.message);
+            handleException(err);
         }
 
     }
@@ -229,7 +230,7 @@ export class SavePage extends React.Component<P, S> {
             this.forceUpdate();
 
         } catch (err) {
-            app.showAlert(err.message);
+            handleException(err);
         } finally {
             this.isFrozen = false;
         }
@@ -244,7 +245,7 @@ export class SavePage extends React.Component<P, S> {
             this.forceUpdate();
 
         } catch (err) {
-            app.showAlert(err.message);
+            handleException(err);
         } finally {
             this.isFrozen = false;
         }

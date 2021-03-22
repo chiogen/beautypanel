@@ -4,6 +4,8 @@ import { ActionDescriptor, app } from "photoshop";
 import { createFolderToken } from "../common/app-utils";
 import { pixels } from "../common/units";
 import { DialogOptions } from "../enums/dialog-options";
+import { storage } from 'uxp';
+import { isAbortError, throwAbortError } from '../common/errors/abort-error';
 
 export function getLastSavedFormat(): any | undefined {
     const value = localStorage.getItem('lastSavedFormat');
@@ -57,7 +59,7 @@ async function scaleImage(dialogOptions = DialogOptions.DontDisplay) {
     }
 
     if (isEmptyDescriptor(result)) {
-        throw new Error('abort');
+        throwAbortError();
     }
 
     console.log(result);
@@ -85,7 +87,7 @@ async function unsharpMask(dialogOptions = DialogOptions.DontDisplay) {
     }
 
     if (isEmptyDescriptor(result)) {
-        throw new Error('abort');
+        throwAbortError();
     }
 
     localStorage.setItem(key, JSON.stringify({
@@ -121,7 +123,7 @@ async function saveCopy(basePath: string, dialogOptions = DialogOptions.DontDisp
         throw new Error(result.message);
     }
     if (isEmptyDescriptor(result)) {
-        throw new Error('abort');
+        throwAbortError();
     }
 
     if (result.as) {
@@ -136,15 +138,24 @@ export async function saveScaledCopy() {
         return;
     }
 
-    const folder = path.parse(app.activeDocument.path).dir;
+    let folder = path.parse(app.activeDocument.path).dir;
     const copy = await app.activeDocument.duplicate();
 
     try {
 
+
         if (copy) {
             await scaleImage(DialogOptions.Display);
             await unsharpMask(DialogOptions.Display);
-            await saveCopy(folder, DialogOptions.Display);
+
+            if (folder) {
+                await saveCopy(folder, DialogOptions.Display);
+            } else {
+                const file = await storage.localFileSystem.getFileForSaving({
+                    types: ['png', 'jpg']
+                });
+                await copy.save(file);
+            }
 
             const message = i18next.t('savePage.messages.copySaveSuccess');
             app.showAlert(message);
@@ -153,7 +164,7 @@ export async function saveScaledCopy() {
     } catch (err) {
 
         const message = err.message || err;
-        if (message === 'abort') {
+        if (isAbortError(err)) {
             app.showAlert('Abgebrochen');
             return;
         }
@@ -171,20 +182,28 @@ export async function saveUnscaledCopy() {
         return;
     }
 
-    const folder = path.parse(app.activeDocument.path).dir;
+    let folder = path.parse(app.activeDocument.path).dir;
     const copy = await app.activeDocument.duplicate();
 
     try {
 
         if (copy) {
-            await saveCopy(folder, DialogOptions.Display);
+
+            if (folder) {
+                await saveCopy(folder, DialogOptions.Display);
+            } else {
+                const file = await storage.localFileSystem.getFileForSaving({
+                    types: ['png', 'jpg']
+                });
+                await copy.save(file);
+            }
 
             const message = i18next.t('savePage.messages.copySaveSuccess');
             app.showAlert(message);
         }
 
     } catch (err) {
-        if (err.message === 'abort') {
+        if (isAbortError(err)) {
             app.showAlert('Abgebrochen');
             return;
         }

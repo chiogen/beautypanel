@@ -156,7 +156,7 @@ declare module 'uxp' {
                 /** the preferred initial location of the file picker. If not defined, the most recently used domain from a file picker is used instead. */
                 initialDomain?: symbol
                 /** array of valid file types that the user can choose to assign to a file. */
-                tyspes: Array<string>;
+                types: Array<string>;
             }): Promise<File>;
 
             getFolder(options?: {
