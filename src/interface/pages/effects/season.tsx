@@ -1,3 +1,4 @@
+import i18next from "i18next";
 import { ActionDescriptor, app, Document } from "photoshop";
 import { BeautyPanel, E_Layer } from "../../../common/beautypanel";
 import { percent } from "../../../common/units";
@@ -6,6 +7,7 @@ import { confirm } from "../../dialogues/confirm";
 
 export type ColorCorrectionColor = 'reds' | 'yellows' | 'greens' | 'cyans' | 'blues' | 'magentas' | 'whites' | 'neutrals' | 'blacks'
 export interface SeasonProfile {
+    layerOpacity: number
     colorCorrection: Array<SeasonColorCorrection>
 }
 export interface SeasonColorCorrection {
@@ -17,6 +19,7 @@ export interface SeasonColorCorrection {
 }
 
 const springToAutumn: SeasonProfile = {
+    layerOpacity: 100,
     colorCorrection: [
         {
             color: 'reds',
@@ -42,12 +45,37 @@ const springToAutumn: SeasonProfile = {
     ]
 };
 
-export async function createAutumnEffect(_e: React.MouseEvent<HTMLButtonElement>) {
+export async function createAutumnEffect(e: React.MouseEvent<HTMLButtonElement>) {
     try {
-        await createSeasonEffect(BeautyPanel.getLayerName(E_Layer.Autumn), springToAutumn);
+
+        if (e.altKey) {
+            optAutumnEffect();
+            return;
+        }
+
+        const profile = springToAutumn;
+        const opacity = localStorage.getItem('autumnLayerOpacity');
+        if (opacity) {
+            profile.layerOpacity = parseInt(opacity);
+        }
+
+        await createSeasonEffect(BeautyPanel.getLayerName(E_Layer.Autumn), profile);
     } catch (err) {
         app.showAlert(err.message)
     }
+}
+function optAutumnEffect() {
+    const key = 'autumnLayerOpacity'
+    const layerName = BeautyPanel.getLayerName(E_Layer.Autumn)
+    const layer = BeautyPanel.getLayerByCode(E_Layer.Autumn);
+
+    if (layer) {
+        localStorage.setItem(key, String(layer.opacity));
+        app.showAlert('Opacity value saved.');
+    } else {
+        app.showAlert(i18next.t('layerNotFound', { name: layerName }));
+    }
+
 }
 
 export async function createSpringEffect(_e: React.MouseEvent<HTMLButtonElement>) {
@@ -88,6 +116,7 @@ export async function createSeasonEffect(name: string, profile: SeasonProfile) {
         if (!layer) {
             layer = await createSelectiveColorLayer(document, profile);
             layer.name = name;
+            layer.opacity = profile.layerOpacity;
         }
 
         return layer;

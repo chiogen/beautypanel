@@ -35,8 +35,8 @@
         "strengthenDetails": "Strengthen Details",
         "orton": "Orton Effect",
         "vignette": "Vignette",
-        "autumn": "Season: Spring -> Autumn",
-        "spring": "Season: Autumn -> SPring"
+        "autumn": "Season: Autumn",
+        "spring": "Season: Spring"
     },
     "savePage": {
         "currentPicture": "Current picture",
@@ -82,5 +82,7 @@
         "bright": "Bright",
         "autumn": "Autumn Effect",
         "spring": "Spring Effect"
-    }
+    },
+    "opacityValueSaved": "Opacity value saved.",
+    "layerNotFound": "Layer {{name}} doesn't exist."
 }

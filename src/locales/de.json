@@ -36,8 +36,8 @@
         "strengthenDetails": "Details verstärken",
         "orton": "Orton Effect",
         "vignette": "Vignette",
-        "autumn": "Season: Frühling -> Herbst",
-        "spring": "Season: Herbst -> Frühling"
+        "autumn": "Season: Herbst",
+        "spring": "Season: Frühling"
     },
     "savePage": {
         "currentPicture": "Aktuelles Bild",
@@ -78,5 +78,7 @@
         "bright": "Hell",
         "autumn": "Herbst Effekt",
         "spring": "Frühling Effekt"
-    }
+    },
+    "opacityValueSaved": "Deckkraft gespeichert.",
+    "layerNotFound": "Ebene {{name}} existiert nicht."
 }
