@@ -83,10 +83,35 @@ export async function createSpringEffect(_e: React.MouseEvent<HTMLButtonElement>
 
         throw new Error('No profile defined.');
 
-        // await createSeasonEffect(BeautyPanel.getLayerName(E_Layer.Spring), springToAutumn);
+        // if (e.altKey) {
+        //     optAutumnEffect();
+        //     return;
+        // }
+
+        // const profile = springToAutumn;
+        // const opacity = localStorage.getItem('springLayerOpacity');
+        // if (opacity) {
+        //     profile.layerOpacity = parseInt(opacity);
+        // }
+
+        // await createSeasonEffect(BeautyPanel.getLayerName(E_Layer.Spring), profile);
+        
     } catch (err) {
         app.showAlert(err.message)
     }
+}
+function optSpringEffect() {
+    const key = 'springLayerOpacity'
+    const layerName = BeautyPanel.getLayerName(E_Layer.Autumn)
+    const layer = BeautyPanel.getLayerByCode(E_Layer.Autumn);
+
+    if (layer) {
+        localStorage.setItem(key, String(layer.opacity));
+        app.showAlert('Opacity value saved.');
+    } else {
+        app.showAlert(i18next.t('layerNotFound', { name: layerName }));
+    }
+
 }
 
 /**
