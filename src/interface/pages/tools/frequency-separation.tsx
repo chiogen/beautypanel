@@ -23,7 +23,7 @@ export const FrequencySeparation = () => (
     </div>
 );
 
-export async function executeFrequencySeparation(e: React.MouseEvent<HTMLButtonElement>) {
+export async function executeFrequencySeparation(e: React.MouseEvent) {
 
     if (!app.activeDocument) {
         return;

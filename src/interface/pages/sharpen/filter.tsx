@@ -2,9 +2,14 @@ import * as React from 'react'
 import i18next from 'i18next'
 import { Heading } from '@adobe/react-spectrum'
 import { filterUnsharpMask } from '../../../modules/filter/sharpen/unsharp-mask';
-import { app } from 'photoshop';
+import { app, Layer } from 'photoshop';
 import { DialogOptions } from '../../../enums/dialog-options';
 import { filterSmartSharpen } from '../../../modules/filter/sharpen/smart-sharpen';
+import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
+import { executeFrequencySeparation } from '../tools/frequency-separation';
+import { imageDesaturation } from '../../../modules/image/desaturate';
+import { DocumentUtils } from '../../../common/document-utils';
+import { imageCalculation } from '../../../modules/image/calculation';
 
 export const Filter = () => (
     <div className="section filters">
@@ -67,10 +72,74 @@ async function _executeSelectiveFilter(e: React.MouseEvent) {
 async function _executeFreqSeparationFilter(e: React.MouseEvent) {
     try {
 
+        let document = app.activeDocument;
+        if (!document) {
+            return;
+        }
+        
+        let detailsBackup: Layer | undefined;
+        let softBackup: Layer | undefined;
+
+        let detail = BeautyPanel.layers.detail;
+        let soft = BeautyPanel.layers.soft;
+
+        // Run frequency separation if it isn't done yet
+        if (detail) {
+            detailsBackup = await detail.duplicate(undefined, "Detail_Backup");
+        }
+        if (soft) {
+            softBackup = await soft.duplicate(undefined, 'Soft_Backup');
+        }
+
+        if (!detail || !soft) {
+            await executeFrequencySeparation(e);
+            detail = BeautyPanel.layers.detail!;
+            soft = BeautyPanel.layers.soft!;
+        }
+
+        let detailBlackWhite = await detail.duplicate(undefined, BeautyPanel.getLayerName(E_Layer.DetailBlackWhite));
+        let detailColor = detail;
+        detailColor.name = BeautyPanel.getLayerName(E_Layer.DetailColor);
+
+        detailBlackWhite.blendMode = 'linearLight';
+        await imageDesaturation(detailBlackWhite);
+        await imageCalculation({
+            layer: detailColor,
+            targetLayer: detailBlackWhite,
+            calculationType: 'add',
+            channel: 'RGB',
+            invert: true,
+            scale: 2,
+            offset: 0
+        });
+
+        await DocumentUtils.selectLayers([detailBlackWhite]);
+        await filterUnsharpMask({
+            dialogOptions: DialogOptions.Display
+        });
+
+        const mergedLayer = await DocumentUtils.mergeLayers(document, [
+            detailBlackWhite,
+            detailColor,
+            soft
+        ]);
+
+
+        // Reset layers
+        if (detailsBackup) {
+            detailsBackup.name = BeautyPanel.getLayerName(E_Layer.Detail);
+        }
+        if (softBackup) {
+            softBackup.name = BeautyPanel.getLayerName(E_Layer.Soft);
+        }
+
+        mergedLayer.delete();
+
     } catch(err) {
         app.showAlert(err.message);
     }
 }
+
 
 async function _executeMaskedFilter(e: React.MouseEvent) {
     try {
