@@ -1,10 +1,9 @@
 import * as React from "react"
 import i18next from "i18next";
-import { Flex, Heading } from "@adobe/react-spectrum";
+import { Heading } from "@adobe/react-spectrum";
 import { PresetsManager } from "../../../common/presets-manager";
 import { app } from "photoshop";
 import { filterUnsharpMask } from "../../../modules/filter/sharpen/unsharp-mask";
-import { property } from "../../../decorators/react-property";
 
 type S = {
     presetEdit: PresetEdit | null
@@ -94,12 +93,12 @@ export class Presets extends React.Component<{}, S> {
                 <div className="dialog-body">
                     <Heading>Preset Edit</Heading>
                     <div style={lineStyle}>
-                        <span>Amount: </span>
-                        <input type="number" style={inputStyles} defaultValue={preset.amount} onChange={onAmountChanged} />%
+                        <span>{i18next.t('radius')}: </span>
+                        <input type="number" style={inputStyles} defaultValue={preset.radius} onChange={onRadiusChanged} />px
                     </div>
                     <div style={lineStyle}>
-                        <span>Radius: </span>
-                        <input type="number" style={inputStyles} defaultValue={preset.radius} onChange={onRadiusChanged} />px
+                        <span>{i18next.t('intensity')}: </span>
+                        <input type="number" style={inputStyles} defaultValue={preset.amount} onChange={onAmountChanged} />%
                     </div>
                     <div className="dialog-actions">
                         <sp-action-button onClick={cancel}>{i18next.t('cancel')}</sp-action-button>
