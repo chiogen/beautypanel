@@ -76,21 +76,11 @@ async function _executeFreqSeparationFilter(e: React.MouseEvent) {
         if (!document) {
             return;
         }
-        
-        let detailsBackup: Layer | undefined;
-        let softBackup: Layer | undefined;
 
         let detail = BeautyPanel.layers.detail;
         let soft = BeautyPanel.layers.soft;
 
         // Run frequency separation if it isn't done yet
-        if (detail) {
-            detailsBackup = await detail.duplicate(undefined, "Detail_Backup");
-        }
-        if (soft) {
-            softBackup = await soft.duplicate(undefined, 'Soft_Backup');
-        }
-
         if (!detail || !soft) {
             await executeFrequencySeparation(e);
             detail = BeautyPanel.layers.detail!;
@@ -123,15 +113,6 @@ async function _executeFreqSeparationFilter(e: React.MouseEvent) {
             detailColor,
             soft
         ]);
-
-
-        // Reset layers
-        if (detailsBackup) {
-            detailsBackup.name = BeautyPanel.getLayerName(E_Layer.Detail);
-        }
-        if (softBackup) {
-            softBackup.name = BeautyPanel.getLayerName(E_Layer.Soft);
-        }
 
         mergedLayer.delete();
 
