@@ -66,6 +66,48 @@ export namespace BeautyPanel {
         }
     }
 
+    export const layerNames = {
+        get soft() {
+            return getLayerName(E_Layer.Soft);
+        },
+        get detail() {
+            return getLayerName(E_Layer.Detail);
+        },
+        get contrast() {
+            return getLayerName(E_Layer.Contrast);
+        },
+        get detailBlackWhite() {
+            return getLayerName(E_Layer.DetailBlackWhite);
+        },
+        get detailColor() {
+            return getLayerName(E_Layer.DetailColor);
+        },
+        get detailEnahnce() {
+            return getLayerName(E_Layer.DetailEnhance);
+        },
+        get enhanceDetails() {
+            return getLayerName(E_Layer.EnhanceDetails);
+        },
+        get dodgeAndBurnGray() {
+            return getLayerName(E_Layer.DodgeAndBurn);
+        },
+        get orton() {
+            return getLayerName(E_Layer.Orton);
+        },
+        get vignette() {
+            return getLayerName(E_Layer.Vignette);
+        },
+        get dark() {
+            return getLayerName(E_Layer.Dark);
+        },
+        get bright() {
+            return getLayerName(E_Layer.Bright);
+        },
+        get autumn() {
+            return getLayerName(E_Layer.Autumn);
+        }
+    }
+
     export function getLayerName(code: E_Layer): string {
         return i18next.t('layerNames.' + code) as string;
     }
