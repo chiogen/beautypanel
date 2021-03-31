@@ -130,21 +130,22 @@ export namespace DocumentUtils {
 
     export async function mergeLayers(document: Document, layers: Layer[]): Promise<Layer> {
 
-        // The last layer will be the remaining layer, where all is merged to
-        const lastLayer = layers[layers.length - 1];
+        const duplicates = await Promise.all(layers.map(async layer => layer.duplicate()));
+                
+        const results = await app.batchPlay([
+            _selectLayers(duplicates),
+            {
+                _obj: "mergeLayersNew"
+            }
+        ]);
 
-        for (const layer of layers) {
-            if (layer !== lastLayer) {
-                lastLayer.moveAbove(layer);
+        for (const result of results) {
+            if (result.message) {
+                throw new Error(result.message);
             }
         }
 
-        for (const layer of document.layers) {
-            layer.visible = layers.includes(layer);
-        }
-
-        document.mergeVisibleLayers()
-        return lastLayer;
+        return document.activeLayers[0];
     }
 
     export function _deleteLayer(layer: Layer): ActionDescriptor {
