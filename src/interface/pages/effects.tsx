@@ -4,6 +4,9 @@ import * as React from 'react'
 import { BeautyPanel, E_Layer } from '../../common/beautypanel';
 import { DocumentUtils } from '../../common/document-utils';
 import { LayerUtils } from '../../common/layer-utils';
+import { DialogOptions } from '../../enums/dialog-options';
+import { filterGaussianBlur } from '../../modules/filter/blur/gaussian-blur';
+import { createAdjustmentLayer } from '../../modules/masks/levels';
 import { createAutumnEffect, createSeasonEffect, createSpringEffect } from './effects/season';
 import { createVignette } from './effects/vignette'
 
@@ -99,7 +102,33 @@ async function strengthenDetails(e: React.MouseEvent<HTMLButtonElement>) {
 async function createOrthonEffect(e: React.MouseEvent<HTMLButtonElement>) {
     try {
 
+        const document = app.activeDocument;
+        if (!document || !document.backgroundLayer) {
+            return;
+        }
 
+        let orthonLayer: Layer;
+        let soft = BeautyPanel.layers.soft;
+        let detail = BeautyPanel.layers.detail;
+
+        if (soft && detail) {
+            const detailCopy = await detail.duplicate();
+            const softCopy = await soft.duplicate();
+            orthonLayer = await DocumentUtils.mergeLayers(document, [detailCopy, softCopy]);
+        } else {
+            orthonLayer = await document.backgroundLayer.duplicate();
+        }
+
+        orthonLayer.name = BeautyPanel.layerNames.orton;
+        orthonLayer.blendMode = 'normal';
+        orthonLayer.opacity = 50;
+
+        await filterGaussianBlur(5, DialogOptions.Display);
+        await createAdjustmentLayer({
+            levels: {
+                adjustment: {}
+            }
+        });
 
     } catch (err) {
         const message = err.message || err;
