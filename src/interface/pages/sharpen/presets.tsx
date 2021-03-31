@@ -4,10 +4,9 @@ import { Heading } from "@adobe/react-spectrum";
 import { PresetsManager } from "../../../common/presets-manager";
 import { app } from "photoshop";
 import { filterUnsharpMask } from "../../../modules/filter/sharpen/unsharp-mask";
+import { DialogOptions } from "../../../enums/dialog-options";
 
-type S = {
-    presetEdit: PresetEdit | null
-}
+type S = {}
 
 const _defaultPresets: UnsharpMaskPreset[] = [
     { radius: 0.5, amount: 35 },
@@ -23,17 +22,10 @@ interface UnsharpMaskPreset {
     radius: number
 }
 
-interface PresetEdit {
-    index: number
-    preset: UnsharpMaskPreset
-}
-
 
 export class Presets extends React.Component<{}, S> {
 
     private presets = new PresetsManager<UnsharpMaskPreset>('unsharpmask', _defaultPresets);
-    private _presetEditAmountValue?: number;
-    private _presetEditRadiusValue?: number;
 
     constructor(props: {}) {
         super(props);
@@ -48,7 +40,6 @@ export class Presets extends React.Component<{}, S> {
         return (
             <div className="section presets">
                 <Heading>{i18next.t("sharpen.presets")}</Heading>
-                {this.renderPresetEdit()}
                 <div className="buttons">
                     {presets.map(this.renderPreset.bind(this))}
                 </div>
@@ -56,107 +47,34 @@ export class Presets extends React.Component<{}, S> {
         )
     }
 
-    renderPresetEdit() {
-
-        if (!this.state.presetEdit) {
-            return undefined;
-        }
-
-        const preset = this.state.presetEdit.preset;
-
-        const lineStyle: React.CSSProperties = {
-            display: "flex",
-            alignItems: "center"
-        };
-        const inputStyles: React.CSSProperties = {
-
-        }
-
-        const cancel = () => this._cancelPresetEdit();
-        const submit = () => this._submitPresetEdit();
-
-        const onAmountChanged = (e: React.ChangeEvent) => {
-            const element = e.target as HTMLInputElement;
-            if (this.state.presetEdit?.preset) {
-                preset.amount = parseFloat(element.value.replace(/,/, '.'));
-            }
-        };
-        const onRadiusChanged = (e: React.ChangeEvent) => {
-            const element = e.target as HTMLInputElement;
-            if (this.state.presetEdit?.preset) {
-                preset.radius = parseFloat(element.value.replace(/,/, '.'));
-            }
-        };
-
-        return (
-            <div className="dialog">
-                <div className="dialog-body">
-                    <Heading>Preset Edit</Heading>
-                    <div style={lineStyle}>
-                        <span>{i18next.t('radius')}: </span>
-                        <input type="number" style={inputStyles} defaultValue={preset.radius} onChange={onRadiusChanged} />px
-                    </div>
-                    <div style={lineStyle}>
-                        <span>{i18next.t('intensity')}: </span>
-                        <input type="number" style={inputStyles} defaultValue={preset.amount} onChange={onAmountChanged} />%
-                    </div>
-                    <div className="dialog-actions">
-                        <sp-action-button onClick={cancel}>{i18next.t('cancel')}</sp-action-button>
-                        <sp-action-button onClick={submit}>OK</sp-action-button>
-                    </div>
-                </div>
-            </div>
-        )
-    }
-
     renderPreset(preset: UnsharpMaskPreset, index: number) {
 
-        const onClick = (e: React.MouseEvent) => this._executePreset(e, preset, index); 
+        const onClick = (e: React.MouseEvent) => this._onPresetButtonClick(e, preset, index);
 
         return (
-            <sp-action-button key={"preset-unsharp-" + index} onClick={onClick}> {preset.radius}px <br/> {preset.amount}% </sp-action-button>
+            <sp-action-button key={"preset-unsharp-" + index} onClick={onClick}> {preset.radius}px <br /> {preset.amount}% </sp-action-button>
         )
     }
 
-    private _submitPresetEdit() {
-        const edit = this.state.presetEdit;
-
-        if (!edit) {
-            return;
-        }
-
-        this.presets.set(edit.index, edit.preset);
-
-        this.setState({
-            presetEdit: null
-        });
-    }
-    private _cancelPresetEdit() {
-        this.setState({
-            presetEdit: null
-        });
-    }
-
-    private async _executePreset(event: React.MouseEvent, preset: UnsharpMaskPreset, index: number) {
+    private async _onPresetButtonClick(event: React.MouseEvent, preset: UnsharpMaskPreset, index: number) {
         try {
 
-            if (event.altKey) {
-                this.setState({
-                    presetEdit: {
-                        index,
-                        preset
-                    }
-                });
-                return;
-            }
-
-            await filterUnsharpMask({
+            const result = await filterUnsharpMask({
                 amount: preset.amount,
                 radius: preset.radius,
-                threshold: 0
+                threshold: 0,
+                dialogOptions: DialogOptions.Display
             });
 
-        } catch(err) {
+            if (event.altKey && result.amount && result.radius) {
+                this.presets.set(index, {
+                    amount: result.amount._value,
+                    radius: result.radius._value
+                });
+                this.forceUpdate();
+            }
+
+        } catch (err) {
             await app.showAlert(err.message);
         }
     }

@@ -37,4 +37,6 @@ export async function filterUnsharpMask(options: UnsharpMaskOptions) {
     if (result.message) {
         throw new Error(result.message);
     }
+
+    return result;
 }
