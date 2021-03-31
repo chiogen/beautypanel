@@ -1,4 +1,3 @@
-
 declare module 'photoshop' {
 
     export type Bounds = {
@@ -174,7 +173,9 @@ declare module 'photoshop' {
         /** This is the action key */
         _obj?: string
         _target?: ActionTargetReference | Array<ActionTargetReference>
-        _options?: Object
+        _options?: {
+            dialogOptions?: 'display' | 'dontDisplay'
+        }
         [key: string]: any
     }
     export interface ActionTargetReference {
