@@ -12,7 +12,6 @@ import { Heading } from "@react-spectrum/text";
 
 type State = {
     opacity: number
-    presetEdit: PresetEditState | null
 }
 
 export const opacityPresets = new PresetsManager<number>('opacity', defaultPresets)
@@ -21,15 +20,14 @@ export const opacityPresets = new PresetsManager<number>('opacity', defaultPrese
 export class CurrentToolOpacity extends StatefulComponent<{}, State> {
 
     @property opacity: number
-    @property presetEdit: PresetEditState
+    @property presetEditIndex?: number;
     @property presetEditValue?: number;
 
     constructor(props) {
         super(props);
         const state = store.getState();
         this.state = {
-            opacity: state.currentToolOptions.opacity,
-            presetEdit: null
+            opacity: state.currentToolOptions.opacity
         };
     }
 
@@ -49,7 +47,7 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
         )
     }
     private renderPresetEdit() {
-        if (!this.presetEdit)
+        if (typeof this.presetEditIndex !== 'number')
             return undefined;
 
         const lineStyle: React.CSSProperties = {
@@ -57,7 +55,7 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
             alignItems: "center"
         }
 
-        const index= this.presetEdit.index;
+        const index = this.presetEditIndex;
         const currentValue = this.presetEditValue ?? opacityPresets.get(index);
 
         const onValueChanged = this._presetInputValueChanged.bind(this);
@@ -68,9 +66,9 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
         return (
             <div className="dialog">
                 <Heading>Preset Edit</Heading>
-                    <div style={lineStyle}>
-                        <input type="number" min="0" max="100" defaultValue={currentValue} onInput={onValueChanged} /> <span>%</span>
-                    </div>
+                <div style={lineStyle}>
+                    <input type="number" min="0" max="100" defaultValue={currentValue} onInput={onValueChanged} /> <span>%</span>
+                </div>
                 <div className="dialog-actions">
                     <sp-action-button onClick={cancel}>{i18next.t('cancel')}</sp-action-button>
                     <sp-action-button onClick={submit}>OK</sp-action-button>
@@ -81,7 +79,7 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
     private _presetInputValueChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
         let value = parseInt(e.currentTarget.value.replace(/,/, '.'));
         if (!Number.isNaN(value)) {
-            this.presetEditValue = value
+            this.presetEditValue = value ?? -1;
         }
     }
 
@@ -91,38 +89,44 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
         const isActive = Math.abs(value - this.opacity) < 1e-8;
 
         const onClick = (e: React.MouseEvent<HTMLButtonElement>) => this.onPresetClick(e);
-        const onContextMenu = (e: React.MouseEvent<HTMLButtonElement>) => this.onPresetContextMenu(e);
 
         return (
-            <sp-action-button data-index={index} data-active={isActive} onClick={onClick} onContextMenu={onContextMenu}>{value}%</sp-action-button>
+            <sp-action-button data-index={index} data-active={isActive} onClick={onClick}>{value}%</sp-action-button>
         );
     }
 
     private applyPresetEdit() {
-        if (!this.presetEdit)
-            return undefined;
+        try {
+            if (typeof this.presetEditIndex !== 'number')
+                return;
 
-        if (typeof this.presetEditValue !== 'number' || this.presetEditValue < 0 || this.presetEditValue > 100) {
-            app.showAlert('Invalid value: ' + this.presetEditValue);
-            return;
+            if (typeof this.presetEditValue === 'number') {
+
+                if (this.presetEditValue < 0 || this.presetEditValue > 100) {
+                    throw new Error('Invalid value: ' + this.presetEditValue);
+                }
+
+                opacityPresets.set(this.presetEditIndex, this.presetEditValue);
+            }
+
+            this.presetEditIndex = undefined;
+            this.presetEditValue = undefined;
+        } catch (err) {
+            app.showAlert(err);
         }
-
-        opacityPresets.set(this.presetEdit.index, this.presetEditValue!)
-        store.dispatch({
-            type: ActionType.EndPresetEdit
-        });
     }
     private cancelPresetEdit() {
-        store.dispatch({
-            type: ActionType.EndPresetEdit
-        });
+        this.presetEditIndex = undefined;
+        this.presetEditValue = undefined;
     }
 
     private async onPresetClick(e: React.MouseEvent<HTMLButtonElement>) {
         const button = e.currentTarget as HTMLButtonElement;
 
         if (e.button === 0 && e.altKey) {
-            return this.onPresetContextMenu(e);
+            const index = parseInt(button.dataset.index!);
+            this.presetEditIndex = index;
+            return;
         }
 
         if (e.button === 0) {
@@ -135,28 +139,8 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
         }
     }
 
-    private async onPresetContextMenu(e: React.MouseEvent<HTMLButtonElement>) {
-        const button = e.currentTarget as HTMLButtonElement;
-        const index = parseInt(button.dataset.index!);
-
-        store.dispatch({
-            type: ActionType.StartPresetEdit,
-            edit: {
-                type: 'opacity',
-                index
-            }
-        })
-
-    }
-
     stateChanged(state: TState) {
         this.opacity = state.currentToolOptions.opacity;
-
-        if (state.presetEdit?.type === 'opacity') {
-            this.presetEdit = state.presetEdit;
-        } else {
-            this.presetEdit = null;
-        }
     }
 
 }

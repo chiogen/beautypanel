@@ -9,6 +9,7 @@ import { ActionType } from '../../../store-action-types';
 import { PresetsManager } from '../../../common/presets-manager';
 import { PresetEditState } from '../../../reducer/preset-edit';
 import { Heading } from '@react-spectrum/text';
+import { isAbortError } from '../../../common/errors/abort-error';
 
 export const hardnessPresets = new PresetsManager<number>('hardness', defaultPresets);
 
@@ -18,9 +19,8 @@ type State = {
 
 export class CurrentToolHardness extends StatefulComponent<{}, State> {
 
-    @property
-    hardness: number
-    @property presetEdit: PresetEditState
+    @property hardness: number
+    @property presetEditIndex?: number;
     @property presetEditValue?: number;
 
     constructor(props) {
@@ -47,7 +47,7 @@ export class CurrentToolHardness extends StatefulComponent<{}, State> {
         )
     }
     private renderPresetEdit() {
-        if (!this.presetEdit)
+        if (typeof this.presetEditIndex !== 'number')
             return undefined;
 
         const lineStyle: React.CSSProperties = {
@@ -55,7 +55,7 @@ export class CurrentToolHardness extends StatefulComponent<{}, State> {
             alignItems: "center"
         }
 
-        const index = this.presetEdit.index;
+        const index = this.presetEditIndex;
         const currentValue = this.presetEditValue ?? hardnessPresets.get(index);
 
         const onValueChanged = this._presetInputValueChanged.bind(this);
@@ -67,9 +67,9 @@ export class CurrentToolHardness extends StatefulComponent<{}, State> {
         return (
             <div className="dialog">
                 <Heading>Preset Edit</Heading>
-                    <div style={lineStyle}>
-                        <input type="number" min="0" max="100" defaultValue={currentValue} onInput={onValueChanged} /> <span>%</span>
-                    </div>
+                <div style={lineStyle}>
+                    <input type="number" min="0" max="100" defaultValue={currentValue} onInput={onValueChanged} /> <span>%</span>
+                </div>
                 <div className="dialog-actions">
                     <sp-action-button onClick={cancel}>{i18next.t('cancel')}</sp-action-button>
                     <sp-action-button onClick={submit}>OK</sp-action-button>
@@ -81,23 +81,30 @@ export class CurrentToolHardness extends StatefulComponent<{}, State> {
         this.presetEditValue = parseInt(e.currentTarget.value.replace(/,/, '.'));
     }
     private applyPresetEdit() {
-        if (!this.presetEdit)
-            return;
+        try {
+            if (typeof this.presetEditIndex !== 'number')
+                return;
 
-        if (typeof this.presetEditValue !== 'number' || this.presetEditValue < 0 || this.presetEditValue > 100) {
-            app.showAlert('Invalid value: ' + this.presetEditValue);
-            return;
+            // If presetEditValue is undefined, the value hasn't changed.
+            if (typeof this.presetEditValue === 'number') {
+
+                if (this.presetEditValue < 0 || this.presetEditValue > 100) {
+                    throw new Error('Invalid value: ' + this.presetEditValue);
+                }
+
+                hardnessPresets.set(this.presetEditIndex, this.presetEditValue);
+            }
+
+            this.presetEditIndex = undefined;
+            this.presetEditValue = undefined;
+
+        } catch (err) {
+            app.showAlert(err.message);
         }
-
-        hardnessPresets.set(this.presetEdit.index, this.presetEditValue!)
-        store.dispatch({
-            type: ActionType.EndPresetEdit
-        });
     }
     private cancelPresetEdit() {
-        store.dispatch({
-            type: ActionType.EndPresetEdit
-        });
+        this.presetEditIndex = undefined;
+        this.presetEditValue = undefined;
     }
 
     private renderPresetButton(index: number) {
@@ -105,9 +112,8 @@ export class CurrentToolHardness extends StatefulComponent<{}, State> {
         const isActive = Math.abs(value - this.hardness) < 1e-8;
 
         const onClick = (e: any) => this.onPresetClick(e);
-        const onContextMenu = (e: React.MouseEvent<HTMLButtonElement>) => this.onPresetContextMenu(e);
 
-        return <sp-action-button data-index={index} data-active={isActive} onClick={onClick} onContextMenu={onContextMenu}>{value}%</sp-action-button>;
+        return <sp-action-button data-index={index} data-active={isActive} onClick={onClick}>{value}%</sp-action-button>;
     }
 
     private async onPresetClick(e: React.MouseEvent<HTMLButtonElement>) {
@@ -115,7 +121,9 @@ export class CurrentToolHardness extends StatefulComponent<{}, State> {
         const button = e.currentTarget as HTMLButtonElement;
 
         if (e.button === 0 && e.altKey) {
-            return this.onPresetContextMenu(e);
+            const index = parseInt(button.dataset.index!);
+            this.presetEditIndex = index;
+            return;
         }
 
         if (e.button === 0) {
@@ -128,28 +136,8 @@ export class CurrentToolHardness extends StatefulComponent<{}, State> {
         }
     }
 
-    private async onPresetContextMenu(e: React.MouseEvent<HTMLButtonElement>) {
-        const button = e.currentTarget as HTMLButtonElement;
-        const index = parseInt(button.dataset.index!);
-
-        store.dispatch({
-            type: ActionType.StartPresetEdit,
-            edit: {
-                type: 'hardness',
-                index
-            }
-        })
-
-    }
-
     stateChanged(state: TState) {
         this.hardness = state.currentToolOptions.hardness;
-
-        if (state.presetEdit?.type === 'hardness') {
-            this.presetEdit = state.presetEdit;
-        } else {
-            this.presetEdit = null;
-        }
     }
 
 }
