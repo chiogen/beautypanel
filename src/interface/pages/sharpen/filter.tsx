@@ -33,7 +33,7 @@ async function _executeUnsharpMask(e: React.MouseEvent) {
         const detail = BeautyPanel.layers.detail;
 
         if (detail && sharpenOptions.useDetailLayer) {
-            await DocumentUtils.selectLayers([detail]);
+            await DocumentUtils.selectLayers([detail], true);
         }
 
         await filterUnsharpMask({
@@ -55,7 +55,7 @@ async function _executeSelectiveFilter(e: React.MouseEvent) {
         const detail = BeautyPanel.layers.detail;
 
         if (detail && sharpenOptions.useDetailLayer) {
-            await DocumentUtils.selectLayers([detail]);
+            await DocumentUtils.selectLayers([detail], true);
         }
 
         await filterSmartSharpen({
@@ -140,7 +140,7 @@ async function _executeMaskedFilter(e: React.MouseEvent) {
         const detail = BeautyPanel.layers.detail;
 
         if (detail && sharpenOptions.useDetailLayer) {
-            await DocumentUtils.selectLayers([detail]);
+            await DocumentUtils.selectLayers([detail], true);
         }
 
     } catch(err) {
