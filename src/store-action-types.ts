@@ -7,7 +7,7 @@ export enum ActionType {
     SetToolHardness = 'SET_TOOL_HARDNESS',
     // Page
     SetPage = 'SET_PAGE',
-    // Preset Edit
-    StartPresetEdit = 'START_PRESET_EDIT',
-    EndPresetEdit = 'END_PRESET_EDIT'
+    // Options
+    SetSharpenOptions = 'SET_SHARPEN_OPTIONS'
+
 }

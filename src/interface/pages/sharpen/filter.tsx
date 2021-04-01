@@ -10,6 +10,7 @@ import { executeFrequencySeparation } from '../tools/frequency-separation';
 import { imageDesaturation } from '../../../modules/image/desaturate';
 import { DocumentUtils } from '../../../common/document-utils';
 import { imageCalculation } from '../../../modules/image/calculation';
+import { store } from '../../../store';
 
 export const Filter = () => (
     <div className="section filters">
@@ -28,7 +29,12 @@ export const Filter = () => (
 async function _executeUnsharpMask(e: React.MouseEvent) {
     try {
 
-        // const dialogOptions = e.altKey ? DialogOptions.Display : DialogOptions.DontDisplay;
+        const { sharpenOptions } = store.getState();
+        const detail = BeautyPanel.layers.detail;
+
+        if (detail && sharpenOptions.useDetailLayer) {
+            await DocumentUtils.selectLayers([detail]);
+        }
 
         await filterUnsharpMask({
             dialogOptions: DialogOptions.Display,
@@ -45,7 +51,12 @@ async function _executeUnsharpMask(e: React.MouseEvent) {
 async function _executeSelectiveFilter(e: React.MouseEvent) {
     try {
 
-        // const dialogOptions = e.altKey ? DialogOptions.Display : DialogOptions.DontDisplay;
+        const { sharpenOptions } = store.getState();
+        const detail = BeautyPanel.layers.detail;
+
+        if (detail && sharpenOptions.useDetailLayer) {
+            await DocumentUtils.selectLayers([detail]);
+        }
 
         await filterSmartSharpen({
             amount: 100,
@@ -124,6 +135,13 @@ async function _executeFreqSeparationFilter(e: React.MouseEvent) {
 
 async function _executeMaskedFilter(e: React.MouseEvent) {
     try {
+
+        const { sharpenOptions } = store.getState();
+        const detail = BeautyPanel.layers.detail;
+
+        if (detail && sharpenOptions.useDetailLayer) {
+            await DocumentUtils.selectLayers([detail]);
+        }
 
     } catch(err) {
         app.showAlert(err.message);

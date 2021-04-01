@@ -4,8 +4,9 @@
 @import "./section.scss";
 @import "./tabbar.scss";
 @import "./pages.scss";
-@import "./components//dialog.scss";
-@import "./components//preset-edit-dialog.scss";
+@import "./components/dialog.scss";
+@import "./components/preset-edit-dialog.scss";
+@import "./typography/label.scss";
 
 body {
     color: white;

@@ -5,20 +5,22 @@ import { Page } from "./enums";
 import page, { PageAction } from './reducer/page'
 import currentTool, { CurrentToolAction } from './reducer/current-tool'
 import currentToolOptions, { CurrentToolOptionsAction, CurrentToolOptionsState } from './reducer/current-tool-options'
-import presetEdit, { PresetEditState, PresetEditAction } from './reducer/preset-edit'
 import { UpdateToolDataAction, DocumentChangedAction } from "./reducer/shared-action-types";
 import { ActionType } from "./store-action-types";
+import sharpenOptions, { SharpenOptions, SharpenOptionsAction } from "./reducer/sharpen-options";
 
 export interface TState {
     readonly lastAction: TAction
     readonly page: Page
     readonly currentTool: string
     readonly currentToolOptions: CurrentToolOptionsState
-    readonly presetEdit: PresetEditState
+    readonly sharpenOptions: SharpenOptions
 }
 
 type TSharedAction = UpdateToolDataAction | DocumentChangedAction;
-export type TAction = TSharedAction | PageAction | CurrentToolAction | CurrentToolOptionsAction | PresetEditAction;
+export type TAction = TSharedAction
+    | PageAction
+    | CurrentToolAction | CurrentToolOptionsAction | SharpenOptionsAction;
 
 const lastAction = (_s: TAction, action: TAction) => action;
 
@@ -27,11 +29,10 @@ const reducer: Reducer<TState, TAction> = combineReducers({
     page,
     currentTool,
     currentToolOptions,
-    presetEdit
+    sharpenOptions
 });
 
 export const store: Store<TState, TAction> = createStore(reducer);
-
 
 // Poll required app state data
 async function poll() {
