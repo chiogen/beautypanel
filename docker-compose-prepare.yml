@@ -1,8 +1,8 @@
 services:
     build:
-        image: node:lts
+        image: node:latest
         volumes:
             - .:/code
         working_dir: /code
         entrypoint: npm
-        command: start
+        command: install
