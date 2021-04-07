@@ -1,18 +1,30 @@
 import { app, Document } from "photoshop";
 
+
 export function addDocumentLoadedCallback(callback: (document: Document) => any) {
 
-    let previousDocumentPath: string | null | undefined = app.activeDocument?.path;
+    const interval = 500;
 
-    let handle: number | undefined = setInterval(() => {
-        if (app.activeDocument && app.activeDocument.path !== previousDocumentPath) {
-            previousDocumentPath = app.activeDocument.path;
-            callback(app.activeDocument);
+    let previousDocumentPath: string | null | undefined = app.activeDocument?.path;
+    let handle: number | undefined;
+    
+    const tick = () => {
+        const activeDocument = app.activeDocument;
+
+        if (activeDocument && activeDocument.path !== previousDocumentPath) {
+            previousDocumentPath = activeDocument.path;
+            callback(activeDocument);
         }
-    }, 500) as any;
+
+        handle = setTimeout(tick, interval) as any as number;
+    }
+
+    handle = setTimeout(tick, interval) as any as number;
 
     return () => {
-        clearTimeout(handle);
+        if (typeof handle === 'number') {
+            clearTimeout(handle);
+        }
         previousDocumentPath = undefined;
         handle = undefined;
     };
