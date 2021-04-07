@@ -1,6 +1,6 @@
 import { ActionDescriptor } from "photoshop";
-import { setToolOptions, _setToolOptions } from "../common/app-utils";
 import { percent } from "../common/units";
+import { setToolOptions } from "../modules/application/set-tool-options";
 import { ActionType } from "../store-action-types";
 import { UpdateToolDataAction } from "./shared-action-types";
 

@@ -5,10 +5,10 @@ import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
 import { LayerUtils } from '../../../common/layer-utils';
 import { DocumentUtils } from '../../../common/document-utils';
 import { confirm } from '../../dialogues/confirm';
-import { selectTool } from '../../../common/app-utils';
 import { percent } from '../../../common/units';
 import { opacityPresets } from './opacity'
 import { filterMedianNoise } from '../../../modules/filter/noise/median';
+import { selectTool } from '../../../modules/application/select-tool';
 
 export const FrequencySeparation = () => (
     <div className="section">

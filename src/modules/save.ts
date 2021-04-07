@@ -1,11 +1,11 @@
 import * as path from 'path'
 import i18next from "i18next";
 import { ActionDescriptor, app } from "photoshop";
-import { createFolderToken } from "../common/app-utils";
 import { pixels } from "../common/units";
 import { DialogOptions } from "../enums/dialog-options";
 import { storage } from 'uxp';
 import { isAbortError, throwAbortError } from '../common/errors/abort-error';
+import { createFolderToken } from './storage/fs';
 
 export function getLastSavedFormat(): any | undefined {
     const value = localStorage.getItem('lastSavedFormat');

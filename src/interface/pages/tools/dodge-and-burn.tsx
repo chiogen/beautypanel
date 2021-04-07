@@ -3,13 +3,13 @@ import i18next from "i18next";
 import { app, Layer } from 'photoshop';
 import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
 import { DocumentUtils } from '../../../common/document-utils';
-import { LayerUtils } from '../../../common/layer-utils';
-import { selectTool, setForegroundColor, _setForegroundColor } from '../../../common/app-utils';
 import { confirm } from '../../dialogues/confirm';
 import { StatefulComponent } from '../../../components/base/stateful-component';
 import { store, TState } from '../../../store';
 import { property } from '../../../decorators/react-property';
 import { invert } from '../../../modules/layer/invert';
+import { selectTool } from '../../../modules/application/select-tool';
+import { setForegroundColor } from '../../../modules/application/foreground-color';
 
 interface State {
     currentTool: string,

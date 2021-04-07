@@ -4,15 +4,12 @@ import i18next from 'i18next'
 import { Heading } from '@adobe/react-spectrum';
 import { property } from '../decorators/react-property';
 import { Document } from 'photoshop';
-import options from './save.json'
 import { storage } from 'uxp';
 import * as path from 'path';
 import { shallowCompare } from '../common/shallow-compare';
 import { addDocumentLoadedCallback } from '../common/active-document-observer';
 import { getLastSavedFormat, getLastScaleWidth, saveScaledCopy, saveUnscaledCopy } from '../modules/save';
 import { handleException } from '../common/errors/handle-error';
-
-const rFileSplit = /^(.+)\/([^\/]+)$/;
 
 type P = {
     isActive: boolean
