@@ -6,6 +6,7 @@ import { DocumentUtils } from '../../common/document-utils';
 import { LayerUtils } from '../../common/layer-utils';
 import { DialogOptions } from '../../enums/dialog-options';
 import { filterGaussianBlur } from '../../modules/filter/blur/gaussian-blur';
+import { invert } from '../../modules/layer/invert';
 import { createAdjustmentLayer } from '../../modules/masks/levels';
 import { createAutumnEffect, createSeasonEffect, createSpringEffect } from './effects/season';
 import { createVignette } from './effects/vignette'
@@ -69,7 +70,7 @@ async function enhanceDetails(e: React.MouseEvent<HTMLButtonElement>) {
         
         // Invert reference layer
         const inverted = await tempLayer.duplicate();
-        await LayerUtils.invert(inverted);
+        await invert(inverted);
         inverted.blendMode = 'vividLight';
         await LayerUtils.surfaceBlur(inverted, 24, 26);
 

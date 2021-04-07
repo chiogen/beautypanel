@@ -1,0 +1,8 @@
+services:
+    build:
+        image: node:latest
+        volumes:
+            - .:/code
+        working_dir: /code
+        entrypoint: npm
+        command: start

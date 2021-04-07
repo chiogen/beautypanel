@@ -4,24 +4,6 @@ import { pixels } from "./units";
 
 export namespace LayerUtils {
 
-    export async function desaturate(layer: Layer) {
-        const descriptor: ActionDescriptor = {
-            _obj: "desaturate",
-            _target: {
-                _ref: 'layer',
-                _id: layer._id
-            }
-        }
-
-        const result = await app.batchPlay([descriptor], {});
-
-        for (const item of result) {
-            if (item.message) {
-                await app.showAlert(item.message);
-            }
-        }
-    }
-
     export async function invert(layer: Layer) {
         const descriptor: ActionDescriptor = {
             _obj: "invert",

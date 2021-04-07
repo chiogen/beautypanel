@@ -9,6 +9,7 @@ import { confirm } from '../../dialogues/confirm';
 import { StatefulComponent } from '../../../components/base/stateful-component';
 import { store, TState } from '../../../store';
 import { property } from '../../../decorators/react-property';
+import { invert } from '../../../modules/layer/invert';
 
 interface State {
     currentTool: string,
@@ -189,7 +190,7 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
                         [255, 255]
                     ]
                 )
-                await LayerUtils.invert(bright);
+                await invert(bright);
             }
             bright.visible = true;
             bright.blendMode = 'luminosity';
@@ -207,7 +208,7 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
                         [255, 255]
                     ]
                 );
-                await LayerUtils.invert(dark);
+                await invert(dark);
             }
             dark.visible = true;
             dark.blendMode = 'luminosity';
