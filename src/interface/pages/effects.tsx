@@ -2,12 +2,14 @@ import i18next from 'i18next';
 import { app, Layer } from 'photoshop';
 import * as React from 'react'
 import { BeautyPanel, E_Layer } from '../../common/beautypanel';
-import { DocumentUtils } from '../../common/document-utils';
-import { LayerUtils } from '../../common/layer-utils';
 import { DialogOptions } from '../../enums/dialog-options';
 import { filterGaussianBlur } from '../../modules/filter/blur/gaussian-blur';
+import { surfaceBlur } from '../../modules/filter/blur/surface-blur';
+import { checkBitsPerChannel } from '../../modules/image/bits-per-channel';
+import { mergeLayers } from '../../modules/image/merge-layers';
 import { invert } from '../../modules/layer/invert';
 import { createAdjustmentLayer } from '../../modules/masks/levels';
+import { createRevealAllMask } from '../../modules/masks/reveal-all';
 import { createAutumnEffect, createSeasonEffect, createSpringEffect } from './effects/season';
 import { createVignette } from './effects/vignette'
 
@@ -51,7 +53,7 @@ async function enhanceDetails(e: React.MouseEvent<HTMLButtonElement>) {
         referenceLayer.locked = true;
 
         // Preparations
-        await DocumentUtils.checkBitsPerChannel(document);
+        await checkBitsPerChannel(document);
 
         // Delete layers if they exist and the user has permitted it
         if (BeautyPanel.layers.enhanceDetails) {
@@ -66,22 +68,24 @@ async function enhanceDetails(e: React.MouseEvent<HTMLButtonElement>) {
         let tempLayer = await referenceLayer.duplicate();
         tempLayer.opacity = 1;
         let tempLayer2 = await referenceLayer.duplicate();
-        tempLayer = await DocumentUtils.mergeLayers(document, [tempLayer, tempLayer2]);
-        
+        tempLayer = await mergeLayers(document, [tempLayer, tempLayer2]);
+
         // Invert reference layer
         const inverted = await tempLayer.duplicate();
         await invert(inverted);
         inverted.blendMode = 'vividLight';
-        await LayerUtils.surfaceBlur(inverted, 24, 26);
+        await surfaceBlur(inverted, 24, 26);
 
         // Merge layers and finalize action
-        const enhanceDetails = await DocumentUtils.mergeLayers(document, [tempLayer, inverted]);
+        const enhanceDetails = await mergeLayers(document, [tempLayer, inverted]);
         enhanceDetails.name = BeautyPanel.getLayerName(E_Layer.EnhanceDetails);
         enhanceDetails.blendMode = 'overlay';
         enhanceDetails.opacity = 50;
 
         // enhanceDetails.moveBelow(referenceLayer);
-        await LayerUtils.createRvlaMask(enhanceDetails);
+        await createRevealAllMask({
+            layer: enhanceDetails
+        });
 
     } catch (err) {
         const message = err.message || err;
@@ -115,7 +119,7 @@ async function createOrthonEffect(e: React.MouseEvent<HTMLButtonElement>) {
         if (soft && detail) {
             const detailCopy = await detail.duplicate();
             const softCopy = await soft.duplicate();
-            orthonLayer = await DocumentUtils.mergeLayers(document, [detailCopy, softCopy]);
+            orthonLayer = await mergeLayers(document, [detailCopy, softCopy]);
         } else {
             orthonLayer = await document.backgroundLayer.duplicate();
         }

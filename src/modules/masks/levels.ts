@@ -1,4 +1,4 @@
-import { app } from "photoshop";
+import { app, Layer } from "photoshop";
 import { ActionDescriptor } from "photoshop";
 import { DialogOptions } from "../../enums/dialog-options";
 
@@ -15,7 +15,7 @@ export interface AdjustmentLayerOptions {
 }
 
 
-export async function createAdjustmentLayer(options: AdjustmentLayerOptions) {
+export async function createAdjustmentLayer(options: AdjustmentLayerOptions): Promise<Layer> {
     const [result] = await app.batchPlay([
         _createAdjustmentLayer(options)
     ]);
@@ -24,7 +24,7 @@ export async function createAdjustmentLayer(options: AdjustmentLayerOptions) {
         throw new Error(result.message);
     }
 
-    return result;
+    return app.activeDocument!.activeLayers[0];
 }
 
 function _createAdjustmentLayer(options: AdjustmentLayerOptions): ActionDescriptor {
@@ -62,11 +62,7 @@ function _levelsAdjustment(options: LevelsAdjustmentsOptions) {
             "_ref": "channel",
             "_enum": "channel",
             "_value": "composite"
-        },
-        input: [
-            50,
-            240
-        ]
+        }
     };
 
     if (options.input) {

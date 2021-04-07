@@ -8,9 +8,10 @@ import { filterSmartSharpen } from '../../../modules/filter/sharpen/smart-sharpe
 import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
 import { executeFrequencySeparation } from '../tools/frequency-separation';
 import { imageDesaturation } from '../../../modules/image/desaturate';
-import { DocumentUtils } from '../../../common/document-utils';
 import { imageCalculation } from '../../../modules/image/calculation';
 import { store } from '../../../store';
+import { selectLayers } from '../../../modules/image/select-layers';
+import { mergeLayers } from '../../../modules/image/merge-layers';
 
 export const Filter = () => (
     <div className="section filters">
@@ -33,7 +34,7 @@ async function _executeUnsharpMask(e: React.MouseEvent) {
         const detail = BeautyPanel.layers.detail;
 
         if (detail && sharpenOptions.useDetailLayer) {
-            await DocumentUtils.selectLayers([detail], true);
+            await selectLayers([detail], true);
         }
 
         await filterUnsharpMask({
@@ -55,7 +56,7 @@ async function _executeSelectiveFilter(e: React.MouseEvent) {
         const detail = BeautyPanel.layers.detail;
 
         if (detail && sharpenOptions.useDetailLayer) {
-            await DocumentUtils.selectLayers([detail], true);
+            await selectLayers([detail], true);
         }
 
         await filterSmartSharpen({
@@ -105,7 +106,7 @@ async function _executeFreqSeparationFilter(e: React.MouseEvent) {
         detailBlackWhite.blendMode = 'linearLight';
         await imageDesaturation(detailBlackWhite);
         await imageCalculation({
-            layer: detailColor,
+            sourceLayer: detailColor,
             targetLayer: detailBlackWhite,
             calculationType: 'add',
             channel: 'RGB',
@@ -114,12 +115,12 @@ async function _executeFreqSeparationFilter(e: React.MouseEvent) {
             offset: 0
         });
 
-        await DocumentUtils.selectLayers([detailBlackWhite]);
+        await selectLayers([detailBlackWhite]);
         await filterUnsharpMask({
             dialogOptions: DialogOptions.Display
         });
 
-        const mergedLayer = await DocumentUtils.mergeLayers(document, [
+        const mergedLayer = await mergeLayers(document, [
             detailBlackWhite,
             detailColor,
             soft
@@ -140,7 +141,7 @@ async function _executeMaskedFilter(e: React.MouseEvent) {
         const detail = BeautyPanel.layers.detail;
 
         if (detail && sharpenOptions.useDetailLayer) {
-            await DocumentUtils.selectLayers([detail], true);
+            await selectLayers([detail], true);
         }
 
     } catch(err) {

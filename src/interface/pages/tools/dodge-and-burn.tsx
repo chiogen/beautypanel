@@ -2,7 +2,6 @@ import * as React from 'react'
 import i18next from "i18next";
 import { app, Layer } from 'photoshop';
 import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
-import { DocumentUtils } from '../../../common/document-utils';
 import { confirm } from '../../dialogues/confirm';
 import { StatefulComponent } from '../../../components/base/stateful-component';
 import { store, TState } from '../../../store';
@@ -10,6 +9,8 @@ import { property } from '../../../decorators/react-property';
 import { invert } from '../../../modules/layer/invert';
 import { selectTool } from '../../../modules/application/select-tool';
 import { setForegroundColor } from '../../../modules/application/foreground-color';
+import { checkBitsPerChannel } from '../../../modules/image/bits-per-channel';
+import { selectLayers } from '../../../modules/image/select-layers';
 
 interface State {
     currentTool: string,
@@ -97,7 +98,7 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
             const document = app.activeDocument;
 
             // Preparations
-            await DocumentUtils.checkBitsPerChannel(document);
+            await checkBitsPerChannel(document);
 
             // Get maybe existing layers
             let layer = BeautyPanel.layers.dodgeAndBurnGray;
@@ -159,7 +160,7 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
         try {
 
             const document = app.activeDocument;
-            await DocumentUtils.checkBitsPerChannel(document);
+            await checkBitsPerChannel(document);
 
             const sourceLayer = document.backgroundLayer ?? document.layers[0];
             sourceLayer.visible = true;
@@ -247,7 +248,7 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
                 await setForegroundColor(grayscale);
 
                 layer.visible = true;
-                await DocumentUtils.selectLayers([layer])
+                await selectLayers([layer])
             }
         } catch (err) {
             await app.showAlert(err);

@@ -1,7 +1,6 @@
 import * as React from 'react'
 import i18next from "i18next";
 import { app } from 'photoshop'
-import { _selectTool } from "../../../common/app-utils";
 
 export const Zoom = () => (
     <div className="section">

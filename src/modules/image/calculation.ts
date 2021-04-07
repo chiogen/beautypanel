@@ -1,6 +1,6 @@
 import { ActionDescriptor, Layer, PercentValue } from "photoshop";
 import { app } from "photoshop";
-import { DocumentUtils } from "../../common/document-utils";
+import { _selectLayers } from "./select-layers";
 
 export type ImageCalculationType = 'normal' |
     'add' | 'subtract' |
@@ -10,7 +10,7 @@ export type ImageCalculationType = 'normal' |
     'difference' | 'exclusion' | 'divide';
 
 export interface ImageCalculationOptions {
-    layer: Layer
+    sourceLayer: Layer
     targetLayer: Layer
     calculationType: ImageCalculationType
     channel: string
@@ -34,7 +34,7 @@ export function _imageCalculation(options: ImageCalculationOptions): ActionDescr
                     },
                     {
                         _ref: "layer",
-                        _id: options.targetLayer._id
+                        _id: options.sourceLayer._id
                     }
                 ]
             },
@@ -58,7 +58,7 @@ export function _imageCalculation(options: ImageCalculationOptions): ActionDescr
 
 export async function imageCalculation(options: ImageCalculationOptions) {
     const [result] = await app.batchPlay([
-        DocumentUtils._selectLayers([options.layer]),
+        _selectLayers([options.targetLayer]),
         _imageCalculation(options)
     ]);
 

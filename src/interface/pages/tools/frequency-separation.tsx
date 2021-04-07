@@ -2,13 +2,15 @@ import * as React from 'react'
 import i18next from "i18next";
 import { app, Layer } from 'photoshop';
 import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
-import { LayerUtils } from '../../../common/layer-utils';
-import { DocumentUtils } from '../../../common/document-utils';
 import { confirm } from '../../dialogues/confirm';
 import { percent } from '../../../common/units';
 import { opacityPresets } from './opacity'
 import { filterMedianNoise } from '../../../modules/filter/noise/median';
 import { selectTool } from '../../../modules/application/select-tool';
+import { checkBitsPerChannel } from '../../../modules/image/bits-per-channel';
+import { selectLayers } from '../../../modules/image/select-layers';
+import { imageCalculation } from '../../../modules/image/calculation';
+import { createAdjustmentLayer } from '../../../modules/masks/levels';
 
 export const FrequencySeparation = () => (
     <div className="section">
@@ -36,7 +38,7 @@ export async function executeFrequencySeparation(e: React.MouseEvent) {
         button.disabled = true;
 
         const document = app.activeDocument;
-        await DocumentUtils.checkBitsPerChannel(document);
+        await checkBitsPerChannel(document);
 
         const referenceLayer = document.backgroundLayer ?? document.layers[0];
         referenceLayer.visible = true;
@@ -56,41 +58,45 @@ export async function executeFrequencySeparation(e: React.MouseEvent) {
 
         // Ensure the required layers exist
         if (!detail) {
-            const name = BeautyPanel.getLayerName(E_Layer.Detail);
-            detail = await referenceLayer.duplicate(undefined, name);
+            detail = await referenceLayer.duplicate(undefined, BeautyPanel.layerNames.detail);
         }
         if (!soft) {
-            const name = BeautyPanel.getLayerName(E_Layer.Soft);
-            soft = await referenceLayer.duplicate(undefined, name);
+            soft = await referenceLayer.duplicate(undefined, BeautyPanel.layerNames.soft);
         }
 
         // Interpolate brightness on soft layer
-        await DocumentUtils.selectLayers([soft]);
+        await selectLayers([soft]);
         await filterMedianNoise({ radius: 10 });
 
         // Image calculation
-        await LayerUtils.applyImageEvent({
-            source: soft,
-            target: detail,
+        await imageCalculation({
+            sourceLayer: soft,
+            targetLayer: detail,
             channel: 'RGB',
             calculationType: 'add',
             offset: 0,
             scale: 2,
-            opacity: percent(100),
             invert: true
-        });
+        })
         detail.blendMode = 'linearLight';
 
         // Create adjustment layer (levels)
-        contrast = await LayerUtils.createContrastLayer(detail, 120, 132);
-        contrast.name = BeautyPanel.getLayerName(E_Layer.Contrast);
+        // contrast = await LayerUtils.createContrastLayer(detail, 120, 132);
+        contrast = await createAdjustmentLayer({
+            levels: {
+                adjustment: {
+                    input: [120, 132]
+                }
+            }
+        })
+        contrast.name = BeautyPanel.layerNames.contrast;
 
         // Update layer visibility
         referenceLayer.visible = false;
         soft.visible = false;
 
         // Focus detail layer
-        await DocumentUtils.selectLayers([detail]);
+        await selectLayers([detail]);
 
         // Set Brush as current tool
         // Set brush hardness to 100%
@@ -131,7 +137,7 @@ async function setLayerDetails() {
             layer.visible = false;
         }
 
-        await DocumentUtils.selectLayers([detail]);
+        await selectLayers([detail]);
         contrast.visible = true;
         detail.visible = true;
 
@@ -169,7 +175,7 @@ async function setLayerSoft() {
             layer.visible = false;
         }
 
-        await DocumentUtils.selectLayers([soft]);
+        await selectLayers([soft]);
         soft.visible = true;
 
         await selectTool('cloneStampTool', {

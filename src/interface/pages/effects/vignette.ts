@@ -1,8 +1,7 @@
 import { ActionDescriptor, app, Document, Layer } from "photoshop";
 import { BeautyPanel, E_Layer } from "../../../common/beautypanel";
-import { DocumentUtils } from "../../../common/document-utils";
-import { LayerUtils } from "../../../common/layer-utils";
 import { percent, pixels, points } from "../../../common/units";
+import { checkBitsPerChannel } from "../../../modules/image/bits-per-channel";
 
 export enum VignetteType {
     Circle = 'circle',
@@ -20,7 +19,7 @@ export async function createVignette(e: React.MouseEvent<HTMLButtonElement>) {
     try {
 
         const document = app.activeDocument;
-        await DocumentUtils.checkBitsPerChannel(document);
+        await checkBitsPerChannel(document);
         
         const referenceLayer = document.backgroundLayer ?? document.layers[0];
         referenceLayer.visible = true;
