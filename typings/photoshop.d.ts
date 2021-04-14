@@ -183,7 +183,7 @@ declare module 'photoshop' {
         readonly Document: typeof Document
         readonly Layer: typeof Layer
 
-        activeDocument: Document | null
+        readonly activeDocument: Document | null
         readonly documents: Document[]
         readonly actionTree: ActionSet[]
         readonly backgroundColor: object
