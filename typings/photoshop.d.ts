@@ -146,33 +146,12 @@ declare module 'photoshop' {
         mode: string
     }
 
-    export interface Photoshop {
-        readonly Action: typeof Action
-        readonly ActionSet: typeof ActionSet
-        readonly Document: typeof Document
-        readonly Layer: typeof Layer
-
-        activeDocument: Document | null
-        readonly documents: Document[]
-        readonly actionTree: ActionSet[]
-        readonly backgroundColor: object
-        readonly foregroundColor: object
-        readonly currentTool: Tool
-        eventNotifier: (event: unknown, descriptor: unknown) => void
-
-        readonly batchPlay: BatchPlay
-        bringToFront(): void
-        createDocument(options?: DocumentCreateOptions): Promise<Document | null>
-        open(entry?: File): Promise<Document>
-        showAlert(mesasge: string): Promise<void>
-    }
     export interface DocumentCreateOptions {
 
     }
     export interface ActionDescriptor {
         /** This is the action key */
         _obj?: string
-        _target?: ActionTargetReference | Array<ActionTargetReference>
         _options?: {
             dialogOptions?: 'display' | 'dontDisplay'
         }
@@ -198,7 +177,26 @@ declare module 'photoshop' {
     }
     export type BatchPlay = (commands: Array<ActionDescriptor>, options?: BatchPlayOptions) => Promise<Array<BatchPlayResult>>;
 
-    export const app: Photoshop;
+    export const app: {
+        readonly Action: typeof Action
+        readonly ActionSet: typeof ActionSet
+        readonly Document: typeof Document
+        readonly Layer: typeof Layer
+
+        activeDocument: Document | null
+        readonly documents: Document[]
+        readonly actionTree: ActionSet[]
+        readonly backgroundColor: object
+        readonly foregroundColor: object
+        readonly currentTool: Tool
+        eventNotifier: (event: unknown, descriptor: unknown) => void
+
+        readonly batchPlay: BatchPlay
+        bringToFront(): void
+        createDocument(options?: DocumentCreateOptions): Promise<Document | null>
+        open(entry?: File): Promise<Document>
+        showAlert(mesasge: string): Promise<void>
+    };
 
     export const action: {
         readonly batchPlay: BatchPlay

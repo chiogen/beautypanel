@@ -10,11 +10,16 @@
         "importHelpers": true,
         "allowSyntheticDefaultImports": true,
         "jsx": "react",
-        "strictNullChecks": true
+        "strictNullChecks": true,
+        "typeRoots": [
+            "./typings",
+            "./node_modules/@types"
+        ]
     },
     "include": [
         "src/**/*.ts",
-        "src/**/*.tsx"
+        "src/**/*.tsx",
+        "typings/**/*.d.ts"
     ],
     "exclude": [
         "node_modules"

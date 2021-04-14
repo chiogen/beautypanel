@@ -54,7 +54,7 @@ declare module 'uxp' {
         version: string
     };
 
-    export namespace storage {
+    export module storage {
 
         export const domains: {
             appLocalCache: symbol
@@ -141,7 +141,7 @@ declare module 'uxp' {
         }
 
         /** https://www.adobe.io/photoshop/uxp/uxp/reference-js/Modules/uxp/Persistent%20File%20Storage/FileSystemProvider/ */
-        export interface LocalFileSystemProvider {
+        interface LocalFileSystemProvider {
             isFileSystemProvider: boolean;
             supportedDomains: Array<symbol>
 
