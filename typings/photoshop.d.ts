@@ -200,7 +200,7 @@ declare module 'photoshop' {
 
     export const action: {
         readonly batchPlay: BatchPlay
-        addNotificationListener(types: Array<{ event: string }>, listener: (event: unknown) => void): void;
+        addNotificationListener(types: Array<{ event: string }>, listener: (event: string, descriptor: object) => void): void;
     };
 
 }
