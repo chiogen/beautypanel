@@ -1,6 +1,5 @@
 import { ActionDescriptor, app } from "photoshop";
 
-
 export async function setToolOptions(options: Object) {
 
     const [result] = await app.batchPlay([
@@ -11,6 +10,7 @@ export async function setToolOptions(options: Object) {
         await app.showAlert(result.message);
 
 }
+
 export function _setToolOptions(options: Object, toolId?: string): ActionDescriptor {
     return {
         _obj: 'set',
