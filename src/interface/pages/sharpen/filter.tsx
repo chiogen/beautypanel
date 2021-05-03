@@ -2,7 +2,7 @@ import * as React from 'react'
 import i18next from 'i18next'
 import { Heading } from '@adobe/react-spectrum'
 import { filterUnsharpMask } from '../../../modules/filter/sharpen/unsharp-mask';
-import { app, Layer } from 'photoshop';
+import { app } from 'photoshop';
 import { DialogOptions } from '../../../enums/dialog-options';
 import { filterSmartSharpen } from '../../../modules/filter/sharpen/smart-sharpen';
 import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
