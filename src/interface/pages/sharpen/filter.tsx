@@ -16,11 +16,11 @@ import { mergeLayers } from '../../../modules/image/merge-layers';
 export const Filter = () => (
     <div className="section filters">
         <Heading>{i18next.t('sharpen.filters')}</Heading>
-        <div className="flex-buttons">
+        <div className="flex">
             <sp-action-button onClick={_executeUnsharpMask}>{i18next.t('sharpen.unsharpen')}</sp-action-button>
             <sp-action-button onClick={_executeSelectiveFilter}>{i18next.t('sharpen.selective')}</sp-action-button>
         </div>
-        <div className="flex-buttons">
+        <div className="flex">
             <sp-action-button onClick={_executeFreqSeparationFilter}># {i18next.t('sharpen.frequencySeparation')}</sp-action-button>
             <sp-action-button onClick={_executeMaskedFilter}># {i18next.t('sharpen.masked')}</sp-action-button>
         </div>

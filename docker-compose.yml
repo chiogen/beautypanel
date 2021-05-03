@@ -6,3 +6,10 @@ services:
         working_dir: /code
         entrypoint: npm
         command: start
+    build-styles:
+        image: node:lts
+        volumes:
+            - .:/code
+        working_dir: /code
+        entrypoint: npm
+        command: run start:styles

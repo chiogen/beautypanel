@@ -3,9 +3,9 @@ import cjs from '@rollup/plugin-commonjs'
 import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript'
 import json from '@rollup/plugin-json'
-import scss from 'rollup-plugin-scss'
 import babel from '@rollup/plugin-babel'
 import del from 'rollup-plugin-delete'
+import css from './deploy/rollup/css';
 
 const extensions = ['.js', '.ts'];
 
@@ -27,9 +27,11 @@ const app = {
         // Allows node_modules resolution
         resolve({
             mainFields: ['jsnext:main', 'module', 'main'],
-            extensions: ['ts', 'tsx', '.mjs', '.js', 'jsx'],
+            extensions: ['ts', 'tsx', '.mjs', '.js', '.jsx', '.css'],
             preferBuiltins: false
         }),
+        // Bundle stylesheets
+        css(),
         // Bundle JSON files
         json({
             compact: true,
@@ -38,13 +40,6 @@ const app = {
             ],
             preferConst: true,
             namedExports: true
-        }),
-        // Stylesheets
-        scss({
-            output: 'ccx/index.css',
-            includePaths: ['node_modules'],
-            compiler: require('sass'),
-            watch: 'src/styles'
         }),
         // Compile TypeScript/JavaScript files
         typescript(),

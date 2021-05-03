@@ -2,13 +2,12 @@ import i18next from "i18next";
 import * as React from 'react'
 import { StatefulComponent } from "../../../components/base/stateful-component";
 import { property } from "../../../decorators/react-property";
-import { PresetEditState } from "../../../reducer/preset-edit";
 import { store, TState } from "../../../store";
 import { ActionType } from "../../../store-action-types";
 import { opacity as defaultPresets } from './default-presets.json'
 import { PresetsManager } from "../../../common/presets-manager";
 import { app } from "photoshop";
-import { Heading } from "@react-spectrum/text";
+import { Heading, Grid, repeat, Flex } from '@adobe/react-spectrum'
 
 type State = {
     opacity: number
@@ -36,7 +35,7 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
             <div className="section">
                 <h3 className="title">{i18next.t('opacity')}</h3>
                 {this.renderPresetEdit()}
-                <div className="flex-buttons">
+                <div className="flex stretch">
                     {this.renderPresetButton(0)}
                     {this.renderPresetButton(1)}
                     {this.renderPresetButton(2)}

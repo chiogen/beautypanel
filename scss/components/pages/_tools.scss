@@ -1,13 +1,18 @@
 #frequency-separation {
     display: flex;
+
     > sp-action-button {
         flex-grow: 1;
     }
+
     > div {
+        
         flex-grow: 1;
         display: flex;
+
         > sp-action-button {
             flex-grow: 1;
         }
+
     }
 }

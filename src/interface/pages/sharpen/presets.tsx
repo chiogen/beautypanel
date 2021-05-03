@@ -40,7 +40,7 @@ export class Presets extends React.Component<{}, S> {
         return (
             <div className="section presets">
                 <Heading>{i18next.t("sharpen.presets")}</Heading>
-                <div className="buttons">
+                <div className="flex stretch">
                     {presets.map(this.renderPreset.bind(this))}
                 </div>
             </div>

@@ -7,9 +7,7 @@ import { property } from '../../../decorators/react-property';
 import { store, TState } from '../../../store';
 import { ActionType } from '../../../store-action-types';
 import { PresetsManager } from '../../../common/presets-manager';
-import { PresetEditState } from '../../../reducer/preset-edit';
-import { Heading } from '@react-spectrum/text';
-import { isAbortError } from '../../../common/errors/abort-error';
+import { Heading } from '@adobe/react-spectrum';
 
 export const hardnessPresets = new PresetsManager<number>('hardness', defaultPresets);
 
@@ -36,7 +34,7 @@ export class CurrentToolHardness extends StatefulComponent<{}, State> {
             <div className="section">
                 <h2 className="title">{i18next.t('hardness')}</h2>
                 {this.renderPresetEdit()}
-                <div className="flex-buttons">
+                <div className="flex stretch">
                     {this.renderPresetButton(0)}
                     {this.renderPresetButton(1)}
                     {this.renderPresetButton(2)}

@@ -5,7 +5,7 @@ import { app } from 'photoshop'
 export const Zoom = () => (
     <div className="section">
         <h3 className="title">{i18next.t('zoom')}</h3>
-        <div className="flex-buttons">
+        <div className="flex stretch">
             <sp-action-button onClick={zoomFit}>{i18next.t('zoomFit')}</sp-action-button>
             <sp-action-button onClick={zoomOut}>-</sp-action-button>
             <sp-action-button onClick={zoomPixelPerfect}>100%</sp-action-button>

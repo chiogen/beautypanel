@@ -125,19 +125,19 @@ export class SavePage extends React.Component<P, S> {
             <div className="section">
                 <Heading>{i18next.t('savePage.currentPicture')}</Heading>
                 <div id="document-information">
-                    <div>
+                    <div className="flex">
                         <span>{activeDocument?.path ?? ''}</span>
                     </div>
-                    <div>
+                    <div className="flex">
                         <span>{i18next.t('savePage.resolution')}</span>
                         <span>{width}x{height}</span>
                     </div>
-                    <div>
+                    <div className="flex">
                         <span>{i18next.t('savePage.pictureTypeLabel')}</span>
                         <span>{format}</span>
                     </div>
                 </div>
-                <div className="actions">
+                <div className="flex stretch">
                     <sp-action-button style={{ display: 'flex' }} onClick={quickSave}>{texts.save}</sp-action-button>
                     <sp-action-button style={{ display: 'flex' }} onClick={saveAs}>{texts.saveAs}</sp-action-button>
                 </div>
@@ -169,7 +169,7 @@ export class SavePage extends React.Component<P, S> {
                     {texts.saveUnscaledButtonText} {formatCode}
                 </sp-action-button>
 
-                <div className="output-dir">
+                <div className="output-dir flex">
                     <span> {this.texts.outputFolder} {saveFolder} </span>
                 </div>
             </div>

@@ -4,7 +4,6 @@
         display: contents;
 
         & > div {
-            display: flex;
             padding-left: 1em;            
             padding-right: 1em;
 
@@ -19,16 +18,8 @@
 
     }
 
-    .actions {
-        display: flex;
-    }
-    sp-action-button  {
-        flex-grow: 1;
-    }
-
     .output-dir {
-        display: flex;
-        padding: 0.5rem;
+        padding: 1rem 0.5rem ;
     }
 
     a {

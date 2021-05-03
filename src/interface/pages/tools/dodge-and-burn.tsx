@@ -65,16 +65,16 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
             <div className="section">
                 <h3 className="title">Dodge and Burn</h3>
                 <div id="dodge-and-burn">
-                    <div className="flex-buttons">
+                    <div className="flex stretch">
                         <sp-action-button onClick={this.excecuteWithGradient.bind(this)}># {i18next.t('dodgeAndBurn.gradient')}</sp-action-button>
                         <sp-action-button onClick={this.execute.bind(this)}>{i18next.t('dodgeAndBurn.default')}</sp-action-button>
                     </div>
-                    <div className="flex-buttons">
+                    <div className="flex stretch">
                         <sp-action-button data-color="white" style={white} onClick={setColor}>{i18next.t('dodgeAndBurn.white')}</sp-action-button>
                         <sp-action-button data-color="gray" style={gray} onClick={setColor}>{i18next.t('dodgeAndBurn.gray')}</sp-action-button>
                         <sp-action-button data-color="black" style={black} onClick={setColor}>{i18next.t('dodgeAndBurn.black')}</sp-action-button>
                     </div>
-                    <div className="current-tool-buttons flex-buttons">
+                    <div className="flex stretch">
                         <sp-action-button data-active={this.currentTool === 'paintbrushTool'} onClick={onBrushButtonClicked}>Brush</sp-action-button>
                         <sp-action-button data-active={this.currentTool === 'cloneStampTool'} onClick={onStampButtonClicked}>Stamp</sp-action-button>
                     </div>

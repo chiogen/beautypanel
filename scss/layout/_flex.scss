@@ -1,0 +1,13 @@
+.flex {
+    display: flex;
+
+    &.stretch {
+        & > * {
+            flex-grow: 1;
+        }
+    }
+
+    &.stack {
+        flex-direction: column;
+    }
+}

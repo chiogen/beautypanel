@@ -1,5 +1,4 @@
 #sharpen {
-
     .filters {
         sp-action-button {
             width: 50%;
@@ -13,14 +12,9 @@
     }
 
     .presets {
-        .buttons {
-            display: flex;
-            > sp-action-button {
-                text-align: center;
-                flex-grow: 1;
-                height: 3rem;
-            }
+        sp-action-button {
+            text-align: center;
+            height: 3rem;
         }
     }
-
 }

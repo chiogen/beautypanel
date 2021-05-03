@@ -1,7 +1,6 @@
 console.log('Loading Beautypanel...');
 
 import { app } from 'photoshop';
-import './styles/index.scss';
 import { localizationLoaded } from './localization';
 
 import './common/prototype-pollution/document';
