@@ -29,7 +29,7 @@ declare module 'uxp' {
         initialLocation?: string
     }
 
-    export const entryPoints: {
+    export const entrypoints: {
         _commands: Set<unknown>
         _panels: Set<unknown>
         _pluginInfo: {
@@ -46,6 +46,10 @@ declare module 'uxp' {
                 version: string
             }
         }
+        setup(config: {
+            commands?: Record<string, any>
+            panels?: Record<string, unknown>
+        }): unknown
     };
 
     export const host: {

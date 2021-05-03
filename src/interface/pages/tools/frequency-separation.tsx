@@ -25,17 +25,19 @@ export const FrequencySeparation = () => (
     </div>
 );
 
-export async function executeFrequencySeparation(e: React.MouseEvent) {
+export async function executeFrequencySeparation(e?: React.MouseEvent) {
 
     if (!app.activeDocument) {
         return;
     }
 
-    const button = (e.currentTarget || e.target) as HTMLButtonElement
+    const button = (e?.currentTarget ?? e?.target) as HTMLButtonElement | undefined;
 
     try {
 
-        button.disabled = true;
+        if (button) {
+            button.disabled = true;
+        }
 
         const document = app.activeDocument;
         await checkBitsPerChannel(document);
@@ -114,7 +116,9 @@ export async function executeFrequencySeparation(e: React.MouseEvent) {
         console.error(err);
         app.showAlert(err.message || err)
     } finally {
-        button.disabled = false;
+        if (button) {
+            button.disabled = false;
+        }
     }
 
 }
