@@ -4,43 +4,47 @@ declare namespace JSX {
         slot?: string
     }
 
+    type TypedReactElement<T, P = {}> = React.DetailedHTMLProps<DefaultAttributes & React.HTMLAttributes<T> & P, T>;
+
+
     interface IntrinsicElements {
 
         // <sp-checkbox>
-        'sp-action-button': React.DetailedHTMLProps<DefaultAttributes & React.HTMLAttributes<HTMLButtonElement> & {
-            quiet?: boolean
-            disabled?: boolean
-        }, HTMLButtonElement>
-
-        // <sp-button>
-        'sp-button': React.DetailedHTMLProps<DefaultAttributes & React.HTMLAttributes<HTMLButtonElement> &  {
+        'sp-action-button': TypedReactElement<HTMLButtonElement, {
             disabled?: boolean
             variant?: string
             quiet?: boolean
-        }, HTMLButtonElement>
+        }>
+
+        // <sp-button>
+        'sp-button': TypedReactElement<HTMLButtonElement, {
+            disabled?: boolean
+            variant?: string
+            quiet?: boolean
+        }>
 
         // <sp-icon>
-        'sp-icon': React.DetailedHTMLProps<DefaultAttributes & React.HTMLAttributes<HTMLElement> & {
-            size?: string
-        }, HTMLElement>
+        'sp-icon': TypedReactElement<HTMLElement>
 
         // <sp-checkbox>
-        'sp-checkbox': React.DetailedHTMLProps<DefaultAttributes & React.HTMLAttributes<HTMLInputElement>, HTMLInputElement>
+        'sp-checkbox': TypedReactElement<HTMLInputElement>
 
-        // <preset-edit-dialog>
-        'preset-edit-dialog': React.DetailedHTMLProps<DefaultAttributes & React.HTMLAttributes<HTMLElement>, HTMLElement>
-
-        // <preset-edit-dialog-slider>
-        'preset-edit-dialog-slider': React.DetailedHTMLProps<DefaultAttributes & React.HTMLAttributes<HTMLElement>, HTMLElement>
+        // <sp-textfield>
+        'sp-textfield': TypedReactElement<HTMLInputElement, {
+            type?: string
+        }>
 
         // <sp-slider>
-        'sp-slider': React.DetailedHTMLProps<any, HTMLElement>
+        'sp-slider': TypedReactElement<HTMLElement>
 
         // <sp-menu>
-        'sp-menu': React.DetailedHTMLProps<any, HTMLElement>
+        'sp-menu': TypedReactElement<HTMLElement>
 
         // <sp-menu>
-        'sp-divider': React.DetailedHTMLProps<any, HTMLElement>
+        'sp-divider': TypedReactElement<HTMLElement>
+
+        // <sp-checkbox>
+        'sp-label': TypedReactElement<HTMLSpanElement>
 
     }
 }

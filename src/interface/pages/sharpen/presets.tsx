@@ -26,15 +26,7 @@ interface UnsharpMaskPreset {
 export class Presets extends React.Component<{}, S> {
 
     private presets = new PresetsManager<UnsharpMaskPreset>('unsharpmask', _defaultPresets);
-
-    constructor(props: {}) {
-        super(props);
-
-        this.state = {
-            presetEdit: null
-        };
-    }
-
+    
     render() {
         const presets = this.presets.getAll();
         return (

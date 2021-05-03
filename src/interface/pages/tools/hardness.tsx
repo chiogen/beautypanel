@@ -48,29 +48,18 @@ export class CurrentToolHardness extends StatefulComponent<{}, State> {
         if (typeof this.presetEditIndex !== 'number')
             return undefined;
 
-        const lineStyle: React.CSSProperties = {
-            display: "flex",
-            alignItems: "center"
-        }
-
         const index = this.presetEditIndex;
         const currentValue = this.presetEditValue ?? hardnessPresets.get(index);
-
-        const onValueChanged = this._presetInputValueChanged.bind(this);
-
-        const cancel = () => this.cancelPresetEdit();
-        const submit = () => this.applyPresetEdit();
-
 
         return (
             <div className="dialog">
                 <Heading>Preset Edit</Heading>
-                <div style={lineStyle}>
-                    <input type="number" min="0" max="100" defaultValue={currentValue} onInput={onValueChanged} /> <span>%</span>
+                <div className="flex" style={{ alignItems: "center" }}>
+                    <sp-textfield placeholder="Value" type="number" defaultValue={currentValue} onInput={this._presetInputValueChanged}></sp-textfield>
                 </div>
                 <div className="dialog-actions">
-                    <sp-action-button onClick={cancel}>{i18next.t('cancel')}</sp-action-button>
-                    <sp-action-button onClick={submit}>OK</sp-action-button>
+                    <sp-action-button onClick={this.cancelPresetEdit}>{i18next.t('cancel')}</sp-action-button>
+                    <sp-action-button onClick={this.applyPresetEdit}>OK</sp-action-button>
                 </div>
             </div>
         );
@@ -78,7 +67,11 @@ export class CurrentToolHardness extends StatefulComponent<{}, State> {
     private _presetInputValueChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
         this.presetEditValue = parseInt(e.currentTarget.value.replace(/,/, '.'));
     }
-    private applyPresetEdit() {
+    private cancelPresetEdit = () => {
+        this.presetEditIndex = undefined;
+        this.presetEditValue = undefined;
+    }
+    private applyPresetEdit = () => {
         try {
             if (typeof this.presetEditIndex !== 'number')
                 return;
@@ -99,10 +92,6 @@ export class CurrentToolHardness extends StatefulComponent<{}, State> {
         } catch (err) {
             app.showAlert(err.message);
         }
-    }
-    private cancelPresetEdit() {
-        this.presetEditIndex = undefined;
-        this.presetEditValue = undefined;
     }
 
     private renderPresetButton(index: number) {
