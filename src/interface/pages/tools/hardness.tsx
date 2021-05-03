@@ -7,6 +7,7 @@ import { property } from '../../../decorators/react-property';
 import { store, TState } from '../../../store';
 import { ActionType } from '../../../store-action-types';
 import { PresetsManager } from '../../../common/presets-manager';
+import { Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
 
 export const hardnessPresets = new PresetsManager<number>('hardness', defaultPresets);
 
@@ -47,20 +48,23 @@ export class CurrentToolHardness extends StatefulComponent<{}, State> {
         if (typeof this.presetEditIndex !== 'number')
             return undefined;
 
-        const index = this.presetEditIndex;
-        const currentValue = this.presetEditValue ?? hardnessPresets.get(index);
+        const open = typeof this.presetEditIndex === 'number';
+        const defaultValue = this.presetEditValue ?? (this.presetEditIndex ? hardnessPresets.get(this.presetEditIndex) : 0);
+        const titleIndex = (this.presetEditIndex ?? 0) + 1;
 
         return (
-            <div className="dialog">
-                <h3>Preset Edit</h3>
-                <div className="flex" style={{ alignItems: "center" }}>
-                    <sp-textfield placeholder="Value" type="number" defaultValue={currentValue} onInput={this._presetInputValueChanged}></sp-textfield>
-                </div>
-                <div className="dialog-actions">
+            <Dialog open={open}>
+                <DialogTitle>Härte Preset {titleIndex}</DialogTitle>
+                <DialogContent>
+                    <div className="flex" style={{ alignItems: "center" }}>
+                        <sp-textfield placeholder="Value" type="number" defaultValue={defaultValue} onInput={this._presetInputValueChanged}></sp-textfield>
+                    </div>
+                </DialogContent>
+                <DialogActions>
                     <sp-action-button onClick={this.cancelPresetEdit}>{i18next.t('cancel')}</sp-action-button>
                     <sp-action-button onClick={this.applyPresetEdit}>OK</sp-action-button>
-                </div>
-            </div>
+                </DialogActions>
+            </Dialog>
         );
     }
     private _presetInputValueChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
