@@ -157,7 +157,7 @@ sp-button[data-active=true], sp-button[active], sp-action-button[data-active=tru
 #sharpen .filters sp-action-button {
   width: 50%;
 }
-#sharpen .options .checkbox {
+#sharpen .options div {
   margin-left: 1rem;
 }
 #sharpen .presets sp-action-button {

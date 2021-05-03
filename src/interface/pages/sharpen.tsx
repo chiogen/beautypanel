@@ -24,7 +24,7 @@ export class Sharpen extends React.Component<Props> {
 
         return <div id="sharpen" className={classes.join(' ')} style={style}>
             {Filter()}
-            <SharpenOptions />
+            {SharpenOptions()}
             <Presets />
         </div>;
     }
