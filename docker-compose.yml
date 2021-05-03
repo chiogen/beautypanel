@@ -1,15 +1,15 @@
 services:
-    build:
+    bundle:
         image: node:lts
         volumes:
             - .:/code
         working_dir: /code
         entrypoint: npm
         command: start
-    build-styles:
+    styles:
         image: node:lts
         volumes:
             - .:/code
         working_dir: /code
         entrypoint: npm
-        command: run start:styles
+        command: run start-styles

@@ -5,9 +5,11 @@ import typescript from '@rollup/plugin-typescript'
 import json from '@rollup/plugin-json'
 import babel from '@rollup/plugin-babel'
 import del from 'rollup-plugin-delete'
+import { terser } from 'rollup-plugin-terser'
 // import css from './deploy/rollup/css';
 import css from "rollup-plugin-import-css";
 
+const mode = process.env.NODE_ENV || 'development';
 const extensions = ['.js', '.ts'];
 
 /** @type {import('rollup').RollupOptions} */
@@ -54,6 +56,7 @@ const app = {
         }),
         // Convert cjs and umd modules to esm
         cjs({ extensions }),
+        mode === 'production' && terser()
     ]
 }
 
