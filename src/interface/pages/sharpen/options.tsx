@@ -1,8 +1,6 @@
 import * as React from 'react'
 import { Checkbox, Heading } from '@adobe/react-spectrum'
 import i18next from 'i18next';
-import { StatefulComponent } from '../../../components/base/stateful-component';
-import { property } from '../../../decorators/react-property';
 import { store, TState } from '../../../store';
 import { ActionType } from '../../../store-action-types';
 
