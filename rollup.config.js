@@ -5,7 +5,8 @@ import typescript from '@rollup/plugin-typescript'
 import json from '@rollup/plugin-json'
 import babel from '@rollup/plugin-babel'
 import del from 'rollup-plugin-delete'
-import css from './deploy/rollup/css';
+// import css from './deploy/rollup/css';
+import css from "rollup-plugin-import-css";
 
 const extensions = ['.js', '.ts'];
 
@@ -31,7 +32,9 @@ const app = {
             preferBuiltins: false
         }),
         // Bundle stylesheets
-        css(),
+        css({
+            output: 'adobe-spectrum.css'
+        }),
         // Bundle JSON files
         json({
             compact: true,

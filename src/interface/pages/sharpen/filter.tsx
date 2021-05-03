@@ -17,17 +17,17 @@ export const Filter = () => (
     <div className="section filters">
         <Heading>{i18next.t('sharpen.filters')}</Heading>
         <div className="flex">
-            <sp-action-button onClick={_executeUnsharpMask}>{i18next.t('sharpen.unsharpen')}</sp-action-button>
-            <sp-action-button onClick={_executeSelectiveFilter}>{i18next.t('sharpen.selective')}</sp-action-button>
+            <sp-action-button onClick={_executeUnsharpMask}> {i18next.t('sharpen.unsharpen')} </sp-action-button>
+            <sp-action-button onClick={_executeSelectiveFilter}> {i18next.t('sharpen.selective')} </sp-action-button>
         </div>
         <div className="flex">
-            <sp-action-button onClick={_executeFreqSeparationFilter}># {i18next.t('sharpen.frequencySeparation')}</sp-action-button>
-            <sp-action-button onClick={_executeMaskedFilter}># {i18next.t('sharpen.masked')}</sp-action-button>
+            <sp-action-button onClick={_executeFreqSeparationFilter}># {i18next.t('sharpen.frequencySeparation')} </sp-action-button>
+            <sp-action-button onClick={_executeMaskedFilter}># {i18next.t('sharpen.masked')} </sp-action-button>
         </div>
     </div>
 );
 
-async function _executeUnsharpMask(e: React.MouseEvent) {
+async function _executeUnsharpMask() {
     try {
 
         const { sharpenOptions } = store.getState();
@@ -44,7 +44,7 @@ async function _executeUnsharpMask(e: React.MouseEvent) {
             threshold: 0
         });
 
-    } catch(err) {
+    } catch (err) {
         app.showAlert(err.message);
     }
 }
@@ -76,7 +76,7 @@ async function _executeSelectiveFilter(e: React.MouseEvent) {
             dialogOptions: DialogOptions.Display
         });
 
-    } catch(err) {
+    } catch (err) {
         app.showAlert(err.message);
     }
 }
@@ -128,7 +128,7 @@ async function _executeFreqSeparationFilter(e: React.MouseEvent) {
 
         mergedLayer.delete();
 
-    } catch(err) {
+    } catch (err) {
         app.showAlert(err.message);
     }
 }
@@ -144,7 +144,7 @@ async function _executeMaskedFilter(e: React.MouseEvent) {
             await selectLayers([detail], true);
         }
 
-    } catch(err) {
+    } catch (err) {
         app.showAlert(err.message);
     }
 }

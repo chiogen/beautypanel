@@ -10,6 +10,7 @@
     "start:styles": "sass --watch scss:ccx/styles --no-source-map --load-path=node_modules"
   },
   "devDependencies": {
+    "@adobe/react-spectrum": "^3.9.0",
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
     "@rollup/plugin-babel": "^5.2.2",
@@ -23,12 +24,12 @@
     "rollup": "^2.35.1",
     "rollup-plugin-consts": "^1.0.2",
     "rollup-plugin-delete": "^2.0.0",
+    "rollup-plugin-import-css": "^2.0.1",
     "rollup-plugin-terser": "^7.0.2",
     "sass": "^1.32.0",
     "typescript": "^4.1.3"
   },
   "dependencies": {
-    "@adobe/react-spectrum": "^3.7.0",
     "@material-ui/core": "^4.11.3",
     "@vaadin/vaadin-core": "^17.0.11",
     "htm": "^3.0.4",

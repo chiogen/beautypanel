@@ -1,4 +1,4 @@
-import * as path from 'path';
+import { promises as fs } from 'fs';
 
 /**
  * @param {{ include?: string[], exclude?: string[] }} options
@@ -8,19 +8,16 @@ function css() {
 
     return {
         name: 'rollup-plugin-css',
-        transform(code, id) {
+        async load(id) {
             if (!id.endsWith('.css'))
                 return null;
 
+            let code = await fs.readFile(id, { encoding: 'utf-8' });
             code = `
-                // StyleAsset: ${path.relative(process.cwd(), id)}
-                const styles = document.createElement('styles');
-                styles.innerHTML = ${JSON.stringify(code)};
-                document.head.appendChild(style);
-                export default styles.innerHTML;
+                export default ${JSON.stringify(code)};
             `;
 
-            return { code };
+            return code;
         }
     }
 }
