@@ -4,7 +4,7 @@ import { ActionType } from '../store-action-types'
 import i18next from "i18next";
 import * as React from 'react'
 import { StatefulComponent } from "../components/base/stateful-component";
-import { Tab, Tabs } from '@material-ui/core'
+import { AppBar, Paper, Tab, Tabs } from '@material-ui/core'
 import { property } from "../decorators/react-property";
 
 // ToDo: Make Tabbar a component
@@ -47,12 +47,11 @@ export class Tabbar extends StatefulComponent<{}, State> {
         const index = indexPageMap.indexOf(this.page);
 
         return (
-            <Tabs value={index} onChange={this._onTabClick} >
+            <Tabs value={index} onChange={this._onTabClick} centered>
                 <Tab label={this.texts.tools} />
                 <Tab label={this.texts.sharpen} />
                 <Tab label={this.texts.effects} />
                 <Tab label={this.texts.save} />
-                <Tab label={this.texts.settings} />
             </Tabs>
         );
     }

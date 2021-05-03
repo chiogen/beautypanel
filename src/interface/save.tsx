@@ -1,7 +1,6 @@
 import { app } from 'photoshop'
 import * as React from 'react'
 import i18next from 'i18next'
-import { Heading } from '@adobe/react-spectrum';
 import { property } from '../decorators/react-property';
 import { Document } from 'photoshop';
 import { storage } from 'uxp';
@@ -123,7 +122,7 @@ export class SavePage extends React.Component<P, S> {
 
         return (
             <div className="section">
-                <Heading>{i18next.t('savePage.currentPicture')}</Heading>
+                <h3>{i18next.t('savePage.currentPicture')}</h3>
                 <div id="document-information">
                     <div className="flex">
                         <span>{activeDocument?.path ?? ''}</span>
@@ -159,12 +158,12 @@ export class SavePage extends React.Component<P, S> {
 
         return (
             <div className="section">
-                <Heading>{texts.saveScaledCopyTo}</Heading>
+                <h3>{texts.saveScaledCopyTo}</h3>
                 <sp-action-button style={{ display: 'flex' }} onClick={saveScaledCopy}>
                     {texts.saveScaledButtonText} {formatCode} {scaleWidth}
                 </sp-action-button>
 
-                <Heading>{texts.saveUnscaledCopyTo}</Heading>
+                <h3>{texts.saveUnscaledCopyTo}</h3>
                 <sp-action-button style={{ display: 'flex' }} onClick={saveUnscaledCopy}>
                     {texts.saveUnscaledButtonText} {formatCode}
                 </sp-action-button>

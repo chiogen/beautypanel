@@ -10,7 +10,6 @@
     "start:styles": "sass --watch scss:ccx/styles --no-source-map --load-path=node_modules"
   },
   "devDependencies": {
-    "@adobe/react-spectrum": "^3.9.0",
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
     "@rollup/plugin-babel": "^5.2.2",
@@ -30,15 +29,12 @@
     "typescript": "^4.1.3"
   },
   "dependencies": {
-    "@material-ui/core": "^4.11.3",
-    "@vaadin/vaadin-core": "^17.0.11",
-    "htm": "^3.0.4",
+    "@material-ui/core": "^4.11.4",
     "i18next": "^19.8.4",
     "path": "^0.12.7",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "redux": "^4.0.5",
-    "tslib": "^2.0.3",
-    "vue": "^3.0.5"
+    "tslib": "^2.0.3"
   }
 }

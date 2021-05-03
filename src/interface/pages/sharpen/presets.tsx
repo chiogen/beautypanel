@@ -1,6 +1,5 @@
 import * as React from "react"
 import i18next from "i18next";
-import { Heading } from "@adobe/react-spectrum";
 import { PresetsManager } from "../../../common/presets-manager";
 import { app } from "photoshop";
 import { filterUnsharpMask } from "../../../modules/filter/sharpen/unsharp-mask";
@@ -31,7 +30,7 @@ export class Presets extends React.Component<{}, S> {
         const presets = this.presets.getAll();
         return (
             <div className="section presets">
-                <Heading>{i18next.t("sharpen.presets")}</Heading>
+                <h3>{i18next.t("sharpen.presets")}</h3>
                 <div className="flex stretch">
                     {presets.map(this.renderPreset.bind(this))}
                 </div>

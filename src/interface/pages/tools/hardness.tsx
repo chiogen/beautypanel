@@ -7,7 +7,6 @@ import { property } from '../../../decorators/react-property';
 import { store, TState } from '../../../store';
 import { ActionType } from '../../../store-action-types';
 import { PresetsManager } from '../../../common/presets-manager';
-import { Heading } from '@adobe/react-spectrum';
 
 export const hardnessPresets = new PresetsManager<number>('hardness', defaultPresets);
 
@@ -53,7 +52,7 @@ export class CurrentToolHardness extends StatefulComponent<{}, State> {
 
         return (
             <div className="dialog">
-                <Heading>Preset Edit</Heading>
+                <h3>Preset Edit</h3>
                 <div className="flex" style={{ alignItems: "center" }}>
                     <sp-textfield placeholder="Value" type="number" defaultValue={currentValue} onInput={this._presetInputValueChanged}></sp-textfield>
                 </div>

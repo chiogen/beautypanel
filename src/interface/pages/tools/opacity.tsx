@@ -7,7 +7,6 @@ import { ActionType } from "../../../store-action-types";
 import { opacity as defaultPresets } from './default-presets.json'
 import { PresetsManager } from "../../../common/presets-manager";
 import { app } from "photoshop";
-import { Heading, Grid, repeat, Flex } from '@adobe/react-spectrum'
 
 type State = {
     opacity: number
@@ -66,7 +65,7 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
 
         return (
             <div className="dialog">
-                <Heading>Preset Edit</Heading>
+                <h3>Preset Edit</h3>
                 <div className="flex" style={{ alignItems: "center" }}>
                     <sp-textfield placeholder="Value" type="number" defaultValue={currentValue} onInput={this._presetInputValueChanged}></sp-textfield>
                 </div>

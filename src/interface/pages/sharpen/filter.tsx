@@ -1,6 +1,5 @@
 import * as React from 'react'
 import i18next from 'i18next'
-import { Heading } from '@adobe/react-spectrum'
 import { filterUnsharpMask } from '../../../modules/filter/sharpen/unsharp-mask';
 import { app } from 'photoshop';
 import { DialogOptions } from '../../../enums/dialog-options';
@@ -15,7 +14,7 @@ import { mergeLayers } from '../../../modules/image/merge-layers';
 
 export const Filter = () => (
     <div className="section filters">
-        <Heading>{i18next.t('sharpen.filters')}</Heading>
+        <h3>{i18next.t('sharpen.filters')}</h3>
         <div className="flex">
             <sp-action-button onClick={_executeUnsharpMask}> {i18next.t('sharpen.unsharpen')} </sp-action-button>
             <sp-action-button onClick={_executeSelectiveFilter}> {i18next.t('sharpen.selective')} </sp-action-button>

@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { Checkbox, Heading } from '@adobe/react-spectrum'
 import i18next from 'i18next';
 import { store, TState } from '../../../store';
 import { ActionType } from '../../../store-action-types';
@@ -10,7 +9,7 @@ type S = {};
 export function SharpenOptions() {
     return (
         <div className="section options">
-            <Heading>{i18next.t('options')}</Heading>
+            <h3>{i18next.t('options')}</h3>
             <div>
                 <sp-checkbox onChange={switchToDetailLayerChanged} defaultChecked={true}>
                     {i18next.t('sharpen.switchToDetailLayer')}
