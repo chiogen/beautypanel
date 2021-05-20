@@ -1,5 +1,9 @@
 {
     "appTitle": "Beautypanel",
+    "yes": "Ja",
+    "no": "Nein",
+    "ok": "Ok",
+    "abort": "Abbrechen",
     "tabbar": {
         "tools": "Werkzeuge",
         "sharpen": "Schärfe",

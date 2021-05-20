@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as ReactDom from 'react-dom'
 import i18next from "i18next";
+import { showDialog } from './dialog';
 
 export const enum ConfirmDialogChoiceSet {
     YesNo,
@@ -18,7 +19,7 @@ export async function showConfirmDialog(message: string, choiceSet = ConfirmDial
             <p>
                 {message}
             </p>
-            <div>
+            <div className="actions">
                 {renderChoices(dialog, choiceSet)}
             </div>
         </sp-body>,
@@ -30,7 +31,6 @@ export async function showConfirmDialog(message: string, choiceSet = ConfirmDial
     });
 
     dialog.remove();
-
     return result === 'ok';
 }
 

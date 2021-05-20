@@ -13,3 +13,14 @@
         justify-content: flex-end;
     }
 }
+
+dialog {
+    .actions {
+        display: flex;
+        justify-content: center;
+
+        sp-action-button {
+            width: 100px;
+        }
+    }
+}

@@ -1,5 +1,9 @@
 {
     "appTitle": "Beautypanel",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "Ok",
+    "abort": "Abort",
     "tabbar": {
         "tools": "Tools",
         "sharpen": "Sharpen",

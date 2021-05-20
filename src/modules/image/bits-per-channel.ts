@@ -1,6 +1,6 @@
 import i18next from "i18next";
 import { ActionDescriptor, app, Document } from "photoshop";
-import { showConfirmDialog } from "../../common/dialog";
+import { ConfirmDialogChoiceSet, showConfirmDialog } from "../ui/confirm";
 
 
 export async function getBitsPerChannel(document: Document): Promise<number> {
@@ -29,8 +29,7 @@ export async function checkBitsPerChannel(document: Document) {
     }
 
     const message = i18next.t('requestBitsPerChannelConvert');
-
-    const convert = await showConfirmDialog(message);
+    const convert = await showConfirmDialog(message, ConfirmDialogChoiceSet.YesNo);
 
     if (convert) {
 

@@ -145,6 +145,14 @@ sp-button[data-active=true], sp-button[active], sp-action-button[data-active=tru
   justify-content: flex-end;
 }
 
+dialog .actions {
+  display: flex;
+  justify-content: center;
+}
+dialog .actions sp-action-button {
+  width: 100px;
+}
+
 #frequency-separation {
   display: flex;
 }
