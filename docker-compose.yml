@@ -3,6 +3,8 @@ services:
         image: node:lts
         volumes:
             - .:/code
+        environment: 
+            - NODE_ENV=development
         working_dir: /code
         entrypoint: npm
         command: start

@@ -4,23 +4,29 @@ declare namespace JSX {
         slot?: string
     }
 
-    type TypedReactElement<T, P = {}> = React.DetailedHTMLProps<DefaultAttributes & React.HTMLAttributes<T> & P, T>;
+    type TypedReactElement<T, P = {}> = React.DetailedHTMLProps<DefaultAttributes & React.HTMLAttributes<T> & Partial<P>, T>;
 
 
     interface IntrinsicElements {
 
+        'sp-header': TypedReactElement<HTMLElement, {
+            size: string
+        }>
+
+        'sp-body': TypedReactElement<HTMLElement>
+
         // <sp-checkbox>
         'sp-action-button': TypedReactElement<HTMLButtonElement, {
-            disabled?: boolean
-            variant?: string
-            quiet?: boolean
+            disabled: boolean
+            variant: string
+            quiet: boolean
         }>
 
         // <sp-button>
         'sp-button': TypedReactElement<HTMLButtonElement, {
-            disabled?: boolean
-            variant?: string
-            quiet?: boolean
+            disabled: boolean
+            variant: string
+            quiet: boolean
         }>
 
         // <sp-icon>
@@ -31,7 +37,7 @@ declare namespace JSX {
 
         // <sp-textfield>
         'sp-textfield': TypedReactElement<HTMLInputElement, {
-            type?: string
+            type: string
         }>
 
         // <sp-slider>
@@ -41,7 +47,9 @@ declare namespace JSX {
         'sp-menu': TypedReactElement<HTMLElement>
 
         // <sp-menu>
-        'sp-divider': TypedReactElement<HTMLElement>
+        'sp-divider': TypedReactElement<HTMLElement, {
+            size: string
+        }>
 
         // <sp-checkbox>
         'sp-label': TypedReactElement<HTMLSpanElement>
