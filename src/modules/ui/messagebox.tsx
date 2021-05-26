@@ -2,6 +2,9 @@ import * as React from 'react'
 import { showDialog } from './dialog';
 
 export async function showMessageBox(message: string) {
+    let dialog: HTMLUxpDialogElement | undefined;
+    const close = () => dialog?.close('dismiss');
+
     await showDialog(
         <sp-body>
             <p>
@@ -10,6 +13,7 @@ export async function showMessageBox(message: string) {
             <div role="row" className="actions">
                 <sp-action-button onClick={close}> OK </sp-action-button>
             </div>
-        </sp-body>
+        </sp-body>,
+        d => dialog = d
     );
 }
