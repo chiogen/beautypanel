@@ -1,3 +1,4 @@
+import i18next from 'i18next';
 import * as React from 'react'
 import { store, TState } from '../../store';
 import { DodgeAndBurn } from './tools/dodge-and-burn';
@@ -21,12 +22,14 @@ export class Tools extends React.Component<Props, State> {
             style.display = 'none';
         }
 
-        return <div id="tools" className={classes.join(' ')} style={style}>
-            {FrequencySeparation()}
-            <DodgeAndBurn />
-            <CurrentToolOpacity />
-            <CurrentToolHardness />
-            {Zoom()}
-        </div>
+        return (
+            <div id="tools" className={classes.join(' ')} style={style}>
+                <FrequencySeparation />
+                <DodgeAndBurn />
+                <CurrentToolOpacity />
+                <CurrentToolHardness />
+                <Zoom />
+            </div>
+        );
     }
 }
