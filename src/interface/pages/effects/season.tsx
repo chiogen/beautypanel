@@ -2,7 +2,7 @@ import i18next from "i18next";
 import { ActionDescriptor, app, Document } from "photoshop";
 import { BeautyPanel, E_Layer } from "../../../common/beautypanel";
 import { percent } from "../../../common/units";
-import { confirm } from "../../dialogues/confirm";
+import { showConfirmDialog } from "../../../modules/ui/confirm";
 
 
 export type ColorCorrectionColor = 'reds' | 'yellows' | 'greens' | 'cyans' | 'blues' | 'magentas' | 'whites' | 'neutrals' | 'blacks'
@@ -130,7 +130,8 @@ export async function createSeasonEffect(name: string, profile: SeasonProfile) {
 
         // Check layers
         if (layer) {
-            if (confirm('Overwrite existing layers?')) {
+            const deleteConfirmed = await showConfirmDialog('Overwrite existing layers?');
+            if (deleteConfirmed) {
                 layer.delete();
                 layer = undefined;
             } else {

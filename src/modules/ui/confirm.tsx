@@ -1,14 +1,14 @@
 import * as React from 'react'
 import * as ReactDom from 'react-dom'
 import i18next from "i18next";
-import { showDialog } from './dialog';
+import { createAbortError, throwAbortError } from '../../common/errors/abort-error';
 
 export const enum ConfirmDialogChoiceSet {
     YesNo,
     OkAbort
 }
 
-export async function showConfirmDialog(message: string, choiceSet = ConfirmDialogChoiceSet.OkAbort) {
+export async function showConfirmDialog(message: string, choiceSet = ConfirmDialogChoiceSet.OkAbort, defaultBehavior = true) {
     const title = i18next.t('appTitle');
 
     const dialog = document.createElement('dialog') as HTMLUxpDialogElement;
@@ -31,6 +31,11 @@ export async function showConfirmDialog(message: string, choiceSet = ConfirmDial
     });
 
     dialog.remove();
+
+    if (defaultBehavior && result === 'abort') {
+        throw createAbortError();
+    }
+
     return result === 'ok';
 }
 
@@ -55,11 +60,12 @@ function renderYesNoChoices(dialog: HTMLUxpDialogElement) {
 }
 function renderOkAbortChoices(dialog: HTMLUxpDialogElement) {
 
-    const _yes = () => dialog.close('ok');
-    const _no = () => dialog.close('declined');
+    const _confirm = () => dialog.close('ok');
+    const _decline = () => dialog.close('abort');
 
-    return (
-        <sp-action-button></sp-action-button>
-    )
+    return <>
+        <sp-action-button onClick={_confirm}>{i18next.t('ok')}</sp-action-button>
+        <sp-action-button onClick={_decline}>{i18next.t('abort')}</sp-action-button>
+    </>
 
 }

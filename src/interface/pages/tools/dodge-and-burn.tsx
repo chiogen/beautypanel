@@ -2,7 +2,6 @@ import * as React from 'react'
 import i18next from "i18next";
 import { app, Layer } from 'photoshop';
 import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
-import { confirm } from '../../dialogues/confirm';
 import { StatefulComponent } from '../../../components/base/stateful-component';
 import { store, TState } from '../../../store';
 import { property } from '../../../decorators/react-property';
@@ -11,6 +10,7 @@ import { selectTool } from '../../../modules/application/select-tool';
 import { setForegroundColor } from '../../../modules/application/foreground-color';
 import { checkBitsPerChannel } from '../../../modules/image/bits-per-channel';
 import { selectLayers } from '../../../modules/image/select-layers';
+import { showConfirmDialog } from '../../../modules/ui/confirm';
 
 interface State {
     currentTool: string,
@@ -105,7 +105,8 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
 
             // Delete layers if they exist and the user has permitted it
             if (layer) {
-                if (confirm('Create new layers?')) {
+                const deleteConfirmed = await showConfirmDialog('Create new layers?');
+                if (deleteConfirmed) {
                     layer.delete();
                     layer = undefined;
                 }
@@ -171,7 +172,8 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
 
             // Delete layers if they exist and the user has permitted it
             if (bright || dark) {
-                if (confirm('Create new layers?')) {
+                const deleteConfirmed = await showConfirmDialog('Create new layers?');
+                if (deleteConfirmed) {
                     bright?.delete();
                     dark?.delete();
                     bright = dark = undefined;

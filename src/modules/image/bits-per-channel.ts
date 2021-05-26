@@ -29,9 +29,9 @@ export async function checkBitsPerChannel(document: Document) {
     }
 
     const message = i18next.t('requestBitsPerChannelConvert');
-    const convert = await showConfirmDialog(message, ConfirmDialogChoiceSet.YesNo);
+    const convertConfirmed = await showConfirmDialog(message, ConfirmDialogChoiceSet.YesNo);
 
-    if (convert) {
+    if (convertConfirmed) {
 
         const descriptor: ActionDescriptor = {
             _obj: 'convertMode',

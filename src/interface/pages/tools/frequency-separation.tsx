@@ -2,7 +2,6 @@ import * as React from 'react'
 import i18next from "i18next";
 import { app, Layer } from 'photoshop';
 import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
-import { confirm } from '../../dialogues/confirm';
 import { percent } from '../../../common/units';
 import { opacityPresets } from './opacity'
 import { filterMedianNoise } from '../../../modules/filter/noise/median';
@@ -11,6 +10,7 @@ import { checkBitsPerChannel } from '../../../modules/image/bits-per-channel';
 import { selectLayers } from '../../../modules/image/select-layers';
 import { imageCalculation } from '../../../modules/image/calculation';
 import { createAdjustmentLayer } from '../../../modules/masks/levels';
+import { showConfirmDialog } from '../../../modules/ui/confirm';
 
 export const FrequencySeparation = () => (
     <div className="section">
@@ -50,7 +50,8 @@ export async function executeFrequencySeparation(e?: React.MouseEvent) {
 
         // Delete layers if they exist and the user has permitted it
         if (detail || soft || contrast) {
-            if (confirm('Create new layers?')) {
+            const deleteConfirmed = await showConfirmDialog('Create new layers?');
+            if (deleteConfirmed) {
                 soft?.delete();
                 detail?.delete();
                 contrast?.delete();
