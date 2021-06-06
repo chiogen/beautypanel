@@ -70,7 +70,11 @@
     "radius": "Radius",
     "strength": "Stärke",
     "intensity": "Intensität",
-    "requestBitsPerChannelConvert": "Das Bild liegt im 8 Bit Modus vor? Das ist nicht ideal für das BeautyPanel. Soll es in den 16 Bit Modue konvertiert werden?",
+    "confirmColorDepthConvert": "Das Bild liegt im 8 Bit Modus vor? Das ist nicht ideal für das BeautyPanel. Soll es in den 16 Bit Modue konvertiert werden?",
+    "colorDepthConvertFailed": {
+        "header": "Bildtiefenkonvertierung fehlgeschlagen",
+        "message": "Fehlercode: {{code}}"
+    },
     "layerNames": {
         "soft": "Soft",
         "detail": "Detail",

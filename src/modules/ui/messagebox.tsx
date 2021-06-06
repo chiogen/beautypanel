@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { showDialog } from './dialog';
 
-export async function showMessageBox(message: string) {
+export async function showMessageBox(message: string | JSX.Element) {
     let dialog: HTMLUxpDialogElement | undefined;
     const close = () => dialog?.close('dismiss');
 

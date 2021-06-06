@@ -74,7 +74,11 @@
     "radius": "Radius",
     "strength": "Strength",
     "intensity": "Intensity",
-    "requestBitsPerChannelConvert": "The picture is in 8 bit mode. This is not ideal for the BeautyPanel. Convert to 16 bit now?",
+    "confirmColorDepthConvert": "The picture is in 8 bit mode. This is not ideal for the BeautyPanel. Convert to 16 bit now?",
+    "colorDepthConvertFailed": {
+        "header": "Color depth conversion failed.",
+        "message": "Error code: {{code}}"
+    },
     "layerNames": {
         "soft": "Soft",
         "detail": "Detail",
