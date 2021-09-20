@@ -1,6 +1,6 @@
 services:
     bundle:
-        image: node:lts
+        image: node
         volumes:
             - .:/code
         environment: 
@@ -9,7 +9,7 @@ services:
         entrypoint: npm
         command: start
     styles:
-        image: node:lts
+        image: node
         volumes:
             - .:/code
         working_dir: /code
