@@ -28,14 +28,13 @@ function isEmptyDescriptor(descriptor: object) {
     return Object.keys(descriptor).length === 0;
 }
 
-async function scaleImage(dialogOptions = DialogOptions.DontDisplay) {
+async function scaleImage(dialogOptions = DialogOptions.DontDisplay, size = 2048) {
 
     const key = 'lastScaleImageDescriptor';
     const storageValue = localStorage.getItem(key);
 
     const descriptor: any = storageValue ? JSON.parse(storageValue) : {
         // Set Default values
-        width: pixels(2048),
         scaleStyles: true,
         constrainProportions: true,
         interfaceIconFrameDimmed: {
@@ -43,6 +42,14 @@ async function scaleImage(dialogOptions = DialogOptions.DontDisplay) {
             _value: "automaticInterpolation"
         }
     };
+
+    if (app.activeDocument!.width > app.activeDocument!.height) {
+        descriptor.width = pixels(size);
+        delete descriptor.height;
+    } else {
+        descriptor.height = pixels(size);
+        delete descriptor.width;
+    }
 
     const [result] = await app.batchPlay([
         {
