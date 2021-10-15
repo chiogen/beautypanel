@@ -17,10 +17,13 @@ function setLastSavedFormat(format: object) {
     localStorage.setItem('lastSavedFormat', JSON.stringify(format));
 }
 
-export function getLastScaleWidth() {
+export function getLastScaleSize() {
     const storageValue = localStorage.getItem('lastScaleImageDescriptor');
     if (storageValue) {
-        return JSON.parse(storageValue).width?._value;
+        const descriptor = JSON.parse(storageValue);
+        const width = descriptor.width?.value ?? -1;
+        const height = descriptor.height?.value ?? -1;
+        return Math.max(width, height);
     }
 }
 

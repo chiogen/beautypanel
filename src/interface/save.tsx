@@ -7,7 +7,7 @@ import { storage } from 'uxp';
 import * as path from 'path';
 import { shallowCompare } from '../common/shallow-compare';
 import { addDocumentLoadedCallback } from '../common/active-document-observer';
-import { getLastSavedFormat, getLastScaleWidth, saveScaledCopy, saveUnscaledCopy } from '../modules/save';
+import { getLastSavedFormat, getLastScaleSize, saveScaledCopy, saveUnscaledCopy } from '../modules/save';
 import { handleException } from '../common/errors/handle-error';
 
 type P = {
@@ -149,7 +149,7 @@ export class SavePage extends React.Component<P, S> {
 
         const format = getLastSavedFormat();
         const formatCode = format?._obj ?? '';
-        const scaleWidth = String(getLastScaleWidth() ?? '');
+        const scaleWidth = String(getLastScaleSize() ?? '');
 
         const saveFolder = this.copyOutputFolder;
 
