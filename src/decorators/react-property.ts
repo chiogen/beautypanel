@@ -1,6 +1,6 @@
 import { StatefulComponent } from '../components/base/stateful-component';
 
-export function property(proto: any, name: string) {
+export function property(proto: object, name: string) {
 
     if (name in proto) {
         return;
@@ -15,7 +15,7 @@ export function property(proto: any, name: string) {
             }
             return this.state[name];
         },
-        set(this: StatefulComponent, value: any) {
+        set(this: StatefulComponent, value: object) {
             const oldValue = this.state[name];
             values.set(this, value);
 
