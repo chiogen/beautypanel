@@ -1,16 +1,10 @@
-import * as React from 'react';
 import i18next from 'i18next';
-import { app, constants, Layer } from 'photoshop';
-import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
+import { app, core } from 'photoshop';
+import * as React from 'react';
 import { StatefulComponent } from '../../../components/base/stateful-component';
-import { store, TState } from '../../../store';
 import { property } from '../../../decorators/react-property';
-import { invert } from '../../../modules/layer/invert';
-import { selectTool } from '../../../modules/application/select-tool';
-import { setForegroundColor } from '../../../modules/application/foreground-color';
-import { checkBitsPerChannel } from '../../../modules/image/bits-per-channel';
-import { selectLayers } from '../../../modules/image/select-layers';
-import { showConfirmDialog } from '../../../modules/ui/confirm';
+import { executeDodgeAndBurn, executeDodgeAndBurnWithGradient, selectToolForDodgeAndBurn, setColorForDodgeAndBurn } from '../../../modules/actions/dodge-and-burn';
+import { store, TState } from '../../../store';
 
 interface State {
     currentTool: string,
@@ -87,7 +81,7 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
         this.currentTool = state.currentTool;
     }
 
-    private async execute(_e: React.MouseEvent<HTMLButtonElement>) {
+    private async execute() {
 
         if (!app.activeDocument) {
             return;
@@ -95,54 +89,10 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
 
         try {
 
-            const document = app.activeDocument;
+            await core.executeAsModal(executeDodgeAndBurn, {
+                commandName: 'Dodge And Burn'
+            });
 
-            // Preparations
-            await checkBitsPerChannel(document);
-
-            // Get maybe existing layers
-            let layer = BeautyPanel.layers.dodgeAndBurnGray;
-
-            // Delete layers if they exist and the user has permitted it
-            if (layer) {
-                const deleteConfirmed = await showConfirmDialog('Create new layers?');
-                if (deleteConfirmed) {
-                    layer.delete();
-                    layer = undefined;
-                }
-            }
-
-            // Pick fill to center of image
-            const [fillResult] = await app.batchPlay([
-                {
-                    _obj: 'make',
-                    _target: [
-                        {
-                            _ref: 'layer'
-                        }
-                    ],
-                    using: {
-                        _obj: 'layer',
-                        name: BeautyPanel.getLayerName(E_Layer.DodgeAndBurn),
-                        mode: {
-                            _enum: 'blendMode',
-                            _value: 'softLight'
-                        },
-                        fillNeutral: true,
-                        color: {
-                            _enum: 'color',
-                            _value: 'gray'
-                        }
-                    }
-                }
-            ], {});
-            if (fillResult.message) {
-                throw new Error(fillResult.message);
-            }
-
-
-            await selectTool('paintbrushTool');
-            await setForegroundColor(255, 255, 255);
             this.color = 'white';
 
         } catch (err) {
@@ -152,7 +102,7 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
 
     }
 
-    private async excecuteWithGradient(_e: React.MouseEvent<HTMLButtonElement>) {
+    private async excecuteWithGradient() {
 
         if (!app.activeDocument) {
             return;
@@ -160,64 +110,9 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
 
         try {
 
-            const document = app.activeDocument;
-            await checkBitsPerChannel(document);
-
-            const sourceLayer = document.backgroundLayer ?? document.layers[0];
-            sourceLayer.visible = true;
-
-            // Get maybe existing layers
-            let bright = BeautyPanel.layers.bright;
-            let dark = BeautyPanel.layers.dark;
-
-            // Delete layers if they exist and the user has permitted it
-            if (bright || dark) {
-                const deleteConfirmed = await showConfirmDialog('Create new layers?');
-                if (deleteConfirmed) {
-                    bright?.delete();
-                    dark?.delete();
-                    bright = dark = undefined;
-                }
-            }
-
-            // ============================================ //
-            // Create adjustment layer "Bright"
-            if (!bright) {
-                bright = await addCurvedAdjustmentLayer(
-                    sourceLayer,
-                    BeautyPanel.getLayerName(E_Layer.Bright),
-                    [
-                        [0, 0],
-                        [84, 105],
-                        [188, 234],
-                        [255, 255]
-                    ]
-                );
-                await invert(bright);
-            }
-            bright.visible = true;
-            bright.blendMode = constants.BlendMode.LUMINOSITY;
-
-            // ============================================ //
-            // Create adjustment layer "Dark"
-            if (!dark) {
-                dark = await addCurvedAdjustmentLayer(
-                    sourceLayer,
-                    BeautyPanel.getLayerName(E_Layer.Dark),
-                    [
-                        [0, 0],
-                        [63, 21],
-                        [166, 144],
-                        [255, 255]
-                    ]
-                );
-                await invert(dark);
-            }
-            dark.visible = true;
-            dark.blendMode = constants.BlendMode.LUMINOSITY;
-
-            // Select brush to start painting
-            selectTool('paintbrushTool');
+            await core.executeAsModal(executeDodgeAndBurnWithGradient, {
+                commandName: 'Dodge And Burn (With Gradient)'
+            });
 
         } catch (err) {
             const message = err.message || err;
@@ -229,15 +124,10 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
     private async setColor(e: React.MouseEvent<HTMLButtonElement>) {
         try {
 
-            const layer = BeautyPanel.layers.dodgeAndBurnGray;
-            if (!layer) {
-                throw new Error('You must run Dodge&Burn first.');
-            }
-
             const button = e.target as HTMLButtonElement;
             const colorCode = button.dataset.color;
+
             if (colorCode) {
-                this.color = colorCode;
 
                 let grayscale = 128;
                 if (this.color === 'white') {
@@ -246,11 +136,11 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
                     grayscale = 0;
                 }
 
-                await selectTool('paintbrushTool');
-                await setForegroundColor(grayscale);
+                await core.executeAsModal(setColorForDodgeAndBurn(grayscale), {
+                    commandName: 'Select Dodge And Burn Color ' + colorCode
+                });
 
-                layer.visible = true;
-                await selectLayers([layer]);
+                this.color = colorCode;
             }
         } catch (err) {
             await app.showAlert(err);
@@ -259,70 +149,28 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
 
 }
 
-async function onBrushButtonClicked(e: React.MouseEvent<HTMLButtonElement>) {
+async function onBrushButtonClicked() {
     try {
-        await selectTool('paintbrushTool');
+
+        await core.executeAsModal(selectToolForDodgeAndBurn('paintbrushTool'), {
+            commandName: 'Select Dodge And Burn Brush'
+        });
+
     } catch (err) {
         const message = err.message || err;
         app.showAlert(message);
     }
 
 }
-async function onStampButtonClicked(e: React.MouseEvent<HTMLButtonElement>) {
+async function onStampButtonClicked() {
     try {
-        await selectTool('cloneStampTool');
+
+        await core.executeAsModal(selectToolForDodgeAndBurn('cloneStampTool'), {
+            commandName: 'Select Dodge And Burn CloneStamp'
+        });
+
     } catch (err) {
         const message = err.message || err;
         await app.showAlert(message);
     }
-}
-
-async function addCurvedAdjustmentLayer(sourceLayer: Layer, name: string, curve: Array<number[]>): Promise<Layer> {
-
-    const layer = await sourceLayer.duplicate(undefined, name);
-
-    const result = await app.batchPlay([
-        {
-            _obj: 'select',
-            _target: {
-                _ref: 'layer',
-                _id: layer._id
-            }
-        },
-        {
-            _obj: 'curves',
-            presetKind: {
-                _enum: 'presetKindType',
-                _value: 'presetKindCustom'
-            },
-            adjustment: [
-                {
-                    _obj: 'curvesAdjustment',
-                    channel: {
-                        _ref: 'channel',
-                        _enum: 'channel',
-                        _value: 'composite'
-                    },
-                    curve: curveArgument(curve)
-                }
-            ]
-        }
-    ], {});
-
-    for (const item of result) {
-        if (item.message) {
-            await app.showAlert(item.message);
-        }
-    }
-
-    return layer;
-}
-function curveArgument(curve: Array<number[]>) {
-    return curve.map(([x, y]) => {
-        return {
-            _obj: 'paint',
-            horizontal: x,
-            vertical: y
-        };
-    });
 }
