@@ -1,6 +1,6 @@
 import * as React from 'react';
 import i18next from 'i18next';
-import { app, Layer } from 'photoshop';
+import { app, constants, Layer } from 'photoshop';
 import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
 import { percent } from '../../../common/units';
 import { opacityPresets } from './opacity';
@@ -81,7 +81,7 @@ export async function executeFrequencySeparation(e?: React.MouseEvent) {
             scale: 2,
             invert: true
         });
-        detail.blendMode = 'linearLight';
+        detail.blendMode = constants.BlendMode.LINEARLIGHT;
 
         // Create adjustment layer (levels)
         // contrast = await LayerUtils.createContrastLayer(detail, 120, 132);

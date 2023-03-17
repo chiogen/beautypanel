@@ -1,6 +1,6 @@
 import * as React from 'react';
 import i18next from 'i18next';
-import { app, Layer } from 'photoshop';
+import { app, constants, Layer } from 'photoshop';
 import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
 import { StatefulComponent } from '../../../components/base/stateful-component';
 import { store, TState } from '../../../store';
@@ -135,7 +135,7 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
                         }
                     }
                 }
-            ]);
+            ], {});
             if (fillResult.message) {
                 throw new Error(fillResult.message);
             }
@@ -196,7 +196,7 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
                 await invert(bright);
             }
             bright.visible = true;
-            bright.blendMode = 'luminosity';
+            bright.blendMode = constants.BlendMode.LUMINOSITY;
 
             // ============================================ //
             // Create adjustment layer "Dark"
@@ -214,7 +214,7 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
                 await invert(dark);
             }
             dark.visible = true;
-            dark.blendMode = 'luminosity';
+            dark.blendMode = constants.BlendMode.LUMINOSITY;
 
             // Select brush to start painting
             selectTool('paintbrushTool');

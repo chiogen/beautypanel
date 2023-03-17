@@ -1,7 +1,7 @@
 import * as React from 'react';
 import i18next from 'i18next';
 import { filterUnsharpMask } from '../../../modules/filter/sharpen/unsharp-mask';
-import { app } from 'photoshop';
+import { app, constants } from 'photoshop';
 import { DialogOptions } from '../../../enums/dialog-options';
 import { filterSmartSharpen } from '../../../modules/filter/sharpen/smart-sharpen';
 import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
@@ -99,10 +99,13 @@ async function _executeFreqSeparationFilter(e: React.MouseEvent) {
         }
 
         const detailBlackWhite = await detail.duplicate(undefined, BeautyPanel.getLayerName(E_Layer.DetailBlackWhite));
+        if (!detailBlackWhite)
+            throw new Error('Photoshop did not duplicate "Detail" layer.');
+
         const detailColor = detail;
         detailColor.name = BeautyPanel.getLayerName(E_Layer.DetailColor);
 
-        detailBlackWhite.blendMode = 'linearLight';
+        detailBlackWhite.blendMode = constants.BlendMode.LINEARLIGHT;
         await imageDesaturation(detailBlackWhite);
         await imageCalculation({
             sourceLayer: detailColor,

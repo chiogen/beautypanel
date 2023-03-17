@@ -1,6 +1,6 @@
 import i18next from 'i18next';
-import { app } from 'photoshop';
-import { BlendMode } from 'photoshop/dom/Constants';
+import { app, constants } from 'photoshop';
+import { Layer } from 'photoshop/dom/Layer';
 import * as React from 'react';
 import { BeautyPanel, E_Layer } from '../../common/beautypanel';
 import { DialogOptions } from '../../enums/dialog-options';
@@ -11,7 +11,7 @@ import { mergeLayers } from '../../modules/image/merge-layers';
 import { invert } from '../../modules/layer/invert';
 import { createAdjustmentLayer } from '../../modules/masks/levels';
 import { createRevealAllMask } from '../../modules/masks/reveal-all';
-import { createAutumnEffect, createSeasonEffect, createSpringEffect } from './effects/season';
+import { createAutumnEffect, createSpringEffect } from './effects/season';
 import { createVignette } from './effects/vignette';
 
 type Props = {
@@ -75,13 +75,13 @@ async function enhanceDetails(e: React.MouseEvent<HTMLButtonElement>) {
         // Invert reference layer
         const inverted = await tempLayer!.duplicate();
         await invert(inverted);
-        inverted!.blendMode = BlendMode.VIVIDLIGHT;
+        inverted!.blendMode = constants.BlendMode.VIVIDLIGHT;
         await surfaceBlur(inverted, 24, 26);
 
         // Merge layers and finalize action
         const enhanceDetails = await mergeLayers(document, [tempLayer, inverted]);
         enhanceDetails.name = BeautyPanel.getLayerName(E_Layer.EnhanceDetails);
-        enhanceDetails.blendMode = BlendMode.OVERLAY;
+        enhanceDetails.blendMode = constants.BlendMode.OVERLAY;
         enhanceDetails.opacity = 50;
 
         // enhanceDetails.moveBelow(referenceLayer);
@@ -127,7 +127,7 @@ async function createOrthonEffect(e: React.MouseEvent<HTMLButtonElement>) {
         }
 
         orthonLayer.name = BeautyPanel.layerNames.orton;
-        orthonLayer.blendMode = 'normal';
+        orthonLayer.blendMode = constants.BlendMode.NORMAL;
         orthonLayer.opacity = 50;
 
         await filterGaussianBlur(5, DialogOptions.Display);
