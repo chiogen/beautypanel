@@ -1,0 +1,44 @@
+{
+    "ignorePatterns": [
+      "**/node_modules/**",
+      "*.js",
+      "shared/service-webservice-typings/graphql/generated.ts",
+      "scripts/**"
+    ],
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint",
+      "lit"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:lit/recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended"
+    ],
+    "rules": {
+      "@typescript-eslint/no-non-null-assertion": "off",
+      "@typescript-eslint/ban-types": "off",
+      "prefer-const": [
+        "warn",
+        {
+          "destructuring": "all"
+        }
+      ],
+      "no-empty-function": "off",
+      "@typescript-eslint/no-empty-function": [
+        "off"
+      ],
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": 1,
+      "quotes": [
+        "warn",
+        "single"
+      ],
+      "semi": "off",
+      "@typescript-eslint/semi": [
+        "warn"
+      ]
+    }
+  }

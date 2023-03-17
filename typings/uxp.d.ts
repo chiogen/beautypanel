@@ -73,20 +73,20 @@ declare module 'uxp' {
             userMusic: symbol
             userPictures: symbol
             userVideos: symbol
-        }
+        };
 
         export const formats: {
             binary: symbol
             utf8: symbol
-        }
+        };
         export const modes: {
             readOnly: symbol
             readWrite: symbol
-        }
+        };
         export const types: {
             file: symbol
             folder: symbol
-        }
+        };
 
 
         export interface EntryMetadata {
