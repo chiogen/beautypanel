@@ -1,3 +1,4 @@
+import { core } from 'photoshop';
 import { percent } from '../common/units';
 import { setToolOptions } from '../modules/application/set-tool-options';
 import { ActionType } from '../store-action-types';
@@ -34,20 +35,22 @@ const initial: CurrentToolOptionsState = {
 export type CurrentToolOptionsAction = UpdateToolDataAction | SetToolOpacityAction | SetToolHardnessAction | SetToolOptionsAction;
 
 function updateToolOptions(state: CurrentToolOptionsState): CurrentToolOptionsState {
-    state.promise = Promise.resolve(state.promise).then(
-        () => {
-            const descriptor = state._descriptor;
+    state.promise = Promise.resolve(state.promise).then(() => core.executeAsModal(() => {
 
-            if (descriptor.brush) {
-                descriptor.brush.hardness = percent(state.hardness);
-            }
+        const descriptor = state._descriptor;
 
-            descriptor.opacity = state.opacity;
-            descriptor.useScatter = false;
-
-            return setToolOptions(descriptor);
+        if (descriptor.brush) {
+            descriptor.brush.hardness = percent(state.hardness);
         }
-    );
+
+        descriptor.opacity = state.opacity;
+        descriptor.useScatter = false;
+
+        return setToolOptions(descriptor);
+
+    }, {
+        commandName: 'Update Tool Options'
+    }));
     return state;
 }
 

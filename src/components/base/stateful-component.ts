@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { Unsubscribe } from 'redux';
-import { property } from '../../decorators/react-property';
-import { Pages } from '../../interface/pages';
 import { store, TState } from '../../store';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export abstract class StatefulComponent<P = {}, S = {}, SS = any> extends React.Component<P, S, SS> {
 
     private _frame?: number;
