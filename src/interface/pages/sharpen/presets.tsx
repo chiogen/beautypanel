@@ -1,7 +1,7 @@
 import * as React from 'react';
 import i18next from 'i18next';
 import { PresetsManager } from '../../../common/presets-manager';
-import { app } from 'photoshop';
+import { app, core } from 'photoshop';
 import { filterUnsharpMask } from '../../../modules/filter/sharpen/unsharp-mask';
 import { DialogOptions } from '../../../enums/dialog-options';
 
@@ -50,24 +50,32 @@ export class Presets extends React.Component<{}, S> {
     private async _onPresetButtonClick(event: React.MouseEvent, preset: UnsharpMaskPreset, index: number) {
         try {
 
-            const result = await filterUnsharpMask({
-                amount: preset.amount,
-                radius: preset.radius,
-                threshold: 0,
-                dialogOptions: DialogOptions.Display
+            await core.executeAsModal(() => this._executePreset(event, preset, index), {
+                commandName: `Unsharp Mask ${preset.amount}% ${preset.radius}px`
             });
-
-            if (event.altKey && result.amount && result.radius) {
-                this.presets.set(index, {
-                    amount: result.amount._value,
-                    radius: result.radius._value
-                });
-                this.forceUpdate();
-            }
 
         } catch (err) {
             await app.showAlert(err.message);
         }
     }
+    private async _executePreset(event: React.MouseEvent, preset: UnsharpMaskPreset, index: number) {
+    
+        const result = await filterUnsharpMask({
+            amount: preset.amount,
+            radius: preset.radius,
+            threshold: 0,
+            dialogOptions: DialogOptions.Display
+        });
+    
+        if (event.altKey && result.amount && result.radius) {
+            this.presets.set(index, {
+                amount: result.amount._value,
+                radius: result.radius._value
+            });
+            this.forceUpdate();
+        }
+        
+    }
 
 }
+
