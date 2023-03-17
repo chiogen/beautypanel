@@ -112,20 +112,21 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
     private async onPresetClick(e: React.MouseEvent<HTMLButtonElement>) {
         const button = e.currentTarget as HTMLButtonElement;
 
-        if (e.button === 0 && e.altKey) {
+        if (e.button !== 0)
+            return;
+
+        if (e.altKey) {
             const index = parseInt(button.dataset.index!);
             this.presetEditIndex = index;
             return;
         }
 
-        if (e.button === 0) {
-            const index = parseInt(button.dataset.index!);
-            const value = opacityPresets.get(index);
-            store.dispatch({
-                type: ActionType.SetToolOpacity,
-                value
-            });
-        }
+        const index = parseInt(button.dataset.index!);
+        const value = opacityPresets.get(index);
+        store.dispatch({
+            type: ActionType.SetToolOpacity,
+            value
+        });
     }
 
     stateChanged(state: TState) {
