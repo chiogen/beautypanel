@@ -5,12 +5,12 @@ import { app, constants } from 'photoshop';
 import { DialogOptions } from '../../../enums/dialog-options';
 import { filterSmartSharpen } from '../../../modules/filter/sharpen/smart-sharpen';
 import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
-import { executeFrequencySeparation } from '../tools/frequency-separation';
 import { imageDesaturation } from '../../../modules/image/desaturate';
 import { imageCalculation } from '../../../modules/image/calculation';
 import { store } from '../../../store';
 import { selectLayers } from '../../../modules/image/select-layers';
 import { mergeLayers } from '../../../modules/image/merge-layers';
+import { executeFrequencySeparation } from '../../../modules/actions/frequency-separation';
 
 export const Filter = () => (
     <div className="section filters">
@@ -48,7 +48,7 @@ async function _executeUnsharpMask() {
     }
 }
 
-async function _executeSelectiveFilter(e: React.MouseEvent) {
+async function _executeSelectiveFilter() {
     try {
 
         const { sharpenOptions } = store.getState();
@@ -80,7 +80,7 @@ async function _executeSelectiveFilter(e: React.MouseEvent) {
     }
 }
 
-async function _executeFreqSeparationFilter(e: React.MouseEvent) {
+async function _executeFreqSeparationFilter() {
     try {
 
         const document = app.activeDocument;
@@ -93,18 +93,19 @@ async function _executeFreqSeparationFilter(e: React.MouseEvent) {
 
         // Run frequency separation if it isn't done yet
         if (!detail || !soft) {
-            await executeFrequencySeparation(e);
+            await executeFrequencySeparation();
             detail = BeautyPanel.layers.detail!;
             soft = BeautyPanel.layers.soft!;
         }
 
-        const detailBlackWhite = await detail.duplicate(undefined, BeautyPanel.getLayerName(E_Layer.DetailBlackWhite));
+        const detailBlackWhite = await detail.duplicate();
         if (!detailBlackWhite)
-            throw new Error('Photoshop did not duplicate "Detail" layer.');
+            throw new Error('Photoshop did not duplicate "DetailBlackWhite" layer.');
 
         const detailColor = detail;
         detailColor.name = BeautyPanel.getLayerName(E_Layer.DetailColor);
 
+        detailBlackWhite.name = BeautyPanel.getLayerName(E_Layer.DetailBlackWhite);
         detailBlackWhite.blendMode = constants.BlendMode.LINEARLIGHT;
         await imageDesaturation(detailBlackWhite);
         await imageCalculation({
@@ -136,7 +137,7 @@ async function _executeFreqSeparationFilter(e: React.MouseEvent) {
 }
 
 
-async function _executeMaskedFilter(e: React.MouseEvent) {
+async function _executeMaskedFilter() {
     try {
 
         const { sharpenOptions } = store.getState();
