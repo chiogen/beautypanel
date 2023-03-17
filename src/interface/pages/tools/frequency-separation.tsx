@@ -1,8 +1,7 @@
 import i18next from 'i18next';
 import { app, core } from 'photoshop';
 import * as React from 'react';
-import { executeFrequencySeparation } from '../../../modules/actions/frequency-separation';
-import { selectLayerDetailsForFrequencySeparation, selectLayerSoftForFrequencySeparation } from '../../../modules/actions/layer-selection';
+import { executeFrequencySeparation, selectLayerDetailsForFrequencySeparation, selectLayerSoftForFrequencySeparation } from '../../../modules/actions/frequency-separation';
 
 export const FrequencySeparation = () => (
     <div className="section">
