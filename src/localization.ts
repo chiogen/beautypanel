@@ -5,7 +5,7 @@ import * as resources from './locales/index'
 const supportedLanguages = ['en', 'de'];
 
 function detectLanguage(): string {
-    const uiLocale = uxp.host.uiLocale.substring(0, 2).toLowerCase();
+    const uiLocale = uxp.host?.uiLocale.substring(0, 2).toLowerCase() ?? 'en';
     if (supportedLanguages.includes(uiLocale)) {
         return uiLocale;
     }

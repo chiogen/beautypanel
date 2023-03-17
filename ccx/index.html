@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="./index.css" />
+	<!-- <link rel="stylesheet" href="./index.css" /> -->
 	<link rel="stylesheet" href="./fonts/index.css" />
 	<link rel="stylesheet" href="./styles/style.css" />
 	<script>
-		require('./js/beautypanel.js')
+		window.addEventListener('load', () => {
+			require('./js/beautypanel.js');
+		});
 	</script>
+	<!-- <script src="./js/beautypanel.js" type="module"></script> -->
 </head>
 <body>
 	<div id="app"></div>
