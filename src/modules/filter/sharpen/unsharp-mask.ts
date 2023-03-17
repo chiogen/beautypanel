@@ -1,6 +1,7 @@
-import { ActionDescriptor, app } from "photoshop";
-import { percent, pixels } from "../../../common/units";
-import { DialogOptions } from "../../../enums/dialog-options";
+import { app } from 'photoshop';
+import { ActionDescriptor } from 'photoshop/dom/CoreModules';
+import { percent, pixels } from '../../../common/units';
+import { DialogOptions } from '../../../enums/dialog-options';
 
 export interface UnsharpMaskOptions {
     radius?: number
@@ -32,7 +33,7 @@ export function _filterUnsharpMask(options: UnsharpMaskOptions) {
 export async function filterUnsharpMask(options: UnsharpMaskOptions) {
     
     const descriptor: ActionDescriptor = _filterUnsharpMask(options);
-    const [result] = await app.batchPlay([descriptor]);
+    const [result] = await app.batchPlay([descriptor], {});
 
     if (result.message) {
         throw new Error(result.message);

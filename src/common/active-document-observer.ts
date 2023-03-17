@@ -1,4 +1,5 @@
-import { app, Document } from "photoshop";
+import { app } from "photoshop";
+import { Document } from 'photoshop/dom/Document';
 
 
 export function addDocumentLoadedCallback(callback: (document: Document) => any) {

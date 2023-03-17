@@ -1,5 +1,6 @@
 import i18next from "i18next";
-import { app, Layer } from "photoshop";
+import { app } from "photoshop";
+import { Layer } from 'photoshop/dom/Layer';
 
 export enum E_Layer {
     // Frequency Separation

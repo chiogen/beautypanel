@@ -1,4 +1,7 @@
-import { ActionDescriptor, app, Document, Layer } from "photoshop";
+import { app } from "photoshop";
+import { ActionDescriptor } from 'photoshop/dom/CoreModules';
+import { Document } from 'photoshop/dom/Document';
+import { Layer } from 'photoshop/dom/Layer';
 import { BeautyPanel, E_Layer } from "../../../common/beautypanel";
 import { percent, pixels, points } from "../../../common/units";
 import { checkBitsPerChannel } from "../../../modules/image/bits-per-channel";
@@ -33,7 +36,7 @@ export async function createVignette(e: React.MouseEvent<HTMLButtonElement>) {
             layer = undefined;
         }
 
-        layer = await createVignetteArtLayer(document, VignetteType.Elipse, 100);
+        layer = await createVignetteArtLayer(document, VignetteType.Elipse, 100);        
         layer.name = BeautyPanel.getLayerName(E_Layer.Vignette);
 
     } catch (err) {

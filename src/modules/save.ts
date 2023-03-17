@@ -1,11 +1,12 @@
 import * as path from 'path'
 import i18next from "i18next";
-import { ActionDescriptor, app } from "photoshop";
+import { app } from "photoshop";
 import { pixels } from "../common/units";
 import { DialogOptions } from "../enums/dialog-options";
 import { storage } from 'uxp';
 import { isAbortError, throwAbortError } from '../common/errors/abort-error';
 import { createFolderToken } from './storage/fs';
+import { ActionDescriptor } from 'photoshop/dom/CoreModules';
 
 export function getLastSavedFormat(): any | undefined {
     const value = localStorage.getItem('lastSavedFormat');
@@ -61,8 +62,8 @@ async function scaleImage(dialogOptions = DialogOptions.DontDisplay, size = 2048
             _options: {
                 dialogOptions
             }
-        }        
-    ]);
+        }
+    ], {});
 
     if (result.message) {
         throw new Error(result.message);
@@ -90,7 +91,7 @@ async function unsharpMask(dialogOptions = DialogOptions.DontDisplay) {
         dialogOptions
     }
 
-    const [result] = await app.batchPlay([descriptor]);
+    const [result] = await app.batchPlay([descriptor], {});
 
     if (result.message) {
         throw new Error(result.message);
@@ -127,7 +128,7 @@ async function saveCopy(basePath: string, dialogOptions = DialogOptions.DontDisp
         descriptor.as = format;
     }
 
-    const [result] = await app.batchPlay([descriptor])
+    const [result] = await app.batchPlay([descriptor], {})
 
     if (result.message) {
         throw new Error(result.message);

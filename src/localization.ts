@@ -1,6 +1,6 @@
-import * as uxp from 'uxp'
-import i18next from 'i18next'
-import * as resources from './locales/index'
+import * as uxp from 'uxp';
+import i18next from 'i18next';
+import * as resources from './locales/index';
 
 const supportedLanguages = ['en', 'de'];
 

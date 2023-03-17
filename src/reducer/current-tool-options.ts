@@ -1,11 +1,10 @@
-import { ActionDescriptor } from "photoshop";
-import { percent } from "../common/units";
-import { setToolOptions } from "../modules/application/set-tool-options";
-import { ActionType } from "../store-action-types";
-import { UpdateToolDataAction } from "./shared-action-types";
+import { percent } from '../common/units';
+import { setToolOptions } from '../modules/application/set-tool-options';
+import { ActionType } from '../store-action-types';
+import { CurrentToolOptionsDescriptor, UpdateToolDataAction } from './shared-action-types';
 
 export interface CurrentToolOptionsStateBase {
-    _descriptor: ActionDescriptor
+    _descriptor: CurrentToolOptionsDescriptor
     hardness: number
     opacity: number
 }
@@ -26,7 +25,7 @@ export interface SetToolOptionsAction {
 }
 
 const initial: CurrentToolOptionsState = {
-    _descriptor: {} as ActionDescriptor,
+    _descriptor: {} as CurrentToolOptionsDescriptor,
     promise: undefined,
     hardness: -1,
     opacity: 0
@@ -46,7 +45,7 @@ function updateToolOptions(state: CurrentToolOptionsState): CurrentToolOptionsSt
             descriptor.opacity = state.opacity;
             descriptor.useScatter = false;
 
-            return setToolOptions(descriptor)
+            return setToolOptions(descriptor);
         }
     );
     return state;

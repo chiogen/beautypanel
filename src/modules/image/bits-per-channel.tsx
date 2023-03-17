@@ -1,25 +1,27 @@
-import * as React from 'react'
-import i18next from "i18next";
-import { ActionDescriptor, app, Document } from "photoshop";
-import { ConfirmDialogChoiceSet, showConfirmDialog } from "../ui/confirm";
-import { showMessageBox } from "../ui/messagebox";
+import i18next from 'i18next';
+import { app } from 'photoshop';
+import { ActionDescriptor } from 'photoshop/dom/CoreModules';
+import { Document } from 'photoshop/dom/Document';
+import * as React from 'react';
+import { ConfirmDialogChoiceSet, showConfirmDialog } from '../ui/confirm';
+import { showMessageBox } from '../ui/messagebox';
 
 export async function getBitsPerChannel(document: Document): Promise<number> {
     const descriptor: ActionDescriptor = {
-        _obj: "get",
+        _obj: 'get',
         _target: [
             {
-                _property: "depth"
+                _property: 'depth'
             },
             {
-                _ref: "document",
-                _id: document._id
+                _ref: 'document',
+                _id: document.id
             }
         ]
     };
 
     const [result] = await app.batchPlay([descriptor], {});
-    return (result as any).depth as number;
+    return result.depth as number;
 }
 
 export async function checkBitsPerChannel(document: Document) {
@@ -44,7 +46,7 @@ export async function checkBitsPerChannel(document: Document) {
         }) as {
             header: string
             message: string
-        }
+        };
         showMessageBox(
             <>
                 <div>

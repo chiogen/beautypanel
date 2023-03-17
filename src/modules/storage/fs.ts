@@ -1,4 +1,4 @@
-import { storage } from "uxp";
+import { storage } from 'uxp';
 
 const cachedTokens = new Map<string, string>();
 

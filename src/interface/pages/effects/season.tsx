@@ -1,5 +1,7 @@
 import i18next from "i18next";
-import { ActionDescriptor, app, Document } from "photoshop";
+import { app } from "photoshop";
+import { ActionDescriptor } from 'photoshop/dom/CoreModules';
+import { Document } from 'photoshop/dom/Document';
 import { BeautyPanel, E_Layer } from "../../../common/beautypanel";
 import { percent } from "../../../common/units";
 import { showConfirmDialog } from "../../../modules/ui/confirm";
@@ -157,7 +159,7 @@ async function createSelectiveColorLayer(document: Document, profile: SeasonProf
     const [result] = await app.batchPlay([
         _selectiveColor(),
         _setColorCorrection(profile.colorCorrection)
-    ]);
+    ], {});
 
     if (result.message) {
         await app.showAlert(result.message);

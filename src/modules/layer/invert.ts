@@ -1,15 +1,16 @@
-import { app } from "photoshop";
-import { ActionDescriptor, Layer } from "photoshop";
+import { app } from 'photoshop';
+import { ActionDescriptor } from 'photoshop/dom/CoreModules';
+import { Layer } from 'photoshop/dom/Layer';
 
 
 export async function invert(layer: Layer) {
     const descriptor: ActionDescriptor = {
-        _obj: "invert",
+        _obj: 'invert',
         _target: {
             _ref: 'layer',
-            _id: layer._id
+            _id: layer.id
         }
-    }
+    };
 
     const result = await app.batchPlay([descriptor], {});
 

@@ -1,5 +1,6 @@
 import i18next from 'i18next';
-import { app, Layer } from 'photoshop';
+import { app } from 'photoshop';
+import { BlendMode } from 'photoshop/dom/Constants';
 import * as React from 'react'
 import { BeautyPanel, E_Layer } from '../../common/beautypanel';
 import { DialogOptions } from '../../enums/dialog-options';
@@ -50,7 +51,7 @@ async function enhanceDetails(e: React.MouseEvent<HTMLButtonElement>) {
         const referenceLayer = document.backgroundLayer!;
 
         referenceLayer.visible = true;
-        referenceLayer.locked = true;
+        // referenceLayer.locked = true;
 
         // Preparations
         await checkBitsPerChannel(document);
@@ -66,20 +67,21 @@ async function enhanceDetails(e: React.MouseEvent<HTMLButtonElement>) {
 
         // Create reference layer
         let tempLayer = await referenceLayer.duplicate();
-        tempLayer.opacity = 1;
+        tempLayer!.opacity = 1;
         let tempLayer2 = await referenceLayer.duplicate();
+
         tempLayer = await mergeLayers(document, [tempLayer, tempLayer2]);
 
         // Invert reference layer
-        const inverted = await tempLayer.duplicate();
+        const inverted = await tempLayer!.duplicate();
         await invert(inverted);
-        inverted.blendMode = 'vividLight';
+        inverted!.blendMode = BlendMode.VIVIDLIGHT;
         await surfaceBlur(inverted, 24, 26);
 
         // Merge layers and finalize action
         const enhanceDetails = await mergeLayers(document, [tempLayer, inverted]);
         enhanceDetails.name = BeautyPanel.getLayerName(E_Layer.EnhanceDetails);
-        enhanceDetails.blendMode = 'overlay';
+        enhanceDetails.blendMode = BlendMode.OVERLAY;
         enhanceDetails.opacity = 50;
 
         // enhanceDetails.moveBelow(referenceLayer);

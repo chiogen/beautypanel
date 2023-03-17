@@ -1,6 +1,7 @@
-import { ActionDescriptor, Layer, PercentValue } from "photoshop";
-import { app } from "photoshop";
-import { _selectLayers } from "./select-layers";
+import { app } from 'photoshop';
+import { ActionDescriptor } from 'photoshop/dom/CoreModules';
+import { Layer } from 'photoshop/dom/Layer';
+import { _selectLayers } from './select-layers';
 
 export type ImageCalculationType = 'normal' |
     'add' | 'subtract' |
@@ -22,25 +23,25 @@ export interface ImageCalculationOptions {
 export function _imageCalculation(options: ImageCalculationOptions): ActionDescriptor {
 
     const descriptor: ActionDescriptor = {
-        _obj: "applyImageEvent",
+        _obj: 'applyImageEvent',
         with: {
-            _obj: "calculation",
+            _obj: 'calculation',
             to: {
                 _ref: [
                     {
-                        _ref: "channel",
-                        _enum: "channel",
+                        _ref: 'channel',
+                        _enum: 'channel',
                         _value: options.channel
                     },
                     {
-                        _ref: "layer",
-                        _id: options.sourceLayer._id
+                        _ref: 'layer',
+                        _id: options.sourceLayer.id
                     }
                 ]
             },
             invert: options.invert ?? false,
             calculation: {
-                _enum: "calculationType",
+                _enum: 'calculationType',
                 _value: options.calculationType
             }
         }
@@ -60,7 +61,7 @@ export async function imageCalculation(options: ImageCalculationOptions) {
     const [result] = await app.batchPlay([
         _selectLayers([options.targetLayer]),
         _imageCalculation(options)
-    ]);
+    ], {});
 
     if (result.message) {
         throw new Error(result.message);

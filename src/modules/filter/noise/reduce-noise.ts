@@ -1,7 +1,7 @@
-import { app, BatchPlayResult } from "photoshop";
-import { ActionDescriptor } from "photoshop";
-import { percent } from "../../../common/units";
-import { DialogOptions } from "../../../enums/dialog-options";
+import { app } from 'photoshop';
+import { ActionDescriptor } from 'photoshop/dom/CoreModules';
+import { percent } from '../../../common/units';
+import { DialogOptions } from '../../../enums/dialog-options';
 
 export interface FilterReduceNoiseOptions {
     sharpen?: number
@@ -14,39 +14,39 @@ export interface FilterReduceNoiseOptions {
 export function _channelDenoise(): ActionDescriptor[] {
     return [
         {
-            _obj: "channelDenoiseParams",
+            _obj: 'channelDenoiseParams',
             channel: {
-                "_ref": "channel",
-                "_enum": "channel",
-                "_value": "composite"
+                '_ref': 'channel',
+                '_enum': 'channel',
+                '_value': 'composite'
             },
             amount: 10,
             edgeFidelity: 50
         },
         {
-            _obj: "channelDenoiseParams",
+            _obj: 'channelDenoiseParams',
             channel: {
-                _ref: "channel",
-                _enum: "channel",
-                _value: "red"
+                _ref: 'channel',
+                _enum: 'channel',
+                _value: 'red'
             },
             amount: 0
         },
         {
-            _obj: "channelDenoiseParams",
+            _obj: 'channelDenoiseParams',
             channel: {
-                _ref: "channel",
-                _enum: "channel",
-                _value: "grain"
+                _ref: 'channel',
+                _enum: 'channel',
+                _value: 'grain'
             },
             amount: 0
         },
         {
-            _obj: "channelDenoiseParams",
+            _obj: 'channelDenoiseParams',
             channel: {
-                _ref: "channel",
-                _enum: "channel",
-                _value: "blue"
+                _ref: 'channel',
+                _enum: 'channel',
+                _value: 'blue'
             },
             amount: 0
         }
@@ -73,11 +73,11 @@ export function _filterReduceNoise(options: FilterReduceNoiseOptions) {
 
     return descriptor;
 }
-export async function filterReduceNoise(options: FilterReduceNoiseOptions): Promise<BatchPlayResult> {
+export async function filterReduceNoise(options: FilterReduceNoiseOptions): Promise<ActionDescriptor> {
 
     const [result] = await app.batchPlay([
         _filterReduceNoise(options)
-    ]);
+    ], {});
 
     if (result.message) {
         throw new Error(result.message);

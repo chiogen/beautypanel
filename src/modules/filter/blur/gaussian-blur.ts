@@ -1,7 +1,7 @@
-import { app } from "photoshop";
-import { ActionDescriptor } from "photoshop";
-import { pixels } from "../../../common/units";
-import { DialogOptions } from "../../../enums/dialog-options";
+import { app } from 'photoshop';
+import { ActionDescriptor } from 'photoshop/dom/CoreModules';
+import { pixels } from '../../../common/units';
+import { DialogOptions } from '../../../enums/dialog-options';
 
 export function _filterGaussianBlur(radius: number, dialogOptions?: DialogOptions): ActionDescriptor {
     const descriptor: ActionDescriptor = {
@@ -21,7 +21,7 @@ export async function filterGaussianBlur(radius: number, dialogOptions?: DialogO
 
     const [result] = await app.batchPlay([
         _filterGaussianBlur(radius, dialogOptions)
-    ]);
+    ], {});
 
     if (result.message) {
         throw new Error(result.message);

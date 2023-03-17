@@ -1,16 +1,18 @@
-import { ActionDescriptor, app, Layer } from "photoshop";
+import { app } from 'photoshop';
+import { ActionDescriptor } from 'photoshop/dom/CoreModules';
+import { Layer } from 'photoshop/dom/Layer';
 
 
-export function _selectLayers(layers: Layer[], makeVisible: boolean = false): ActionDescriptor {
+export function _selectLayers(layers: Layer[], makeVisible = false): ActionDescriptor {
 
-    const layerIds = layers.map(x => x._id);
+    const layerIds = layers.map(x => x.id);
     const firstLayer = layers[0];
 
     const descriptor: ActionDescriptor = {
         _obj: 'select',
         _target: {
             _ref: 'layer',
-            _id: firstLayer._id
+            _id: firstLayer.id
         },
         makeVisible: makeVisible,
         layerID: layerIds
@@ -19,7 +21,7 @@ export function _selectLayers(layers: Layer[], makeVisible: boolean = false): Ac
     return descriptor;
 }
 
-export async function selectLayers(layers: Layer[], makeVisible: boolean = false): Promise<void> {
+export async function selectLayers(layers: Layer[], makeVisible = false): Promise<void> {
 
     if (layers.length === 0)
         return;

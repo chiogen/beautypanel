@@ -1,6 +1,7 @@
-import { app, Layer } from "photoshop";
-import { ActionDescriptor } from "photoshop";
-import { DialogOptions } from "../../enums/dialog-options";
+import { app } from 'photoshop';
+import { ActionDescriptor } from 'photoshop/dom/CoreModules';
+import { Layer } from 'photoshop/dom/Layer';
+import { DialogOptions } from '../../enums/dialog-options';
 
 export interface LevelsAdjustmentsOptions {
     input?: number[]
@@ -18,7 +19,7 @@ export interface AdjustmentLayerOptions {
 export async function createAdjustmentLayer(options: AdjustmentLayerOptions): Promise<Layer> {
     const [result] = await app.batchPlay([
         _createAdjustmentLayer(options)
-    ]);
+    ], {});
 
     if (result.message) {
         throw new Error(result.message);
@@ -29,14 +30,14 @@ export async function createAdjustmentLayer(options: AdjustmentLayerOptions): Pr
 
 function _createAdjustmentLayer(options: AdjustmentLayerOptions): ActionDescriptor {
     const descriptor: ActionDescriptor = {
-        _obj: "make",
+        _obj: 'make',
         _target: [
             {
-                _ref: "adjustmentLayer"
+                _ref: 'adjustmentLayer'
             }
         ],
         using: {
-            _obj: "adjustmentLayer",
+            _obj: 'adjustmentLayer',
             type: _levels(options.levels)
         }
     };
@@ -45,10 +46,10 @@ function _createAdjustmentLayer(options: AdjustmentLayerOptions): ActionDescript
 }
 function _levels(options: LevelsOptions) {
     const descriptor: ActionDescriptor = {
-        _obj: "levels",
+        _obj: 'levels',
         presetKind: {
-            _enum: "presetKindType",
-            _value: "presetKindDefault"
+            _enum: 'presetKindType',
+            _value: 'presetKindDefault'
         },
         adjustment: _levelsAdjustment(options.adjustment)
     };
@@ -57,11 +58,11 @@ function _levels(options: LevelsOptions) {
 }
 function _levelsAdjustment(options: LevelsAdjustmentsOptions) {
     const descriptor: ActionDescriptor = {
-        _obj: "levelsAdjustment",
+        _obj: 'levelsAdjustment',
         channel: {
-            "_ref": "channel",
-            "_enum": "channel",
-            "_value": "composite"
+            '_ref': 'channel',
+            '_enum': 'channel',
+            '_value': 'composite'
         }
     };
 

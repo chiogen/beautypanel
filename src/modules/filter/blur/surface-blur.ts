@@ -1,13 +1,15 @@
-import { ActionDescriptor, app, Layer } from "photoshop";
-import { pixels } from "../../../common/units";
+import { app } from 'photoshop';
+import { ActionDescriptor } from 'photoshop/dom/CoreModules';
+import { Layer } from 'photoshop/dom/Layer';
+import { pixels } from '../../../common/units';
 
 
 export function _surfaceBlur(layer: Layer, radius: number, threshold: number) {
     const descriptor: ActionDescriptor = {
-        _obj: "surfaceBlur",
+        _obj: 'surfaceBlur',
         _target: {
             _ref: 'layer',
-            _id: layer._id
+            _id: layer.id
         },
         radius: pixels(radius),
         threshold: threshold

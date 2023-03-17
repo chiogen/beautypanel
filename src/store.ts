@@ -1,4 +1,4 @@
-import { ActionDescriptor, app } from "photoshop";
+import { app } from 'photoshop';
 import { combineReducers, createStore, Reducer, Store } from "redux";
 import { setAsyncInterval } from "./common/set-async-interval";
 import { Page } from "./enums";
@@ -8,6 +8,7 @@ import currentToolOptions, { CurrentToolOptionsAction, CurrentToolOptionsState }
 import { UpdateToolDataAction, DocumentChangedAction } from "./reducer/shared-action-types";
 import { ActionType } from "./store-action-types";
 import sharpenOptions, { SharpenOptions, SharpenOptionsAction } from "./reducer/sharpen-options";
+import { ActionDescriptor } from 'photoshop/dom/CoreModules';
 
 export interface TState {
     readonly lastAction: TAction
@@ -60,7 +61,7 @@ async function poll() {
 
         const [toolData] = await app.batchPlay([
             brushDataDescriptor
-        ]);
+        ], {});
         const { currentToolOptions } = toolData as any;
 
         if (currentToolOptions) {

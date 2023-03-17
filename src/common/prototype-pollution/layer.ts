@@ -1,13 +1,8 @@
-import { app, Layer } from 'photoshop'
-
-declare module 'photoshop' {
-    export interface Layer {
-        readonly document: Document
-    }
-}
+import { app } from 'photoshop'
+import { Layer } from 'photoshop/dom/Layer';
 
 Object.defineProperty(app.Layer.prototype, 'document', {
     get(this: Layer) {
-        return app.documents.find(x => x._id === this._docId)!
+        return app.documents.find(x => x.id === this._docId)!
     }
 });

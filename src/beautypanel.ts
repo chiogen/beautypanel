@@ -4,9 +4,7 @@ import { app } from 'photoshop';
 import { localizationLoaded } from './localization';
 
 import './common/polyfills/document-has-focus';
-import './common/prototype-pollution/document';
 import './common/prototype-pollution/layer';
-
 import './common/entrypoints';
 
 import { renderApp } from './interface';

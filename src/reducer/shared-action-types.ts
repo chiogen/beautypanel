@@ -1,6 +1,6 @@
-import { Document } from "photoshop";
-import { PercentValue } from "photoshop";
-import type { ActionType } from "../store-action-types";
+import { Document } from 'photoshop/dom/Document';
+import { PercentValue } from 'photoshop/util/unit';
+import type { ActionType } from '../store-action-types';
 
 export interface DocumentChangedAction {
     type: ActionType.DocumentChanged
@@ -8,12 +8,14 @@ export interface DocumentChangedAction {
 }
 export interface UpdateToolDataAction {
     type: ActionType.UpdatePollData
-    currentToolOptions: {
-        brush?: {
-            hardness: PercentValue
-            roundness: PercentValue
-        },
-        opacity: number
-        useScatter: boolean
-    }
+    currentToolOptions: CurrentToolOptionsDescriptor
+}
+
+export interface CurrentToolOptionsDescriptor {
+    brush?: {
+        hardness: PercentValue
+        roundness: PercentValue
+    },
+    opacity: number
+    useScatter: boolean
 }

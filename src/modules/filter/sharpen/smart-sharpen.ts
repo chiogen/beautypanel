@@ -1,6 +1,7 @@
-import { ActionDescriptor, app, BatchPlayResult } from "photoshop";
-import { percent, pixels } from "../../../common/units";
-import { DialogOptions } from "../../../enums/dialog-options";
+import { app } from 'photoshop';
+import { ActionDescriptor } from 'photoshop/dom/CoreModules';
+import { percent, pixels } from '../../../common/units';
+import { DialogOptions } from '../../../enums/dialog-options';
 
 interface AdaptCorrectTonesOptions {
     amount: number
@@ -12,7 +13,7 @@ export interface FilterSmartSharpenOptions {
     amount?: number
     radius?: number
     noiseReduction?: number
-    blur?: "lensBlur" | "gaussianBlur" | "motionBlur"
+    blur?: 'lensBlur' | 'gaussianBlur' | 'motionBlur'
     shadowMode?: AdaptCorrectTonesOptions
     highlightMode?: AdaptCorrectTonesOptions
     dialogOptions?: DialogOptions
@@ -20,11 +21,11 @@ export interface FilterSmartSharpenOptions {
 
 function _adaptCorrectTones(options: AdaptCorrectTonesOptions) {
     return {
-        _obj: "adaptCorrectTones",
+        _obj: 'adaptCorrectTones',
         amount: percent(options.amount),
         width: percent(options.width),
         radius: options.radius
-    }
+    };
 }
 
 export function _filterSmartSharpen(options: FilterSmartSharpenOptions) {
@@ -34,8 +35,8 @@ export function _filterSmartSharpen(options: FilterSmartSharpenOptions) {
     const descriptor: ActionDescriptor = {
         _obj: 'smartSharpen',
         presetKind: {
-            _enum: "presetKindType",
-            _value: "presetKindCustom"
+            _enum: 'presetKindType',
+            _value: 'presetKindCustom'
         },
         useLegacy: false,
         _options: {
@@ -55,8 +56,8 @@ export function _filterSmartSharpen(options: FilterSmartSharpenOptions) {
     }
     if (typeof blur === 'string') {
         descriptor.blur = {
-            _enum: "blurType",
-            _value: "lensBlur"
+            _enum: 'blurType',
+            _value: 'lensBlur'
         };
     }
 
@@ -70,11 +71,11 @@ export function _filterSmartSharpen(options: FilterSmartSharpenOptions) {
     return descriptor;
 }
 
-export async function filterSmartSharpen(options: FilterSmartSharpenOptions): Promise<BatchPlayResult> {
+export async function filterSmartSharpen(options: FilterSmartSharpenOptions): Promise<ActionDescriptor> {
 
     const [result] = await app.batchPlay([
         _filterSmartSharpen(options)
-    ]);
+    ], {});
 
     if (result.message) {
         throw new Error(result.message);

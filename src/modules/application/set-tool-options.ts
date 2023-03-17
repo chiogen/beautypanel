@@ -1,4 +1,5 @@
-import { ActionDescriptor, app } from "photoshop";
+import { app } from 'photoshop';
+import { ActionDescriptor } from 'photoshop/dom/CoreModules';
 
 export async function setToolOptions(options: Object) {
 
