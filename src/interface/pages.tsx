@@ -10,12 +10,12 @@ import { property } from '../decorators/react-property';
 
 type S = {
     page: Page
-}
+};
 
 export class Pages extends StatefulComponent<{}, S> {
 
     @property
-    page: Page
+    page: Page;
 
     constructor(props) {
         super(props);
@@ -33,7 +33,7 @@ export class Pages extends StatefulComponent<{}, S> {
             <Sharpen isActive={page === Page.Sharpen} />
             <Effects isActive={page === Page.Effects} />
             <SavePage isActive={page === Page.Save} />
-        </div>
+        </div>;
     }
 
     protected stateChanged(state: TState) {

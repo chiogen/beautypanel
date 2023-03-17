@@ -1,5 +1,5 @@
-import { app } from "photoshop";
-import { IRGBColor } from "../../common/rgb-color";
+import { app } from 'photoshop';
+import { IRGBColor } from '../../common/rgb-color';
 
 
 export async function setForegroundColor(r: number, g: number = r, b: number = r) {
@@ -13,11 +13,11 @@ export async function setForegroundColor(r: number, g: number = r, b: number = r
 }
 export function _setForegroundColor(r: number, g: number = r, b: number = r) {
     return {
-        _obj: "set",
+        _obj: 'set',
         _target: [
             {
-                _ref: "color",
-                _property: "foregroundColor"
+                _ref: 'color',
+                _property: 'foregroundColor'
             }
         ],
         to: {
@@ -26,6 +26,6 @@ export function _setForegroundColor(r: number, g: number = r, b: number = r) {
             blue: b,
             grain: g
         } as IRGBColor,
-        source: "photoshopPicker"
-    }
+        source: 'photoshopPicker'
+    };
 }

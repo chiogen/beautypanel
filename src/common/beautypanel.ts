@@ -1,5 +1,5 @@
-import i18next from "i18next";
-import { app } from "photoshop";
+import i18next from 'i18next';
+import { app } from 'photoshop';
 import { Layer } from 'photoshop/dom/Layer';
 
 export enum E_Layer {
@@ -65,7 +65,7 @@ export namespace BeautyPanel {
         get autumn() {
             return getLayerByCode(E_Layer.Autumn);
         }
-    }
+    };
 
     export const layerNames = {
         get soft() {
@@ -107,7 +107,7 @@ export namespace BeautyPanel {
         get autumn() {
             return getLayerName(E_Layer.Autumn);
         }
-    }
+    };
 
     export function getLayerName(code: E_Layer): string {
         return i18next.t('layerNames.' + code) as string;

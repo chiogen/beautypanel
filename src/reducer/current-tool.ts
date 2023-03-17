@@ -1,6 +1,6 @@
-import { app } from "photoshop";
-import { ActionType } from "../store-action-types";
-import { UpdateToolDataAction } from "./shared-action-types";
+import { app } from 'photoshop';
+import { ActionType } from '../store-action-types';
+import { UpdateToolDataAction } from './shared-action-types';
 
 export type CurrentToolAction = UpdateToolDataAction;
 

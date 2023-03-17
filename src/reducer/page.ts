@@ -1,5 +1,5 @@
-import { Page } from "../enums";
-import { ActionType } from "../store-action-types";
+import { Page } from '../enums';
+import { ActionType } from '../store-action-types';
 
 export interface SetPageAction {
     type: ActionType.SetPage

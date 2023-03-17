@@ -1,11 +1,11 @@
-import { Page } from "../enums";
-import { store, TState } from "../store";
-import { ActionType } from '../store-action-types'
-import i18next from "i18next";
-import * as React from 'react'
-import { StatefulComponent } from "../components/base/stateful-component";
-import { AppBar, Paper, Tab, Tabs } from '@material-ui/core'
-import { property } from "../decorators/react-property";
+import { Page } from '../enums';
+import { store, TState } from '../store';
+import { ActionType } from '../store-action-types';
+import i18next from 'i18next';
+import * as React from 'react';
+import { StatefulComponent } from '../components/base/stateful-component';
+import { AppBar, Paper, Tab, Tabs } from '@material-ui/core';
+import { property } from '../decorators/react-property';
 
 // ToDo: Make Tabbar a component
 const indexPageMap = [
@@ -14,11 +14,11 @@ const indexPageMap = [
     Page.Effects,
     Page.Save,
     Page.Settings
-]
+];
 
 type State = {
     page: Page
-}
+};
 
 export class Tabbar extends StatefulComponent<{}, State> {
 

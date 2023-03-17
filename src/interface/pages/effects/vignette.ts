@@ -1,10 +1,10 @@
-import { app } from "photoshop";
+import { app } from 'photoshop';
 import { ActionDescriptor } from 'photoshop/dom/CoreModules';
 import { Document } from 'photoshop/dom/Document';
 import { Layer } from 'photoshop/dom/Layer';
-import { BeautyPanel, E_Layer } from "../../../common/beautypanel";
-import { percent, pixels, points } from "../../../common/units";
-import { checkBitsPerChannel } from "../../../modules/image/bits-per-channel";
+import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
+import { percent, pixels, points } from '../../../common/units';
+import { checkBitsPerChannel } from '../../../modules/image/bits-per-channel';
 
 export enum VignetteType {
     Circle = 'circle',
@@ -50,31 +50,31 @@ async function createVignetteArtLayer(document: Document, type: VignetteType, pa
     const width = document.width;
     const height = document.height;
 
-    let top = padding;
-    let left = padding;
-    let right = width - padding;
-    let bottom = height - padding;
+    const top = padding;
+    const left = padding;
+    const right = width - padding;
+    const bottom = height - padding;
 
     const createVignetteLayer: ActionDescriptor = {
-        _obj: "make",
+        _obj: 'make',
         _target: [
             {
-                _ref: "contentLayer"
+                _ref: 'contentLayer'
             }
         ],
         using: {
-            _obj: "contentLayer",
+            _obj: 'contentLayer',
             type: {
-                _obj: "solidColorLayer",
+                _obj: 'solidColorLayer',
                 color: {
-                    _obj: "RGBColor",
+                    _obj: 'RGBColor',
                     red: 105.99838256835938,
                     grain: 119.9981689453125,
                     blue: 131.00189208984375
                 }
             },
             shape: {
-                _obj: "rectangle",
+                _obj: 'rectangle',
                 unitValueQuadVersion: 1,
                 top: pixels(top),
                 left: pixels(left),
@@ -86,7 +86,7 @@ async function createVignetteArtLayer(document: Document, type: VignetteType, pa
                 bottomRight: pixels(0)
             },
             strokeStyle: {
-                _obj: "strokeStyle",
+                _obj: 'strokeStyle',
                 strokeStyleVersion: 2,
                 strokeEnabled: true,
                 fillEnabled: true,
@@ -94,29 +94,29 @@ async function createVignetteArtLayer(document: Document, type: VignetteType, pa
                 strokeStyleLineDashOffset: points(0),
                 strokeStyleMiterLimit: 100,
                 strokeStyleLineCapType: {
-                    _enum: "strokeStyleLineCapType",
-                    _value: "strokeStyleButtCap"
+                    _enum: 'strokeStyleLineCapType',
+                    _value: 'strokeStyleButtCap'
                 },
                 strokeStyleLineJoinType: {
-                    _enum: "strokeStyleLineJoinType",
-                    _value: "strokeStyleMiterJoin"
+                    _enum: 'strokeStyleLineJoinType',
+                    _value: 'strokeStyleMiterJoin'
                 },
                 strokeStyleLineAlignment: {
-                    _enum: "strokeStyleLineAlignment",
-                    _value: "strokeStyleAlignCenter"
+                    _enum: 'strokeStyleLineAlignment',
+                    _value: 'strokeStyleAlignCenter'
                 },
                 strokeStyleScaleLock: false,
                 strokeStyleStrokeAdjust: false,
                 strokeStyleLineDashSet: [],
                 strokeStyleBlendMode: {
-                    _enum: "blendMode",
-                    _value: "normal"
+                    _enum: 'blendMode',
+                    _value: 'normal'
                 },
                 strokeStyleOpacity: percent(100),
                 strokeStyleContent: {
-                    _obj: "solidColorLayer",
+                    _obj: 'solidColorLayer',
                     color: {
-                        _obj: "RGBColor",
+                        _obj: 'RGBColor',
                         red: 0,
                         grain: 0,
                         blue: 0
@@ -127,7 +127,7 @@ async function createVignetteArtLayer(document: Document, type: VignetteType, pa
         }
     };
     const subtractForm: ActionDescriptor = {
-        _obj: "changePathDetails",
+        _obj: 'changePathDetails',
         keyOriginType: 3,
         keyOriginResolution: 72,
         keyActionMode: 1
@@ -136,15 +136,15 @@ async function createVignetteArtLayer(document: Document, type: VignetteType, pa
         _obj: 'set',
         _target: [
             {
-                _ref: "layer",
-                _enum: "ordinal",
-                _value: "targetEnum"
+                _ref: 'layer',
+                _enum: 'ordinal',
+                _value: 'targetEnum'
             }
         ],
         to: {
-            _obj: "layer",
+            _obj: 'layer',
             vectorMaskFeather: {
-                _unit: "pixelsUnit",
+                _unit: 'pixelsUnit',
                 _value: 126.1
             }
         }
@@ -153,36 +153,36 @@ async function createVignetteArtLayer(document: Document, type: VignetteType, pa
         _obj: 'set',
         _target: [
             {
-                _ref: "contentLayer",
-                _enum: "ordinal",
-                _value: "targetEnum"
+                _ref: 'contentLayer',
+                _enum: 'ordinal',
+                _value: 'targetEnum'
             }
         ],
         to: {
-            _obj: "shapeStyle",
+            _obj: 'shapeStyle',
             fillContents: {
-                _obj: "solidColorLayer",
+                _obj: 'solidColorLayer',
                 color: {
-                    _obj: "RGBColor",
+                    _obj: 'RGBColor',
                     red: 0,
                     grain: 0,
                     blue: 0
                 }
             },
             strokeStyle: {
-                _obj: "strokeStyle",
+                _obj: 'strokeStyle',
                 strokeStyleVersion: 2,
                 fillEnabled: true
             }
         }
-    }
+    };
     const deselectForm: ActionDescriptor = {
-        _obj: "deselect",
+        _obj: 'deselect',
         _target: [
             {
-                _ref: "path",
-                _enum: "ordinal",
-                _value: "targetEnum"
+                _ref: 'path',
+                _enum: 'ordinal',
+                _value: 'targetEnum'
             }
         ]
     };

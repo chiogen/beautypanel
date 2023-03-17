@@ -1,6 +1,6 @@
-import * as React from 'react'
-import i18next from "i18next";
-import { app } from 'photoshop'
+import * as React from 'react';
+import i18next from 'i18next';
+import { app } from 'photoshop';
 
 export const Zoom = () => (
     <div className="section">
@@ -21,12 +21,12 @@ async function zoomFit() {
 
         const [result] = await app.batchPlay([
             {
-                _obj: "select",
+                _obj: 'select',
                 _target: [
                     {
                         _ref: '$Mn ',
-                        _enum: "$MnIt",
-                        _value: "fitOnScreen",
+                        _enum: '$MnIt',
+                        _value: 'fitOnScreen',
                     }
                 ]
             }
@@ -66,12 +66,12 @@ async function zoomIn() {
 
         const [result] = await app.batchPlay([
             {
-                _obj: "select",
+                _obj: 'select',
                 _target: [
                     {
                         _ref: '$Mn ',
-                        _enum: "$MnIt",
-                        _value: "zoomIn",
+                        _enum: '$MnIt',
+                        _value: 'zoomIn',
                     }
                 ]
             }
@@ -93,12 +93,12 @@ async function zoomOut() {
 
         const [result] = await app.batchPlay([
             {
-                _obj: "select",
+                _obj: 'select',
                 _target: [
                     {
                         _ref: '$Mn ',
-                        _enum: "$MnIt",
-                        _value: "zoomOut",
+                        _enum: '$MnIt',
+                        _value: 'zoomOut',
                     }
                 ]
             }
@@ -132,7 +132,7 @@ async function getCurrentZoom(): Promise<number> {
                 }
             ]
         }
-    ])
+    ]);
 
     return (result as any).zoom._value;
 }

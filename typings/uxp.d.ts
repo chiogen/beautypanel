@@ -58,7 +58,7 @@ declare module 'uxp' {
         version: string
     };
 
-    export module storage {
+    export namespace storage {
 
         export const domains: {
             appLocalCache: symbol
@@ -112,36 +112,36 @@ declare module 'uxp' {
 
         /** https://www.adobe.io/photoshop/uxp/uxp/reference-js/Modules/uxp/Persistent%20File%20Storage/Entry/ */
         export abstract class Entry {
-            readonly id: Object
-            readonly isEntry: boolean
-            readonly isFile: boolean
-            readonly isFolder: boolean
-            readonly name: string
-            readonly nativePath: string
-            copyTo(folder: Folder, options?: { overwrite?: boolean }): Promise<unknown>
-            moveTo(folder: Folder, options?: { overwrite?: boolean, newName: string }): Promise<unknown>
-            delete(): Promise<void>
-            getMetadata(): Promise<EntryMetadata>
+            readonly id: Object;
+            readonly isEntry: boolean;
+            readonly isFile: boolean;
+            readonly isFolder: boolean;
+            readonly name: string;
+            readonly nativePath: string;
+            copyTo(folder: Folder, options?: { overwrite?: boolean }): Promise<unknown>;
+            moveTo(folder: Folder, options?: { overwrite?: boolean, newName: string }): Promise<unknown>;
+            delete(): Promise<void>;
+            getMetadata(): Promise<EntryMetadata>;
         }
         export abstract class File extends Entry {
-            id: Object
-            isEntry: boolean
-            isFile: boolean
-            isFolder: boolean
-            name: string
-            nativePath: string
-            mode: typeof modes.readOnly | typeof modes.readWrite
+            id: Object;
+            isEntry: boolean;
+            isFile: boolean;
+            isFolder: boolean;
+            name: string;
+            nativePath: string;
+            mode: typeof modes.readOnly | typeof modes.readWrite;
             read(options?: ReadFileOptions): Promise<string | ArrayBuffer>;
-            write(data: string | ArrayBuffer, options?: WriteFileOptions): Promise<void>
+            write(data: string | ArrayBuffer, options?: WriteFileOptions): Promise<void>;
         }
 
         export abstract class Folder extends Entry {
-            id: Object
-            isEntry: boolean
-            isFile: boolean
-            isFolder: boolean
-            name: string
-            nativePath: string
+            id: Object;
+            isEntry: boolean;
+            isFile: boolean;
+            isFolder: boolean;
+            name: string;
+            nativePath: string;
         }
 
         /** https://www.adobe.io/photoshop/uxp/uxp/reference-js/Modules/uxp/Persistent%20File%20Storage/FileSystemProvider/ */
@@ -180,7 +180,7 @@ declare module 'uxp' {
 
         }
 
-        export const localFileSystem: LocalFileSystemProvider
+        export const localFileSystem: LocalFileSystemProvider;
     }
 
 }

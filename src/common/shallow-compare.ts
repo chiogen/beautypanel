@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 /**
  * Performs equality by iterating through keys on an object and returning false
@@ -15,15 +15,15 @@ import React from "react";
       return false;
     }
   
-    var keysA = Object.keys(objA);
-    var keysB = Object.keys(objB);
+    const keysA = Object.keys(objA);
+    const keysB = Object.keys(objB);
   
     if (keysA.length !== keysB.length) {
       return false;
     }
   
     // Test for A's keys different from B.
-    for (var i = 0; i < keysA.length; i++) {
+    for (let i = 0; i < keysA.length; i++) {
       if (!objB.hasOwnProperty(keysA[i]) || objA[keysA[i]] !== objB[keysA[i]]) {
         return false;
       }

@@ -1,4 +1,4 @@
-import { StatefulComponent } from "../components/base/stateful-component";
+import { StatefulComponent } from '../components/base/stateful-component';
 
 export function property(proto: any, name: string) {
 

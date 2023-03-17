@@ -1,6 +1,6 @@
-import * as React from 'react'
-import * as ReactDom from 'react-dom'
-import i18next from "i18next";
+import * as React from 'react';
+import * as ReactDom from 'react-dom';
+import i18next from 'i18next';
 
 export type DialogInitCallback = (dialog: HTMLUxpDialogElement) => void;
 

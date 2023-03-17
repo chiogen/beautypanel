@@ -1,6 +1,6 @@
-import { app } from 'photoshop'
-import * as React from 'react'
-import i18next from 'i18next'
+import { app } from 'photoshop';
+import * as React from 'react';
+import i18next from 'i18next';
 import { property } from '../decorators/react-property';
 import { Document } from 'photoshop';
 import { storage } from 'uxp';
@@ -12,10 +12,10 @@ import { handleException } from '../common/errors/handle-error';
 
 type P = {
     isActive: boolean
-}
+};
 type S = {
     activeDocument: Document | null
-}
+};
 
 type Texts = {
     resolution: string,
@@ -31,14 +31,14 @@ type Texts = {
         quicksaveSuccess: string
         copySaveSuccess: string
     }
-}
+};
 
 export class SavePage extends React.Component<P, S> {
 
-    private _unregisterActiveDocumentObserver?: () => void
+    private _unregisterActiveDocumentObserver?: () => void;
 
-    isFrozen: boolean = false;
-    texts: Texts
+    isFrozen = false;
+    texts: Texts;
 
     @property activeDocument: Document | null;
 
@@ -141,7 +141,7 @@ export class SavePage extends React.Component<P, S> {
                     <sp-action-button style={{ display: 'flex' }} onClick={saveAs}>{texts.saveAs}</sp-action-button>
                 </div>
             </div>
-        )
+        );
     }
     private renderCopyPictureSection() {
 
@@ -172,7 +172,7 @@ export class SavePage extends React.Component<P, S> {
                     <span> {this.texts.outputFolder} {saveFolder} </span>
                 </div>
             </div>
-        )
+        );
     }
 
     private async quickSave() {
@@ -183,7 +183,7 @@ export class SavePage extends React.Component<P, S> {
             }
 
             await app.activeDocument.save();
-            await app.showAlert(this.texts.messages.quicksaveSuccess)
+            await app.showAlert(this.texts.messages.quicksaveSuccess);
 
         } catch (err) {
             handleException(err);
@@ -209,7 +209,7 @@ export class SavePage extends React.Component<P, S> {
             }
 
             await document.save(file);
-            await app.showAlert(this.texts.messages.quicksaveSuccess)
+            await app.showAlert(this.texts.messages.quicksaveSuccess);
 
         } catch (err) {
             handleException(err);

@@ -4,7 +4,7 @@ export abstract class Color {
         return {
             _enum: 'color',
             _value: 'gray'
-        }
+        };
     }
 
 }

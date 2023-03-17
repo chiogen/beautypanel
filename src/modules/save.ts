@@ -1,8 +1,8 @@
-import * as path from 'path'
-import i18next from "i18next";
-import { app } from "photoshop";
-import { pixels } from "../common/units";
-import { DialogOptions } from "../enums/dialog-options";
+import * as path from 'path';
+import i18next from 'i18next';
+import { app } from 'photoshop';
+import { pixels } from '../common/units';
+import { DialogOptions } from '../enums/dialog-options';
 import { storage } from 'uxp';
 import { isAbortError, throwAbortError } from '../common/errors/abort-error';
 import { createFolderToken } from './storage/fs';
@@ -42,8 +42,8 @@ async function scaleImage(dialogOptions = DialogOptions.DontDisplay, size = 2048
         scaleStyles: true,
         constrainProportions: true,
         interfaceIconFrameDimmed: {
-            _enum: "interpolationType",
-            _value: "automaticInterpolation"
+            _enum: 'interpolationType',
+            _value: 'automaticInterpolation'
         }
     };
 
@@ -58,7 +58,7 @@ async function scaleImage(dialogOptions = DialogOptions.DontDisplay, size = 2048
     const [result] = await app.batchPlay([
         {
             ...descriptor,
-            _obj: "imageSize",
+            _obj: 'imageSize',
             _options: {
                 dialogOptions
             }
@@ -83,13 +83,13 @@ async function scaleImage(dialogOptions = DialogOptions.DontDisplay, size = 2048
 async function unsharpMask(dialogOptions = DialogOptions.DontDisplay) {
 
     const key = 'lastUnsharpMaskDescriptor';
-    const storageValue = localStorage.getItem(key)
+    const storageValue = localStorage.getItem(key);
 
     const descriptor: ActionDescriptor = storageValue ? JSON.parse(storageValue) : {};
-    descriptor._obj = "unsharpMask"
+    descriptor._obj = 'unsharpMask';
     descriptor._options = {
         dialogOptions
-    }
+    };
 
     const [result] = await app.batchPlay([descriptor], {});
 
@@ -112,23 +112,23 @@ async function saveCopy(basePath: string, dialogOptions = DialogOptions.DontDisp
     const basePathToken = await createFolderToken(basePath);
 
     const descriptor: ActionDescriptor = {
-        _obj: "save",
+        _obj: 'save',
         _options: {
             dialogOptions
         },
         in: {
             _path: basePathToken,
-            _kind: "local"
+            _kind: 'local'
         },
         lowerCase: true
-    }
+    };
 
     const format = getLastSavedFormat();
     if (format) {
         descriptor.as = format;
     }
 
-    const [result] = await app.batchPlay([descriptor], {})
+    const [result] = await app.batchPlay([descriptor], {});
 
     if (result.message) {
         throw new Error(result.message);
@@ -149,7 +149,7 @@ export async function saveScaledCopy() {
         return;
     }
 
-    let folder = path.parse(app.activeDocument.path).dir;
+    const folder = path.parse(app.activeDocument.path).dir;
     const copy = await app.activeDocument.duplicate();
 
     try {
@@ -193,7 +193,7 @@ export async function saveUnscaledCopy() {
         return;
     }
 
-    let folder = path.parse(app.activeDocument.path).dir;
+    const folder = path.parse(app.activeDocument.path).dir;
     const copy = await app.activeDocument.duplicate();
 
     try {

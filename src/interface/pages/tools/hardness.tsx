@@ -1,7 +1,7 @@
-import { app } from 'photoshop'
-import * as React from 'react'
-import i18next from "i18next";
-import { hardness as defaultPresets } from './default-presets.json'
+import { app } from 'photoshop';
+import * as React from 'react';
+import i18next from 'i18next';
+import { hardness as defaultPresets } from './default-presets.json';
 import { StatefulComponent } from '../../../components/base/stateful-component';
 import { property } from '../../../decorators/react-property';
 import { store, TState } from '../../../store';
@@ -13,11 +13,11 @@ export const hardnessPresets = new PresetsManager<number>('hardness', defaultPre
 
 type State = {
     hardness: number
-}
+};
 
 export class CurrentToolHardness extends StatefulComponent<{}, State> {
 
-    @property hardness: number
+    @property hardness: number;
     @property presetEditIndex?: number;
     @property presetEditValue?: number;
 
@@ -42,7 +42,7 @@ export class CurrentToolHardness extends StatefulComponent<{}, State> {
                     {this.renderPresetButton(4)}
                 </div>
             </div>
-        )
+        );
     }
     private renderPresetEdit() {
         if (typeof this.presetEditIndex !== 'number')
@@ -56,7 +56,7 @@ export class CurrentToolHardness extends StatefulComponent<{}, State> {
             <Dialog open={open}>
                 <DialogTitle>Härte Preset {titleIndex}</DialogTitle>
                 <DialogContent>
-                    <div className="flex" style={{ alignItems: "center" }}>
+                    <div className="flex" style={{ alignItems: 'center' }}>
                         <sp-textfield placeholder="Value" type="number" defaultValue={defaultValue} onInput={this._presetInputValueChanged}></sp-textfield>
                     </div>
                 </DialogContent>
@@ -69,11 +69,11 @@ export class CurrentToolHardness extends StatefulComponent<{}, State> {
     }
     private _presetInputValueChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
         this.presetEditValue = parseInt(e.currentTarget.value.replace(/,/, '.'));
-    }
+    };
     private cancelPresetEdit = () => {
         this.presetEditIndex = undefined;
         this.presetEditValue = undefined;
-    }
+    };
     private applyPresetEdit = () => {
         try {
             if (typeof this.presetEditIndex !== 'number')
@@ -95,7 +95,7 @@ export class CurrentToolHardness extends StatefulComponent<{}, State> {
         } catch (err) {
             app.showAlert(err.message);
         }
-    }
+    };
 
     private renderPresetButton(index: number) {
         const value = hardnessPresets.get(index);

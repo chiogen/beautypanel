@@ -9,7 +9,7 @@ export function _desaturate(layer: Layer): ActionDescriptor {
             _ref: 'layer',
             _id: layer.id
         }
-    }
+    };
 }
 export async function imageDesaturation(layer: Layer) {
     const [ result ] = await app.batchPlay([

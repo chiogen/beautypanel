@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/styles';
 import { app } from 'photoshop';
-import * as React from 'react'
+import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Pages } from './pages';
 import { Tabbar } from './tabbar';

@@ -2,7 +2,7 @@ declare namespace JSX {
 
     type DefaultAttributes = {
         slot?: string
-    }
+    };
 
     type TypedReactElement<T, P = {}> = React.DetailedHTMLProps<DefaultAttributes & React.HTMLAttributes<T> & Partial<P>, T>;
 

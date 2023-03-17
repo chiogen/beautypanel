@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from 'react';
 import { Unsubscribe } from 'redux';
 import { property } from '../../decorators/react-property';
 import { Pages } from '../../interface/pages';
@@ -18,7 +18,7 @@ export abstract class StatefulComponent<P = {}, S = {}, SS = any> extends React.
             this.__unsubscribe = store.subscribe(() => {
                 const state = store.getState();
                 this.stateChanged(state);
-            })
+            });
         }
     }
 

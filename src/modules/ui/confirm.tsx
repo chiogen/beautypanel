@@ -1,6 +1,6 @@
-import * as React from 'react'
-import * as ReactDom from 'react-dom'
-import i18next from "i18next";
+import * as React from 'react';
+import * as ReactDom from 'react-dom';
+import i18next from 'i18next';
 import { createAbortError, throwAbortError } from '../../common/errors/abort-error';
 
 export const enum ConfirmDialogChoiceSet {
@@ -66,6 +66,6 @@ function renderOkAbortChoices(dialog: HTMLUxpDialogElement) {
     return <>
         <sp-action-button onClick={_confirm}>{i18next.t('ok')}</sp-action-button>
         <sp-action-button onClick={_decline}>{i18next.t('abort')}</sp-action-button>
-    </>
+    </>;
 
 }

@@ -1,24 +1,24 @@
-import i18next from "i18next";
-import * as React from 'react'
-import { StatefulComponent } from "../../../components/base/stateful-component";
-import { property } from "../../../decorators/react-property";
-import { store, TState } from "../../../store";
-import { ActionType } from "../../../store-action-types";
-import { opacity as defaultPresets } from './default-presets.json'
-import { PresetsManager } from "../../../common/presets-manager";
-import { app } from "photoshop";
-import { Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
+import i18next from 'i18next';
+import * as React from 'react';
+import { StatefulComponent } from '../../../components/base/stateful-component';
+import { property } from '../../../decorators/react-property';
+import { store, TState } from '../../../store';
+import { ActionType } from '../../../store-action-types';
+import { opacity as defaultPresets } from './default-presets.json';
+import { PresetsManager } from '../../../common/presets-manager';
+import { app } from 'photoshop';
+import { Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
 
 type State = {
     opacity: number
-}
+};
 
-export const opacityPresets = new PresetsManager<number>('opacity', defaultPresets)
+export const opacityPresets = new PresetsManager<number>('opacity', defaultPresets);
 
 
 export class CurrentToolOpacity extends StatefulComponent<{}, State> {
 
-    @property opacity: number
+    @property opacity: number;
     @property presetEditIndex?: number;
     @property presetEditValue?: number;
 
@@ -43,7 +43,7 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
                     {this.renderPresetButton(4)}
                 </div>
             </div>
-        )
+        );
     }
     private renderPresetButton(index: number) {
 
@@ -67,7 +67,7 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
             <Dialog open={open}>
                 <DialogTitle>Härte Preset {titleIndex}</DialogTitle>
                 <DialogContent>
-                    <div className="flex" style={{ alignItems: "center" }}>
+                    <div className="flex" style={{ alignItems: 'center' }}>
                         <sp-textfield placeholder="Value" type="number" defaultValue={defaultValue} onInput={this._presetInputValueChanged}></sp-textfield>
                     </div>
                 </DialogContent>
@@ -79,15 +79,15 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
         );
     }
     private _presetInputValueChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-        let value = parseInt(e.currentTarget.value.replace(/,/, '.'));
+        const value = parseInt(e.currentTarget.value.replace(/,/, '.'));
         if (!Number.isNaN(value)) {
             this.presetEditValue = value ?? -1;
         }
-    }
+    };
     private cancelPresetEdit = () => {
         this.presetEditIndex = undefined;
         this.presetEditValue = undefined;
-    }
+    };
     private applyPresetEdit = () => {
         try {
             if (typeof this.presetEditIndex !== 'number')
@@ -107,7 +107,7 @@ export class CurrentToolOpacity extends StatefulComponent<{}, State> {
         } catch (err) {
             app.showAlert(err);
         }
-    }
+    };
 
     private async onPresetClick(e: React.MouseEvent<HTMLButtonElement>) {
         const button = e.currentTarget as HTMLButtonElement;

@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from 'react';
 import i18next from 'i18next';
 import { store, TState } from '../../../store';
 import { ActionType } from '../../../store-action-types';
@@ -16,7 +16,7 @@ export function SharpenOptions() {
                 </sp-checkbox>
             </div>
         </div>
-    )
+    );
 }
 
 function switchToDetailLayerChanged(e: React.FormEvent<HTMLInputElement>) {

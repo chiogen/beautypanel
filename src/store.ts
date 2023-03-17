@@ -1,13 +1,13 @@
 import { app } from 'photoshop';
-import { combineReducers, createStore, Reducer, Store } from "redux";
-import { setAsyncInterval } from "./common/set-async-interval";
-import { Page } from "./enums";
-import page, { PageAction } from './reducer/page'
-import currentTool, { CurrentToolAction } from './reducer/current-tool'
-import currentToolOptions, { CurrentToolOptionsAction, CurrentToolOptionsState } from './reducer/current-tool-options'
-import { UpdateToolDataAction, DocumentChangedAction } from "./reducer/shared-action-types";
-import { ActionType } from "./store-action-types";
-import sharpenOptions, { SharpenOptions, SharpenOptionsAction } from "./reducer/sharpen-options";
+import { combineReducers, createStore, Reducer, Store } from 'redux';
+import { setAsyncInterval } from './common/set-async-interval';
+import { Page } from './enums';
+import page, { PageAction } from './reducer/page';
+import currentTool, { CurrentToolAction } from './reducer/current-tool';
+import currentToolOptions, { CurrentToolOptionsAction, CurrentToolOptionsState } from './reducer/current-tool-options';
+import { UpdateToolDataAction, DocumentChangedAction, CurrentToolOptionsDescriptor } from './reducer/shared-action-types';
+import { ActionType } from './store-action-types';
+import sharpenOptions, { SharpenOptions, SharpenOptionsAction } from './reducer/sharpen-options';
 import { ActionDescriptor } from 'photoshop/dom/CoreModules';
 
 export interface TState {
@@ -46,23 +46,23 @@ async function poll() {
             _obj: 'get',
             _target: [
                 {
-                    _property: "tool"
+                    _property: 'tool'
                 },
                 {
-                    _ref: "application",
-                    _enum: "ordinal",
-                    _value: "targetEnum"
+                    _ref: 'application',
+                    _enum: 'ordinal',
+                    _value: 'targetEnum'
                 }
             ],
             _options: {
-                dialogOptions: "dontDisplay"
+                dialogOptions: 'dontDisplay'
             }
         };
 
         const [toolData] = await app.batchPlay([
             brushDataDescriptor
         ], {});
-        const { currentToolOptions } = toolData as any;
+        const currentToolOptions = toolData.currentToolOptions as CurrentToolOptionsDescriptor;
 
         if (currentToolOptions) {
             const action: UpdateToolDataAction = {

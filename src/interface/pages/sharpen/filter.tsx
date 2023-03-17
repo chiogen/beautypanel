@@ -1,5 +1,5 @@
-import * as React from 'react'
-import i18next from 'i18next'
+import * as React from 'react';
+import i18next from 'i18next';
 import { filterUnsharpMask } from '../../../modules/filter/sharpen/unsharp-mask';
 import { app } from 'photoshop';
 import { DialogOptions } from '../../../enums/dialog-options';
@@ -83,7 +83,7 @@ async function _executeSelectiveFilter(e: React.MouseEvent) {
 async function _executeFreqSeparationFilter(e: React.MouseEvent) {
     try {
 
-        let document = app.activeDocument;
+        const document = app.activeDocument;
         if (!document) {
             return;
         }
@@ -98,8 +98,8 @@ async function _executeFreqSeparationFilter(e: React.MouseEvent) {
             soft = BeautyPanel.layers.soft!;
         }
 
-        let detailBlackWhite = await detail.duplicate(undefined, BeautyPanel.getLayerName(E_Layer.DetailBlackWhite));
-        let detailColor = detail;
+        const detailBlackWhite = await detail.duplicate(undefined, BeautyPanel.getLayerName(E_Layer.DetailBlackWhite));
+        const detailColor = detail;
         detailColor.name = BeautyPanel.getLayerName(E_Layer.DetailColor);
 
         detailBlackWhite.blendMode = 'linearLight';

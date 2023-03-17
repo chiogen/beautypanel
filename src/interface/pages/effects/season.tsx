@@ -1,13 +1,13 @@
-import i18next from "i18next";
-import { app } from "photoshop";
+import i18next from 'i18next';
+import { app } from 'photoshop';
 import { ActionDescriptor } from 'photoshop/dom/CoreModules';
 import { Document } from 'photoshop/dom/Document';
-import { BeautyPanel, E_Layer } from "../../../common/beautypanel";
-import { percent } from "../../../common/units";
-import { showConfirmDialog } from "../../../modules/ui/confirm";
+import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
+import { percent } from '../../../common/units';
+import { showConfirmDialog } from '../../../modules/ui/confirm';
 
 
-export type ColorCorrectionColor = 'reds' | 'yellows' | 'greens' | 'cyans' | 'blues' | 'magentas' | 'whites' | 'neutrals' | 'blacks'
+export type ColorCorrectionColor = 'reds' | 'yellows' | 'greens' | 'cyans' | 'blues' | 'magentas' | 'whites' | 'neutrals' | 'blacks';
 export interface SeasonProfile {
     layerOpacity: number
     colorCorrection: Array<SeasonColorCorrection>
@@ -63,12 +63,12 @@ export async function createAutumnEffect(e: React.MouseEvent<HTMLButtonElement>)
 
         await createSeasonEffect(BeautyPanel.getLayerName(E_Layer.Autumn), profile);
     } catch (err) {
-        app.showAlert(err.message)
+        app.showAlert(err.message);
     }
 }
 function optAutumnEffect() {
-    const key = 'autumnLayerOpacity'
-    const layerName = BeautyPanel.getLayerName(E_Layer.Autumn)
+    const key = 'autumnLayerOpacity';
+    const layerName = BeautyPanel.getLayerName(E_Layer.Autumn);
     const layer = BeautyPanel.getLayerByCode(E_Layer.Autumn);
 
     if (layer) {
@@ -99,12 +99,12 @@ export async function createSpringEffect(_e: React.MouseEvent<HTMLButtonElement>
         // await createSeasonEffect(BeautyPanel.getLayerName(E_Layer.Spring), profile);
         
     } catch (err) {
-        app.showAlert(err.message)
+        app.showAlert(err.message);
     }
 }
 function optSpringEffect() {
-    const key = 'springLayerOpacity'
-    const layerName = BeautyPanel.getLayerName(E_Layer.Autumn)
+    const key = 'springLayerOpacity';
+    const layerName = BeautyPanel.getLayerName(E_Layer.Autumn);
     const layer = BeautyPanel.getLayerByCode(E_Layer.Autumn);
 
     if (layer) {
@@ -169,40 +169,40 @@ async function createSelectiveColorLayer(document: Document, profile: SeasonProf
 }
 function _selectiveColor(): ActionDescriptor {
     return {
-        _obj: "make",
+        _obj: 'make',
         _target: [
             {
-                _ref: "adjustmentLayer"
+                _ref: 'adjustmentLayer'
             }
         ],
         using: {
-            _obj: "adjustmentLayer",
+            _obj: 'adjustmentLayer',
             type: {
-                _obj: "selectiveColor",
+                _obj: 'selectiveColor',
                 presetKind: {
-                    _enum: "presetKindType",
-                    _value: "presetKindDefault"
+                    _enum: 'presetKindType',
+                    _value: 'presetKindDefault'
                 }
             }
         }
-    }
+    };
 }
 
 function _setColorCorrection(correction: SeasonColorCorrection[]) {
     const descriptor: ActionDescriptor = {
-        _obj: "set",
+        _obj: 'set',
         _target: [
             {
-                _ref: "adjustmentLayer",
-                _enum: "ordinal",
-                _value: "targetEnum"
+                _ref: 'adjustmentLayer',
+                _enum: 'ordinal',
+                _value: 'targetEnum'
             }
         ],
         to: {
-            _obj: "selectiveColor",
+            _obj: 'selectiveColor',
             method: {
-                _enum: "correctionMethod",
-                _value: "absolute"
+                _enum: 'correctionMethod',
+                _value: 'absolute'
             },
             colorCorrection: correction.map(colorCorrection)
         }
@@ -213,9 +213,9 @@ function _setColorCorrection(correction: SeasonColorCorrection[]) {
 
 function colorCorrection({ color, cyan, magenta, yellow, black }: SeasonColorCorrection) {
     const descriptor = {
-        _obj: "colorCorrection",
+        _obj: 'colorCorrection',
         colors: {
-            _enum: "colors",
+            _enum: 'colors',
             _value: color
         },
         cyan: percent(cyan),

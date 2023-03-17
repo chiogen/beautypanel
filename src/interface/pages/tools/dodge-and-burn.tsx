@@ -1,5 +1,5 @@
-import * as React from 'react'
-import i18next from "i18next";
+import * as React from 'react';
+import i18next from 'i18next';
 import { app, Layer } from 'photoshop';
 import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
 import { StatefulComponent } from '../../../components/base/stateful-component';
@@ -19,8 +19,8 @@ interface State {
 
 export class DodgeAndBurn extends StatefulComponent<{}, State> {
 
-    @property currentTool: string
-    @property color: string
+    @property currentTool: string;
+    @property color: string;
 
     constructor(props: {}) {
         super(props);
@@ -115,29 +115,29 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
             // Pick fill to center of image
             const [fillResult] = await app.batchPlay([
                 {
-                    _obj: "make",
+                    _obj: 'make',
                     _target: [
                         {
-                            _ref: "layer"
+                            _ref: 'layer'
                         }
                     ],
                     using: {
-                        _obj: "layer",
+                        _obj: 'layer',
                         name: BeautyPanel.getLayerName(E_Layer.DodgeAndBurn),
                         mode: {
-                            _enum: "blendMode",
-                            _value: "softLight"
+                            _enum: 'blendMode',
+                            _value: 'softLight'
                         },
                         fillNeutral: true,
                         color: {
-                            _enum: "color",
-                            _value: "gray"
+                            _enum: 'color',
+                            _value: 'gray'
                         }
                     }
                 }
             ]);
             if (fillResult.message) {
-                throw new Error(fillResult.message)
+                throw new Error(fillResult.message);
             }
 
 
@@ -192,7 +192,7 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
                         [188, 234],
                         [255, 255]
                     ]
-                )
+                );
                 await invert(bright);
             }
             bright.visible = true;
@@ -231,7 +231,7 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
 
             const layer = BeautyPanel.layers.dodgeAndBurnGray;
             if (!layer) {
-                throw new Error('You must run Dodge&Burn first.')
+                throw new Error('You must run Dodge&Burn first.');
             }
 
             const button = e.target as HTMLButtonElement;
@@ -250,7 +250,7 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
                 await setForegroundColor(grayscale);
 
                 layer.visible = true;
-                await selectLayers([layer])
+                await selectLayers([layer]);
             }
         } catch (err) {
             await app.showAlert(err);
@@ -292,16 +292,16 @@ async function addCurvedAdjustmentLayer(sourceLayer: Layer, name: string, curve:
         {
             _obj: 'curves',
             presetKind: {
-                _enum: "presetKindType",
-                _value: "presetKindCustom"
+                _enum: 'presetKindType',
+                _value: 'presetKindCustom'
             },
             adjustment: [
                 {
-                    _obj: "curvesAdjustment",
+                    _obj: 'curvesAdjustment',
                     channel: {
-                        _ref: "channel",
-                        _enum: "channel",
-                        _value: "composite"
+                        _ref: 'channel',
+                        _enum: 'channel',
+                        _value: 'composite'
                     },
                     curve: curveArgument(curve)
                 }
@@ -320,9 +320,9 @@ async function addCurvedAdjustmentLayer(sourceLayer: Layer, name: string, curve:
 function curveArgument(curve: Array<number[]>) {
     return curve.map(([x, y]) => {
         return {
-            _obj: "paint",
+            _obj: 'paint',
             horizontal: x,
             vertical: y
-        }
+        };
     });
 }

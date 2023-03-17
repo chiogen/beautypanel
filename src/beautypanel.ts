@@ -13,7 +13,7 @@ import { addDocumentLoadedCallback } from './common/active-document-observer';
 localizationLoaded.then(async () => {
     addDocumentLoadedCallback(() => {
         renderApp();
-    })
+    });
     renderApp();
 }).catch(err => {
     app.showAlert(err.message);
@@ -22,7 +22,7 @@ localizationLoaded.then(async () => {
 try {
     app.eventNotifier = (event, descriptor) => {
         console.log(event, JSON.stringify(descriptor, null, ' '));
-    }
+    };
 } catch (err) {
     console.log('eventNotifier not available.');
 }

@@ -1,4 +1,4 @@
-import { app } from "photoshop";
+import { app } from 'photoshop';
 import { Document } from 'photoshop/dom/Document';
 
 
@@ -18,7 +18,7 @@ export function addDocumentLoadedCallback(callback: (document: Document) => any)
         }
 
         handle = setTimeout(tick, interval) as any as number;
-    }
+    };
 
     handle = setTimeout(tick, interval) as any as number;
 

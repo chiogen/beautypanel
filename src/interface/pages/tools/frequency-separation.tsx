@@ -1,9 +1,9 @@
-import * as React from 'react'
-import i18next from "i18next";
+import * as React from 'react';
+import i18next from 'i18next';
 import { app, Layer } from 'photoshop';
 import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
 import { percent } from '../../../common/units';
-import { opacityPresets } from './opacity'
+import { opacityPresets } from './opacity';
 import { filterMedianNoise } from '../../../modules/filter/noise/median';
 import { selectTool } from '../../../modules/application/select-tool';
 import { checkBitsPerChannel } from '../../../modules/image/bits-per-channel';
@@ -80,7 +80,7 @@ export async function executeFrequencySeparation(e?: React.MouseEvent) {
             offset: 0,
             scale: 2,
             invert: true
-        })
+        });
         detail.blendMode = 'linearLight';
 
         // Create adjustment layer (levels)
@@ -91,7 +91,7 @@ export async function executeFrequencySeparation(e?: React.MouseEvent) {
                     input: [120, 132]
                 }
             }
-        })
+        });
         contrast.name = BeautyPanel.layerNames.contrast;
 
         // Update layer visibility
@@ -108,14 +108,14 @@ export async function executeFrequencySeparation(e?: React.MouseEvent) {
             opacity: percent(100),
             useScatter: false,
             brush: {
-                _obj: "computedBrush",
+                _obj: 'computedBrush',
                 hardness: percent(100)
             }
         });
 
     } catch (err) {
         console.error(err);
-        app.showAlert(err.message || err)
+        app.showAlert(err.message || err);
     } finally {
         if (button) {
             button.disabled = false;
@@ -150,14 +150,14 @@ async function setLayerDetails() {
             opacity: percent(100),
             useScatter: false,
             brush: {
-                _obj: "computedBrush",
+                _obj: 'computedBrush',
                 hardness: percent(100)
             }
         });
 
     } catch (err) {
         console.error(err);
-        app.showAlert(err.message || err)
+        app.showAlert(err.message || err);
     }
 }
 
@@ -187,13 +187,13 @@ async function setLayerSoft() {
             opacity: percent(opacityPresets.get(1)),
             useScatter: false,
             brush: {
-                _obj: "computedBrush",
+                _obj: 'computedBrush',
                 hardness: percent(0)
             }
         });
 
     } catch (err) {
         console.error(err);
-        app.showAlert(err.message || err)
+        app.showAlert(err.message || err);
     }
 }

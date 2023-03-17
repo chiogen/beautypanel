@@ -1,5 +1,5 @@
-import { combineReducers } from "redux";
-import { ActionType } from "../store-action-types";
+import { combineReducers } from 'redux';
+import { ActionType } from '../store-action-types';
 
 export interface SharpenOptions {
     useDetailLayer: boolean
@@ -10,7 +10,7 @@ export interface SetSharpenOptionsAction extends Partial<SharpenOptions> {
 }
 export type SharpenOptionsAction = SetSharpenOptionsAction;
 
-function useDetailLayer(state: boolean = true, action: SharpenOptionsAction): boolean {
+function useDetailLayer(state = true, action: SharpenOptionsAction): boolean {
     switch (action.type) {
         case ActionType.SetSharpenOptions:
             return Boolean(action.useDetailLayer) ?? state;

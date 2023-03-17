@@ -1,7 +1,7 @@
 import i18next from 'i18next';
 import { app } from 'photoshop';
 import { BlendMode } from 'photoshop/dom/Constants';
-import * as React from 'react'
+import * as React from 'react';
 import { BeautyPanel, E_Layer } from '../../common/beautypanel';
 import { DialogOptions } from '../../enums/dialog-options';
 import { filterGaussianBlur } from '../../modules/filter/blur/gaussian-blur';
@@ -12,11 +12,11 @@ import { invert } from '../../modules/layer/invert';
 import { createAdjustmentLayer } from '../../modules/masks/levels';
 import { createRevealAllMask } from '../../modules/masks/reveal-all';
 import { createAutumnEffect, createSeasonEffect, createSpringEffect } from './effects/season';
-import { createVignette } from './effects/vignette'
+import { createVignette } from './effects/vignette';
 
 type Props = {
     isActive: boolean
-}
+};
 
 
 export class Effects extends React.Component<Props> {
@@ -35,7 +35,7 @@ export class Effects extends React.Component<Props> {
             <sp-action-button onClick={createVignette}># {i18next.t('effects.vignette')}</sp-action-button>
             <sp-action-button onClick={createAutumnEffect}>{i18next.t('effects.autumn')}</sp-action-button>
             <sp-action-button onClick={createSpringEffect}># {i18next.t('effects.spring')}</sp-action-button>
-        </div>
+        </div>;
     }
 
 }
@@ -68,7 +68,7 @@ async function enhanceDetails(e: React.MouseEvent<HTMLButtonElement>) {
         // Create reference layer
         let tempLayer = await referenceLayer.duplicate();
         tempLayer!.opacity = 1;
-        let tempLayer2 = await referenceLayer.duplicate();
+        const tempLayer2 = await referenceLayer.duplicate();
 
         tempLayer = await mergeLayers(document, [tempLayer, tempLayer2]);
 
@@ -115,8 +115,8 @@ async function createOrthonEffect(e: React.MouseEvent<HTMLButtonElement>) {
         }
 
         let orthonLayer: Layer;
-        let soft = BeautyPanel.layers.soft;
-        let detail = BeautyPanel.layers.detail;
+        const soft = BeautyPanel.layers.soft;
+        const detail = BeautyPanel.layers.detail;
 
         if (soft && detail) {
             const detailCopy = await detail.duplicate();
