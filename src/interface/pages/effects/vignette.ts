@@ -14,7 +14,7 @@ export enum VignetteType {
 /**
  * Create a simle vignette using https://helpx.adobe.com/de/photoshop/how-to/create-vignette-with-layer-mask.html
  */
-export async function createVignette(e: React.MouseEvent<HTMLButtonElement>) {
+export async function createVignette() {
 
     if (!app.activeDocument)
         return;
@@ -33,7 +33,7 @@ export async function createVignette(e: React.MouseEvent<HTMLButtonElement>) {
         // Delete existing layer
         if (layer) {
             layer.delete();
-            layer = undefined;
+            layer = null;
         }
 
         layer = await createVignetteArtLayer(document, VignetteType.Elipse, 100);        
@@ -202,7 +202,4 @@ async function createVignetteArtLayer(document: Document, type: VignetteType, pa
     }
 
     return document.activeLayers[0];
-}
-async function createElipse() {
-
 }

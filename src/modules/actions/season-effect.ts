@@ -1,11 +1,9 @@
-import i18next from 'i18next';
 import { app } from 'photoshop';
 import { ActionDescriptor } from 'photoshop/dom/CoreModules';
 import { Document } from 'photoshop/dom/Document';
-import { BeautyPanel, E_Layer } from '../../../common/beautypanel';
-import { percent } from '../../../common/units';
-import { showConfirmDialog } from '../../../modules/ui/confirm';
-
+import { BeautyPanel } from '../../common/beautypanel';
+import { percent } from '../../common/units';
+import { showConfirmDialog } from '../ui/confirm';
 
 export type ColorCorrectionColor = 'reds' | 'yellows' | 'greens' | 'cyans' | 'blues' | 'magentas' | 'whites' | 'neutrals' | 'blacks';
 export interface SeasonProfile {
@@ -20,102 +18,6 @@ export interface SeasonColorCorrection {
     black: number
 }
 
-const springToAutumn: SeasonProfile = {
-    layerOpacity: 100,
-    colorCorrection: [
-        {
-            color: 'reds',
-            cyan: 1,
-            magenta: 2,
-            yellow: 3,
-            black: 0
-        },
-        {
-            color: 'yellows',
-            cyan: -100,
-            magenta: 42,
-            yellow: 40,
-            black: 0
-        },
-        {
-            color: 'greens',
-            cyan: 100,
-            magenta: 100,
-            yellow: 100,
-            black: 100
-        }
-    ]
-};
-
-export async function createAutumnEffect(e: React.MouseEvent<HTMLButtonElement>) {
-    try {
-
-        if (e.altKey) {
-            optAutumnEffect();
-            return;
-        }
-
-        const profile = springToAutumn;
-        const opacity = localStorage.getItem('autumnLayerOpacity');
-        if (opacity) {
-            profile.layerOpacity = parseInt(opacity);
-        }
-
-        await createSeasonEffect(BeautyPanel.getLayerName(E_Layer.Autumn), profile);
-    } catch (err) {
-        app.showAlert(err.message);
-    }
-}
-function optAutumnEffect() {
-    const key = 'autumnLayerOpacity';
-    const layerName = BeautyPanel.getLayerName(E_Layer.Autumn);
-    const layer = BeautyPanel.getLayerByCode(E_Layer.Autumn);
-
-    if (layer) {
-        localStorage.setItem(key, String(layer.opacity));
-        app.showAlert('Opacity value saved.');
-    } else {
-        app.showAlert(i18next.t('layerNotFound', { name: layerName }));
-    }
-
-}
-
-export async function createSpringEffect(_e: React.MouseEvent<HTMLButtonElement>) {
-    try {
-
-        throw new Error('No profile defined.');
-
-        // if (_e.altKey) {
-        //     optAutumnEffect();
-        //     return;
-        // }
-
-        // const profile = springToAutumn;
-        // const opacity = localStorage.getItem('springLayerOpacity');
-        // if (opacity) {
-        //     profile.layerOpacity = parseInt(opacity);
-        // }
-
-        // await createSeasonEffect(BeautyPanel.getLayerName(E_Layer.Spring), profile);
-        
-    } catch (err) {
-        app.showAlert(err.message);
-    }
-}
-function optSpringEffect() {
-    const key = 'springLayerOpacity';
-    const layerName = BeautyPanel.getLayerName(E_Layer.Autumn);
-    const layer = BeautyPanel.getLayerByCode(E_Layer.Autumn);
-
-    if (layer) {
-        localStorage.setItem(key, String(layer.opacity));
-        app.showAlert('Opacity value saved.');
-    } else {
-        app.showAlert(i18next.t('layerNotFound', { name: layerName }));
-    }
-
-}
-
 /**
  * Source: http://www.psd-dude.com/tutorials/how-to-change-season-autumn-effect-in-photoshop.aspx
  */
@@ -123,10 +25,10 @@ export async function createSeasonEffect(name: string, profile: SeasonProfile) {
     try {
 
         const document = app.activeDocument!;
-        const referenceLayer = document.backgroundLayer!;
+        const referenceLayer = document.backgroundLayer! ?? document.layers[0];
 
         referenceLayer.visible = true;
-        referenceLayer.locked = true;
+        // referenceLayer.locked = true;
 
         let layer = BeautyPanel.getLayerByName(name);
 
@@ -135,7 +37,7 @@ export async function createSeasonEffect(name: string, profile: SeasonProfile) {
             const deleteConfirmed = await showConfirmDialog('Overwrite existing layers?');
             if (deleteConfirmed) {
                 layer.delete();
-                layer = undefined;
+                layer = null;
             } else {
                 return;
             }
@@ -154,6 +56,7 @@ export async function createSeasonEffect(name: string, profile: SeasonProfile) {
         app.showAlert(message);
     }
 }
+
 
 async function createSelectiveColorLayer(document: Document, profile: SeasonProfile) {
     const [result] = await app.batchPlay([
