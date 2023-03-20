@@ -66,15 +66,17 @@ async function scaleImage(dialogOptions = DialogOptions.DontDisplay, size = 2048
         }
     ], {});
 
+    if (result._obj === 'error')
+        throw new Error(result.message ?? '');
+
     if (result.message) {
         throw new Error(result.message);
     }
 
     if (isEmptyDescriptor(result)) {
-        throwAbortError();
+        throw new AbortError();
     }
 
-    console.log(result);
     localStorage.setItem(key, JSON.stringify({
         ...descriptor,
         ...result
@@ -131,9 +133,12 @@ async function saveCopy(basePath: string, dialogOptions = DialogOptions.DontDisp
 
     const [result] = await app.batchPlay([descriptor], {});
 
-    if (result.message) {
-        throw new Error(result.message);
+    if (result._obj === 'error') {
+        throw result.message
+            ? new Error(result.message)
+            : new AbortError();
     }
+
     if (isEmptyDescriptor(result)) {
         throw new AbortError();
     }
@@ -153,6 +158,9 @@ export async function saveScaledCopy() {
     const document = app.activeDocument;
     const folder = path.parse(document.path).dir;
     const copy = await document.duplicate();
+
+    if (!copy)
+        throw new Error('Photoshop did not create a document copy');
 
     try {
 

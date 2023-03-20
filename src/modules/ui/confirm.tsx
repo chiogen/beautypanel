@@ -1,7 +1,7 @@
+import i18next from 'i18next';
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
-import i18next from 'i18next';
-import { createAbortError, throwAbortError } from '../../common/errors/abort-error';
+import { AbortError } from '../../common/errors/abort-error';
 
 export const enum ConfirmDialogChoiceSet {
     YesNo,
@@ -33,7 +33,7 @@ export async function showConfirmDialog(message: string, choiceSet = ConfirmDial
     dialog.remove();
 
     if (defaultBehavior && result === 'abort') {
-        throw createAbortError();
+        throw new AbortError();
     }
 
     return result === 'ok';

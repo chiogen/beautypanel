@@ -11,6 +11,6 @@ export function throwAbortError() {
     throw new AbortError();
 }
 
-export function isAbortError(err: Error): err is AbortError {
-    return err.name === 'AbortError';
+export function isAbortError(err: unknown): err is AbortError {
+    return err instanceof Error && err.name === 'AbortError';
 }

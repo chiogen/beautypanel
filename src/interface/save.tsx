@@ -191,7 +191,7 @@ export class SavePage extends React.Component<P, S> {
 
 
         } catch (err) {
-            handleException(err);
+            await handleException(err);
         }
     }
 
@@ -223,7 +223,7 @@ export class SavePage extends React.Component<P, S> {
             });
 
         } catch (err) {
-            handleException(err);
+            await handleException(err);
         }
 
     }
@@ -240,7 +240,7 @@ export class SavePage extends React.Component<P, S> {
             this.forceUpdate();
 
         } catch (err) {
-            handleException(err);
+            await handleException(err);
         } finally {
             this.isFrozen = false;
         }
@@ -258,7 +258,7 @@ export class SavePage extends React.Component<P, S> {
             this.forceUpdate();
 
         } catch (err) {
-            handleException(err);
+            await handleException(err);
         } finally {
             this.isFrozen = false;
         }
