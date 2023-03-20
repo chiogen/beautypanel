@@ -1,15 +1,14 @@
 
-export interface AbortError extends Error {
-    name: 'AbortError'
+export class AbortError extends Error {
+    name = 'AbortError' as const;
 }
 
 export function createAbortError() {
-    const error = new Error('abort');
-    error.name === 'AbortError';
+    return new AbortError();
 }
 
 export function throwAbortError() {
-    throw createAbortError();
+    throw new AbortError();
 }
 
 export function isAbortError(err: Error): err is AbortError {

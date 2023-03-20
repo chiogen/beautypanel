@@ -149,23 +149,8 @@ declare module 'uxp' {
             isFileSystemProvider: boolean;
             supportedDomains: Array<symbol>
 
-            getFileForOpening(options: {
-                initialDomain?: symbol
-                types?: Array<string>
-                intialLocation: File | Folder
-                allowMultiple?: boolean
-            }): Promise<File | Array<File>>;
 
-            getFileForSaving(options: {
-                /** the preferred initial location of the file picker. If not defined, the most recently used domain from a file picker is used instead. */
-                initialDomain?: symbol
-                /** array of valid file types that the user can choose to assign to a file. */
-                types: Array<string>;
-            }): Promise<File>;
 
-            getFolder(options?: {
-                initialDomain?: symbol
-            }): Promise<Folder | null>;
 
             getTemporaryFolder(): Promise<Folder>;
 
@@ -175,8 +160,22 @@ declare module 'uxp' {
             getEntryForPersistentToken(topken: string): Promise<Entry>
             
             getFileForOpening(options: DialogOpenOptions): Promise<File | undefined>
-            getFileForSaving(name: string, options?: any): Promise<File | undefined>
+            getFileForOpening(options: {
+                initialDomain?: symbol
+                types?: Array<string>
+                intialLocation: File | Folder
+                allowMultiple?: boolean
+            }): Promise<File | Array<File>>;
+
+            getFileForSaving(name: string, options?: {
+                /** array of valid file types that the user can choose to assign to a file. (png|jpeg|...) */
+                types: string[]
+            }): Promise<File | undefined>
+
             getFolder(options?: { initialDomain?: string, initialLocation?: string }): Promise<Folder>
+            getFolder(options?: {
+                initialDomain?: symbol
+            }): Promise<Folder | null>;
 
         }
 

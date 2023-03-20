@@ -1,14 +1,14 @@
-import { app } from 'photoshop';
+import { app, core } from 'photoshop';
 import * as React from 'react';
 import i18next from 'i18next';
 import { property } from '../decorators/react-property';
-import { Document } from 'photoshop';
 import { storage } from 'uxp';
 import * as path from 'path';
 import { shallowCompare } from '../common/shallow-compare';
 import { addDocumentLoadedCallback } from '../common/active-document-observer';
-import { getLastSavedFormat, getLastScaleSize, saveScaledCopy, saveUnscaledCopy } from '../modules/save';
+import { getLastSavedFormat, getLastScaleSize, save, saveScaledCopy, saveUnscaledCopy } from '../modules/actions/save';
 import { handleException } from '../common/errors/handle-error';
+import { Document } from 'photoshop/dom/Document';
 
 type P = {
     isActive: boolean
@@ -76,7 +76,7 @@ export class SavePage extends React.Component<P, S> {
         super.componentWillUnmount?.call(this);
     }
 
-    shouldComponentUpdate(nextProps: Readonly<P>, nextState: Readonly<S>, _nextContext: any): boolean {
+    shouldComponentUpdate(nextProps: Readonly<P>, nextState: Readonly<S>): boolean {
 
         if (this.isFrozen) {
             return false;
@@ -182,8 +182,13 @@ export class SavePage extends React.Component<P, S> {
                 return;
             }
 
-            await app.activeDocument.save();
-            await app.showAlert(this.texts.messages.quicksaveSuccess);
+            await core.executeAsModal(async () => {
+                await app.activeDocument.save();
+                await app.showAlert(this.texts.messages.quicksaveSuccess);
+            }, {
+                commandName: 'Quicksave'
+            });
+
 
         } catch (err) {
             handleException(err);
@@ -208,8 +213,14 @@ export class SavePage extends React.Component<P, S> {
                 return;
             }
 
-            await document.save(file);
-            await app.showAlert(this.texts.messages.quicksaveSuccess);
+            await core.executeAsModal(async () => {
+
+                await save(document, file);
+                await app.showAlert(this.texts.messages.copySaveSuccess);
+
+            }, {
+                commandName: 'Save As'
+            });
 
         } catch (err) {
             handleException(err);
@@ -221,7 +232,10 @@ export class SavePage extends React.Component<P, S> {
         try {
 
             this.isFrozen = true;
-            await saveScaledCopy();
+
+            await core.executeAsModal(saveScaledCopy, {
+                commandName: 'Save scaled copy'
+            });
 
             this.forceUpdate();
 
@@ -236,7 +250,10 @@ export class SavePage extends React.Component<P, S> {
         try {
 
             this.isFrozen = true;
-            await saveUnscaledCopy();
+
+            await core.executeAsModal(saveUnscaledCopy, {
+                commandName: 'Save unscaled copy'
+            });
 
             this.forceUpdate();
 
