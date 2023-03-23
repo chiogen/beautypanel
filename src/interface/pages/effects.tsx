@@ -1,14 +1,9 @@
 import i18next from 'i18next';
-import { app, constants, core } from 'photoshop';
-import { Layer } from 'photoshop/dom/Layer';
+import { app, core } from 'photoshop';
 import * as React from 'react';
 import { BeautyPanel, E_Layer } from '../../common/beautypanel';
-import { DialogOptions } from '../../enums/dialog-options';
 import { executeCreateOrthonLayer, executeEnhanceDetailsEffect } from '../../modules/actions/effects';
 import { createSeasonEffect, SeasonProfile } from '../../modules/actions/season-effect';
-import { filterGaussianBlur } from '../../modules/filter/blur/gaussian-blur';
-import { mergeLayers } from '../../modules/image/merge-layers';
-import { createAdjustmentLayer } from '../../modules/masks/levels';
 import { createVignette } from './effects/vignette';
 
 type Props = {
