@@ -9,6 +9,7 @@ import { addDocumentLoadedCallback } from '../common/active-document-observer';
 import { getLastSavedFormat, getLastScaleSize, save, saveScaledCopy, saveUnscaledCopy } from '../modules/actions/save';
 import { handleException } from '../common/errors/handle-error';
 import { Document } from 'photoshop/dom/Document';
+import { showMessageDialog } from '../ui/message-dialog';
 
 type P = {
     isActive: boolean
@@ -184,7 +185,7 @@ export class SavePage extends React.Component<P, S> {
 
             await core.executeAsModal(async () => {
                 await app.activeDocument.save();
-                await app.showAlert(this.texts.messages.quicksaveSuccess);
+                await showMessageDialog(this.texts.messages.quicksaveSuccess);
             }, {
                 commandName: 'Quicksave'
             });
@@ -216,7 +217,7 @@ export class SavePage extends React.Component<P, S> {
             await core.executeAsModal(async () => {
 
                 await save(document, file);
-                await app.showAlert(this.texts.messages.copySaveSuccess);
+                await showMessageDialog(this.texts.messages.copySaveSuccess);
 
             }, {
                 commandName: 'Save As'

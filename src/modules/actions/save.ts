@@ -7,6 +7,7 @@ import { storage } from 'uxp';
 import { AbortError, isAbortError, throwAbortError } from '../../common/errors/abort-error';
 import { pixels } from '../../common/units';
 import { DialogOptions } from '../../enums/dialog-options';
+import { showMessageDialog } from '../../ui/message-dialog';
 import { createFolderToken } from '../storage/fs';
 
 export function getLastSavedFormat(): ActionDescriptor | undefined {
@@ -182,7 +183,7 @@ export async function saveScaledCopy() {
             }
 
             const message = i18next.t('savePage.messages.copySaveSuccess');
-            app.showAlert(message);
+            showMessageDialog(message);
         }
 
     } catch (err) {
@@ -232,7 +233,7 @@ export async function saveUnscaledCopy() {
         }
 
         const message = i18next.t('savePage.messages.copySaveSuccess');
-        app.showAlert(message);
+        showMessageDialog(message);
 
     } finally {
         copy?.closeWithoutSaving();
