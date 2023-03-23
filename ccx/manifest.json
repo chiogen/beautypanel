@@ -7,11 +7,7 @@
   "host": [
     {
       "app": "PS",
-      "minVersion": "22",
-      "data": {
-        "apiVersion": 2,
-        "loadEvent": "startup"
-      }
+      "minVersion": "23"
     }
   ],
   "entrypoints": [
