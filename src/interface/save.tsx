@@ -10,6 +10,8 @@ import { getLastSavedFormat, getLastScaleSize, save, saveScaledCopy, saveUnscale
 import { handleException } from '../common/errors/handle-error';
 import { Document } from 'photoshop/dom/Document';
 import { showMessageDialog } from '../ui/message-dialog';
+import { replaceExtension } from '../common/path/replace-extension';
+import { basename } from 'path';
 
 type P = {
     isActive: boolean
@@ -116,7 +118,9 @@ export class SavePage extends React.Component<P, S> {
         const width = activeDocument?.width ?? 0;
         const height = activeDocument?.height ?? 0;
 
-        const format = activeDocument?.path ? path.parse(activeDocument.path).ext : '';
+        const format = activeDocument?.path
+            ? path.parse(activeDocument.path).ext
+            : '';
 
         const quickSave = () => this.quickSave();
         const saveAs = () => this.saveAs();
@@ -207,16 +211,19 @@ export class SavePage extends React.Component<P, S> {
             }
 
             const document = app.activeDocument;
-            const parsed = path.parse(document.path);
+            const documentFileName = basename(document.path);
+            const suggestedFileName = replaceExtension(documentFileName, '.jpg');
 
-            const file = await fs.getFileForSaving(parsed.name + '.jpg');
+            const file = await fs.getFileForSaving(suggestedFileName, {
+                types: ['png', 'jpg']
+            });
             if (!file) {
                 return;
             }
 
             await core.executeAsModal(async () => {
 
-                await save(document, file);
+                await save(document, file, true);
                 await showMessageDialog(this.texts.messages.copySaveSuccess);
 
             }, {

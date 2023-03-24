@@ -179,7 +179,7 @@ export async function saveScaledCopy() {
                 if (!file)
                     throw new AbortError();
 
-                await save(copy, file);
+                await save(copy, file, true);
             }
 
             const message = i18next.t('savePage.messages.copySaveSuccess');
@@ -228,7 +228,7 @@ export async function saveUnscaledCopy() {
             if (!file)
                 throw new AbortError();
 
-            await save(copy, file);
+            await save(copy, file, true);
 
         }
 
