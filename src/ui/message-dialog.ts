@@ -26,7 +26,8 @@ export function showMessageDialog(message: string) {
         btnClose.addEventListener('click', e => {
             if (e.button !== 0)
                 return;
-            dialog.remove();
+            dialog.close();
+            setTimeout(() => dialog.remove(), 500);
             fulfill();
         });
 
