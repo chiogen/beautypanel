@@ -170,7 +170,7 @@ declare module 'uxp' {
             getFileForSaving(name: string, options?: {
                 /** array of valid file types that the user can choose to assign to a file. (png|jpeg|...) */
                 types: string[],
-                initialLocation?: Folder
+                initialLocation?: Entry | string
             }): Promise<File | undefined>
 
             getFolder(options?: { initialDomain?: string, initialLocation?: string }): Promise<Folder>

@@ -1,4 +1,5 @@
 import i18next from 'i18next';
+import { parse } from 'path';
 import { app } from 'photoshop';
 import { ActionDescriptor } from 'photoshop/dom/CoreModules';
 import { Document } from 'photoshop/dom/Document';
@@ -128,8 +129,10 @@ export async function saveScaledCopy() {
         await scaleImage(DialogOptions.Display);
         await unsharpMask(DialogOptions.Display);
 
+        const suggestedFolder = parse(document.path).dir;
         const suggestedFileName = addFilenameSuffix(document.name, ' scaled copy');
-        const file = await getFileForSaving(suggestedFileName);
+
+        const file = await getFileForSaving(suggestedFileName, suggestedFolder);
         await save(copy, file, true);
 
         const message = i18next.t('savePage.messages.copySaveSuccess');
@@ -163,8 +166,9 @@ export async function saveUnscaledCopy() {
 
     try {
 
+        const suggestedFolder = parse(document.path).dir;
         const suggestedFileName = addFilenameSuffix(document.name, ' copy');
-        const file = await getFileForSaving(suggestedFileName);
+        const file = await getFileForSaving(suggestedFileName, suggestedFolder);
         await save(copy, file, true);
 
         const message = i18next.t('savePage.messages.copySaveSuccess');
