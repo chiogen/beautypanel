@@ -1,17 +1,17 @@
-import { app, core } from 'photoshop';
-import * as React from 'react';
 import i18next from 'i18next';
-import { property } from '../decorators/react-property';
-import { storage } from 'uxp';
 import * as path from 'path';
-import { shallowCompare } from '../common/shallow-compare';
-import { addDocumentLoadedCallback } from '../common/active-document-observer';
-import { getLastSavedFormat, getLastScaleSize, save, saveScaledCopy, saveUnscaledCopy } from '../modules/actions/save';
-import { handleException } from '../common/errors/handle-error';
-import { Document } from 'photoshop/dom/Document';
-import { showMessageDialog } from '../ui/message-dialog';
-import { replaceExtension } from '../common/path/replace-extension';
 import { basename } from 'path';
+import { app, core } from 'photoshop';
+import { Document } from 'photoshop/dom/Document';
+import * as React from 'react';
+import { addDocumentLoadedCallback } from '../common/active-document-observer';
+import { handleException } from '../common/errors/handle-error';
+import { getFileForSaving } from '../common/fs/get-file-for-saving';
+import { replaceExtension } from '../common/path/replace-extension';
+import { shallowCompare } from '../common/shallow-compare';
+import { property } from '../decorators/react-property';
+import { getLastSavedFormat, getLastScaleSize, save, saveScaledCopy, saveUnscaledCopy } from '../modules/actions/save';
+import { showMessageDialog } from '../ui/message-dialog';
 
 type P = {
     isActive: boolean
@@ -202,8 +202,6 @@ export class SavePage extends React.Component<P, S> {
 
     private async saveAs() {
 
-        const fs = storage.localFileSystem;
-
         try {
 
             if (!app.activeDocument) {
@@ -214,12 +212,7 @@ export class SavePage extends React.Component<P, S> {
             const documentFileName = basename(document.path);
             const suggestedFileName = replaceExtension(documentFileName, '.jpg');
 
-            const file = await fs.getFileForSaving(suggestedFileName, {
-                types: ['png', 'jpg']
-            });
-            if (!file) {
-                return;
-            }
+            const file = await getFileForSaving(suggestedFileName);
 
             await core.executeAsModal(async () => {
 

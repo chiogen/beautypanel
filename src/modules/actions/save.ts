@@ -1,15 +1,14 @@
 import i18next from 'i18next';
-import * as path from 'path';
 import { app } from 'photoshop';
 import { ActionDescriptor } from 'photoshop/dom/CoreModules';
 import { Document } from 'photoshop/dom/Document';
-import { storage } from 'uxp';
-import { AbortError, isAbortError, throwAbortError } from '../../common/errors/abort-error';
+import { JPEGSaveOptions, PNGSaveOptions } from 'photoshop/dom/Objects';
+import { AbortError, isAbortError } from '../../common/errors/abort-error';
+import { getFileForSaving } from '../../common/fs/get-file-for-saving';
+import { addFilenameSuffix } from '../../common/path/add-filename-suffix';
 import { pixels } from '../../common/units';
 import { DialogOptions } from '../../enums/dialog-options';
 import { showMessageDialog } from '../../ui/message-dialog';
-import { createFolderToken } from '../storage/fs';
-
 export function getLastSavedFormat(): ActionDescriptor | undefined {
     const value = localStorage.getItem('lastSavedFormat');
     if (value) {
@@ -111,44 +110,6 @@ async function unsharpMask(dialogOptions = DialogOptions.DontDisplay) {
     }));
 
 }
-async function saveCopy(basePath: string, dialogOptions = DialogOptions.DontDisplay) {
-
-    const basePathToken = await createFolderToken(basePath);
-
-    const descriptor: ActionDescriptor = {
-        _obj: 'save',
-        _options: {
-            dialogOptions
-        },
-        in: {
-            _path: basePathToken,
-            _kind: 'local'
-        },
-        lowerCase: true
-    };
-
-    const format = getLastSavedFormat();
-    if (format) {
-        descriptor.as = format;
-    }
-
-    const [result] = await app.batchPlay([descriptor], {});
-
-    if (result._obj === 'error') {
-        throw result.message
-            ? new Error(result.message)
-            : new AbortError();
-    }
-
-    if (isEmptyDescriptor(result)) {
-        throw new AbortError();
-    }
-
-    if (result.as) {
-        setLastSavedFormat(result.as);
-    }
-
-}
 
 export async function saveScaledCopy() {
 
@@ -157,7 +118,6 @@ export async function saveScaledCopy() {
     }
 
     const document = app.activeDocument;
-    const folder = path.parse(document.path).dir;
     const copy = await document.duplicate();
 
     if (!copy)
@@ -165,26 +125,15 @@ export async function saveScaledCopy() {
 
     try {
 
-        if (copy) {
-            await scaleImage(DialogOptions.Display);
-            await unsharpMask(DialogOptions.Display);
+        await scaleImage(DialogOptions.Display);
+        await unsharpMask(DialogOptions.Display);
 
-            if (folder) {
-                await saveCopy(folder, DialogOptions.Display);
-            } else {
-                const file = await storage.localFileSystem.getFileForSaving(document.name, {
-                    types: ['png', 'jpg']
-                });
+        const suggestedFileName = addFilenameSuffix(document.name, ' scaled copy');
+        const file = await getFileForSaving(suggestedFileName);
+        await save(copy, file, true);
 
-                if (!file)
-                    throw new AbortError();
-
-                await save(copy, file, true);
-            }
-
-            const message = i18next.t('savePage.messages.copySaveSuccess');
-            showMessageDialog(message);
-        }
+        const message = i18next.t('savePage.messages.copySaveSuccess');
+        showMessageDialog(message);
 
     } catch (err) {
 
@@ -207,7 +156,6 @@ export async function saveUnscaledCopy() {
     }
 
     const document = app.activeDocument;
-    const folder = path.parse(document.path).dir;
     const copy = await document.duplicate();
 
     if (!copy)
@@ -215,22 +163,9 @@ export async function saveUnscaledCopy() {
 
     try {
 
-        if (folder) {
-
-            await saveCopy(folder, DialogOptions.Display);
-
-        } else {
-
-            const file = await storage.localFileSystem.getFileForSaving(document.name, {
-                types: ['png', 'jpg']
-            });
-
-            if (!file)
-                throw new AbortError();
-
-            await save(copy, file, true);
-
-        }
+        const suggestedFileName = addFilenameSuffix(document.name, ' copy');
+        const file = await getFileForSaving(suggestedFileName);
+        await save(copy, file, true);
 
         const message = i18next.t('savePage.messages.copySaveSuccess');
         showMessageDialog(message);
@@ -248,10 +183,10 @@ export async function save(document: Document, file: File, saveAsCopy = false) {
         throw new Error('Selected file has no extension.');
 
     if (ext === 'png') {
-        await document.saveAs.jpg(file, undefined, saveAsCopy);
+        await document.saveAs.png(file, {} as PNGSaveOptions, saveAsCopy);
     }
     else if (ext === 'jpg' || ext === 'jpeg') {
-        await document.saveAs.png(file, undefined, saveAsCopy);
+        await document.saveAs.jpg(file, {} as JPEGSaveOptions, saveAsCopy);
     }
     else {
         throw new Error('Unsupported file type: ' + file.type);
