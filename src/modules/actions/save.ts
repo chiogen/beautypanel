@@ -7,6 +7,7 @@ import { JPEGSaveOptions, PNGSaveOptions } from 'photoshop/dom/Objects';
 import { AbortError, isAbortError } from '../../common/errors/abort-error';
 import { getFileForSaving } from '../../common/fs/get-file-for-saving';
 import { addFilenameSuffix } from '../../common/path/add-filename-suffix';
+import { replaceExtension } from '../../common/path/replace-extension';
 import { pixels } from '../../common/units';
 import { DialogOptions } from '../../enums/dialog-options';
 import { setPreferredSaveFormat } from '../../reducer/save';
@@ -119,11 +120,14 @@ export async function saveScaledCopy() {
 
     try {
 
+        const state = store.getState();
+
         await scaleImage(DialogOptions.Display);
         await unsharpMask(DialogOptions.Display);
 
         const suggestedFolder = parse(document.path).dir;
-        const suggestedFileName = addFilenameSuffix(document.name, ' scaled copy');
+        let suggestedFileName = addFilenameSuffix(document.name, ' scaled copy');
+        suggestedFileName = replaceExtension(suggestedFileName, state.save.preferredSaveFormat);
 
         const file = await getFileForSaving(suggestedFileName, suggestedFolder);
         await save(copy, file, true);
@@ -158,15 +162,26 @@ export async function saveUnscaledCopy() {
         throw new Error('Photoshop did not create a document copy');
 
     try {
+        const state = store.getState();
 
         const suggestedFolder = parse(document.path).dir;
-        const suggestedFileName = addFilenameSuffix(document.name, ' copy');
+        let suggestedFileName = addFilenameSuffix(document.name, ' copy');
+        suggestedFileName = replaceExtension(suggestedFileName, state.save.preferredSaveFormat);
+
         const file = await getFileForSaving(suggestedFileName, suggestedFolder);
         await save(copy, file, true);
 
         const message = i18next.t('savePage.messages.copySaveSuccess');
         showMessageDialog(message);
 
+    } catch (err) {
+
+        if (isAbortError(err)) {
+            console.log('Action canceled');
+            return;
+        }
+
+        throw err;
     } finally {
         copy?.closeWithoutSaving();
     }

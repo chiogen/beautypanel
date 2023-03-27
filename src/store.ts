@@ -1,6 +1,6 @@
 import { app } from 'photoshop';
 import { ActionDescriptor } from 'photoshop/dom/CoreModules';
-import { AnyAction, combineReducers, createStore, Store } from 'redux';
+import { AnyAction, combineReducers, createStore } from 'redux';
 import { setAsyncInterval } from './common/set-async-interval';
 import currentTool from './reducer/current-tool';
 import currentToolOptions from './reducer/current-tool-options';
@@ -13,19 +13,16 @@ import { ActionType } from './store-action-types';
 
 const lastAction = (_s: AnyAction, action: AnyAction) => action;
 
-const reducer = combineReducers({
+export const store = createStore(combineReducers({
     lastAction,
     page,
     save,
     currentTool,
     currentToolOptions,
     sharpenOptions
-});
+}));
 
-export const store: Store<TState> = createStore(reducer);
-(window as any).getState = store.getState;
-
-export type TState = ReturnType<typeof reducer>;
+export type TState = ReturnType<typeof store['getState']>;
 
 // Poll required app state data
 async function poll() {

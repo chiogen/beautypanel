@@ -31,7 +31,7 @@ export abstract class StatefulComponent<P = {}, S = {}, SS = any> extends React.
         }
     }
 
-    enqueueStateChange(property: string, value: any) {
+    enqueueStateChange(property: string, value: never) {
         this._nextState[property] = value;
 
         if (!this._frame) {
