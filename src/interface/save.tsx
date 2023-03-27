@@ -9,8 +9,10 @@ import { handleException } from '../common/errors/handle-error';
 import { getFileForSaving } from '../common/fs/get-file-for-saving';
 import { replaceExtension } from '../common/path/replace-extension';
 import { shallowCompare } from '../common/shallow-compare';
+import { StatefulComponent } from '../components/base/stateful-component';
 import { property } from '../decorators/react-property';
-import { getLastSavedFormat, getLastScaleSize, save, saveScaledCopy, saveUnscaledCopy } from '../modules/actions/save';
+import { getLastScaleSize, save, saveScaledCopy, saveUnscaledCopy } from '../modules/actions/save';
+import { store, TState } from '../store';
 import { showMessageDialog } from '../ui/message-dialog';
 
 type P = {
@@ -18,6 +20,7 @@ type P = {
 };
 type S = {
     activeDocument: Document | null
+    preferredSaveFormat: string
 };
 
 type Texts = {
@@ -36,7 +39,7 @@ type Texts = {
     }
 };
 
-export class SavePage extends React.Component<P, S> {
+export class SavePage extends StatefulComponent<P, S> {
 
     private _unregisterActiveDocumentObserver?: () => void;
 
@@ -44,6 +47,8 @@ export class SavePage extends React.Component<P, S> {
     texts: Texts;
 
     @property activeDocument: Document | null;
+
+    @property preferredSaveFormat: string;
 
 
     get copyOutputFolder() {
@@ -55,11 +60,18 @@ export class SavePage extends React.Component<P, S> {
 
     constructor(props: P) {
         super(props);
+
         this.texts = i18next.t('savePage', { returnObjects: true });
         this.state = {
-            activeDocument: app.activeDocument
+            activeDocument: app.activeDocument,
+            preferredSaveFormat: store.getState().save.preferredSaveFormat
         };
     }
+
+    protected stateChanged(state: TState): void {
+        this.preferredSaveFormat = state.save.preferredSaveFormat;
+    }
+
 
     componentDidMount() {
         super.componentDidMount?.call(this);
@@ -150,12 +162,9 @@ export class SavePage extends React.Component<P, S> {
     }
     private renderCopyPictureSection() {
 
-        const { texts } = this;
+        const { texts, preferredSaveFormat } = this;
 
-        const format = getLastSavedFormat();
-        const formatCode = format?._obj ?? '';
         const scaleWidth = String(getLastScaleSize() ?? '');
-
         const saveFolder = this.copyOutputFolder;
 
         const saveUnscaledCopy = () => this.saveUnscaledCopy();
@@ -165,12 +174,12 @@ export class SavePage extends React.Component<P, S> {
             <div className="section">
                 <h3>{texts.saveScaledCopyTo}</h3>
                 <sp-action-button style={{ display: 'flex' }} onClick={saveScaledCopy}>
-                    {texts.saveScaledButtonText} {formatCode} {scaleWidth}
+                    {texts.saveScaledButtonText} {preferredSaveFormat} {scaleWidth}
                 </sp-action-button>
 
                 <h3>{texts.saveUnscaledCopyTo}</h3>
                 <sp-action-button style={{ display: 'flex' }} onClick={saveUnscaledCopy}>
-                    {texts.saveUnscaledButtonText} {formatCode}
+                    {texts.saveUnscaledButtonText} {preferredSaveFormat}
                 </sp-action-button>
 
                 <div className="output-dir flex">

@@ -9,16 +9,9 @@ import { getFileForSaving } from '../../common/fs/get-file-for-saving';
 import { addFilenameSuffix } from '../../common/path/add-filename-suffix';
 import { pixels } from '../../common/units';
 import { DialogOptions } from '../../enums/dialog-options';
+import { setPreferredSaveFormat } from '../../reducer/save';
+import { store } from '../../store';
 import { showMessageDialog } from '../../ui/message-dialog';
-export function getLastSavedFormat(): ActionDescriptor | undefined {
-    const value = localStorage.getItem('lastSavedFormat');
-    if (value) {
-        return JSON.parse(value);
-    }
-}
-function setLastSavedFormat(format: object) {
-    localStorage.setItem('lastSavedFormat', JSON.stringify(format));
-}
 
 export function getLastScaleSize() {
     const storageValue = localStorage.getItem('lastScaleImageDescriptor');
@@ -195,5 +188,7 @@ export async function save(document: Document, file: File, saveAsCopy = false) {
     else {
         throw new Error('Unsupported file type: ' + file.type);
     }
+
+    store.dispatch(setPreferredSaveFormat(ext));
 
 }

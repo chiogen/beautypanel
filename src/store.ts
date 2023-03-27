@@ -1,39 +1,31 @@
 import { app } from 'photoshop';
-import { combineReducers, createStore, Reducer, Store } from 'redux';
-import { setAsyncInterval } from './common/set-async-interval';
-import { Page } from './enums';
-import page, { PageAction } from './reducer/page';
-import currentTool, { CurrentToolAction } from './reducer/current-tool';
-import currentToolOptions, { CurrentToolOptionsAction, CurrentToolOptionsState } from './reducer/current-tool-options';
-import { UpdateToolDataAction, DocumentChangedAction, CurrentToolOptionsDescriptor } from './reducer/shared-action-types';
-import { ActionType } from './store-action-types';
-import sharpenOptions, { SharpenOptions, SharpenOptionsAction } from './reducer/sharpen-options';
 import { ActionDescriptor } from 'photoshop/dom/CoreModules';
+import { AnyAction, combineReducers, createStore, Store } from 'redux';
+import { setAsyncInterval } from './common/set-async-interval';
+import currentTool from './reducer/current-tool';
+import currentToolOptions from './reducer/current-tool-options';
+import page from './reducer/page';
+import save from './reducer/save';
+import { CurrentToolOptionsDescriptor, UpdateToolDataAction } from './reducer/shared-action-types';
+import sharpenOptions from './reducer/sharpen-options';
+import { ActionType } from './store-action-types';
 
-export interface TState {
-    readonly lastAction: TAction
-    readonly page: Page
-    readonly currentTool: string
-    readonly currentToolOptions: CurrentToolOptionsState
-    readonly sharpenOptions: SharpenOptions
-}
 
-type TSharedAction = UpdateToolDataAction | DocumentChangedAction;
-export type TAction = TSharedAction
-    | PageAction
-    | CurrentToolAction | CurrentToolOptionsAction | SharpenOptionsAction;
+const lastAction = (_s: AnyAction, action: AnyAction) => action;
 
-const lastAction = (_s: TAction, action: TAction) => action;
-
-const reducer: Reducer<TState, TAction> = combineReducers({
+const reducer = combineReducers({
     lastAction,
     page,
+    save,
     currentTool,
     currentToolOptions,
     sharpenOptions
 });
 
-export const store: Store<TState, TAction> = createStore(reducer);
+export const store: Store<TState> = createStore(reducer);
+(window as any).getState = store.getState;
+
+export type TState = ReturnType<typeof reducer>;
 
 // Poll required app state data
 async function poll() {
