@@ -2,7 +2,7 @@ import { parse } from 'path';
 import { app } from 'photoshop';
 import { ActionDescriptor } from 'photoshop/dom/CoreModules';
 import { Document } from 'photoshop/dom/Document';
-import { JPEGSaveOptions, PNGSaveOptions } from 'photoshop/dom/Objects';
+import { BMPSaveOptions, GIFSaveOptions, JPEGSaveOptions, PNGSaveOptions } from 'photoshop/dom/Objects';
 import { isAbortError } from '../../common/errors/abort-error';
 import { checkDescriptorError } from '../../common/errors/handle-error';
 import { getFileForSaving } from '../../common/fs/get-file-for-saving';
@@ -168,11 +168,17 @@ export async function save(document: Document, file: File, saveAsCopy = false) {
 
     if (ext === 'png') {
         await document.saveAs.png(file, {} as PNGSaveOptions, saveAsCopy);
-    }
-    else if (ext === 'jpg' || ext === 'jpeg') {
+    } else if (ext === 'jpg' || ext === 'jpeg') {
         await document.saveAs.jpg(file, {} as JPEGSaveOptions, saveAsCopy);
-    }
-    else {
+    } else if (ext === 'bmp') {
+        await document.saveAs.bmp(file, {} as BMPSaveOptions, saveAsCopy);
+    } else if (ext === 'psd') {
+        await document.saveAs.psd(file, {} as never, saveAsCopy);
+    } else if (ext === 'psb') {
+        await document.saveAs.psb(file, {} as never, saveAsCopy);
+    } else if (ext === 'gif') {
+        await document.saveAs.gif(file, {} as GIFSaveOptions, saveAsCopy);
+    } else {
         throw new Error('Unsupported file type: ' + file.type);
     }
 
