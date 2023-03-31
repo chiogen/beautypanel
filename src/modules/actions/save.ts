@@ -23,10 +23,6 @@ export function getLastScaleSize() {
     }
 }
 
-function isEmptyDescriptor(descriptor: object) {
-    return Object.keys(descriptor).length === 0;
-}
-
 async function scaleImage(dialogOptions = DialogOptions.DontDisplay, size = 2048) {
 
     const key = 'lastScaleImageDescriptor';
