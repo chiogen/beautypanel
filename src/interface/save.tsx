@@ -4,7 +4,6 @@ import { basename } from 'path';
 import { app, core } from 'photoshop';
 import { Document } from 'photoshop/dom/Document';
 import * as React from 'react';
-import { addDocumentLoadedCallback } from '../common/active-document-observer';
 import { handleException } from '../common/errors/handle-error';
 import { getFileForSaving } from '../common/fs/get-file-for-saving';
 import { replaceExtension } from '../common/path/replace-extension';
@@ -40,8 +39,6 @@ type Texts = {
 
 export class SavePage extends StatefulComponent<P, S> {
 
-    private _unregisterActiveDocumentObserver?: () => void;
-
     isFrozen = false;
     texts: Texts;
 
@@ -67,25 +64,6 @@ export class SavePage extends StatefulComponent<P, S> {
 
     protected stateChanged(state: TState): void {
         this.preferredSaveFormat = state.save.preferredSaveFormat;
-    }
-
-
-    componentDidMount() {
-        super.componentDidMount?.call(this);
-
-        this._unregisterActiveDocumentObserver = addDocumentLoadedCallback(() => {
-            this.setState({
-                activeDocument: app.activeDocument
-            });
-        });
-    }
-    componentWillUnmount() {
-        if (this._unregisterActiveDocumentObserver) {
-            this._unregisterActiveDocumentObserver();
-            this._unregisterActiveDocumentObserver = undefined;
-        }
-
-        super.componentWillUnmount?.call(this);
     }
 
     shouldComponentUpdate(nextProps: Readonly<P>, nextState: Readonly<S>): boolean {
