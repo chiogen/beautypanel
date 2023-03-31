@@ -45,8 +45,6 @@ export class SavePage extends StatefulComponent<P, S> {
     isFrozen = false;
     texts: Texts;
 
-    @property activeDocument: Document | null;
-
     @property preferredSaveFormat: string;
 
 
