@@ -4,6 +4,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Pages } from './pages';
 import { Tabbar } from './tabbar';
+import { VersionInfo } from './version-info';
 
 const rootElement = document.getElementById('app');
 const scrimElement = document.getElementById('loadingScrim');
@@ -20,6 +21,7 @@ export function renderApp() {
         ReactDOM.render(<>
             <Tabbar />
             <Pages />
+            <VersionInfo />
         </>, rootElement, () => {
             scrimElement?.remove();
         });

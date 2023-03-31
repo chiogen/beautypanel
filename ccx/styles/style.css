@@ -202,3 +202,7 @@ dialog .actions sp-action-button {
 #save a {
   color: royalblue;
 }
+
+#versionInfo {
+  margin-left: 0.5rem;
+}
