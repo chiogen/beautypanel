@@ -20,8 +20,12 @@ localizationLoaded.then(async () => {
 });
 
 try {
-    app.eventNotifier = (event, descriptor) => {
-        console.log(event, JSON.stringify(descriptor, null, ' '));
+    app.eventNotifier = (event: object, descriptor: object) => {
+        console.log('-------------------------------------------------------');
+        console.log(event);
+        console.log(descriptor);
+        console.log(JSON.stringify(descriptor, null, ' '));
+        console.log('-------------------------------------------------------');
     };
 } catch (err) {
     console.log('eventNotifier not available.');
