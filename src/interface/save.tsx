@@ -13,7 +13,6 @@ import { StatefulComponent } from '../components/base/stateful-component';
 import { property } from '../decorators/react-property';
 import { getLastScaleSize, save, saveScaledCopy, saveUnscaledCopy } from '../modules/actions/save';
 import { store, TState } from '../store';
-import { showMessageDialog } from '../ui/message-dialog';
 
 type P = {
     isActive: boolean

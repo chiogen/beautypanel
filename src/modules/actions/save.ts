@@ -3,7 +3,7 @@ import { app } from 'photoshop';
 import { ActionDescriptor } from 'photoshop/dom/CoreModules';
 import { Document } from 'photoshop/dom/Document';
 import { JPEGSaveOptions, PNGSaveOptions } from 'photoshop/dom/Objects';
-import { AbortError, isAbortError } from '../../common/errors/abort-error';
+import { isAbortError } from '../../common/errors/abort-error';
 import { checkDescriptorError } from '../../common/errors/handle-error';
 import { getFileForSaving } from '../../common/fs/get-file-for-saving';
 import { addFilenameSuffix } from '../../common/path/add-filename-suffix';
