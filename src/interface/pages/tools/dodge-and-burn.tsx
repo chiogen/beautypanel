@@ -130,9 +130,9 @@ export class DodgeAndBurn extends StatefulComponent<{}, State> {
             if (colorCode) {
 
                 let grayscale = 128;
-                if (this.color === 'white') {
+                if (colorCode === 'white') {
                     grayscale = 255;
-                } else if (this.color === 'black') {
+                } else if (colorCode === 'black') {
                     grayscale = 0;
                 }
 
