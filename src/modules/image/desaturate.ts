@@ -1,6 +1,7 @@
 import { app } from 'photoshop';
 import { ActionDescriptor } from 'photoshop/dom/CoreModules';
 import { Layer } from 'photoshop/dom/Layer';
+import { checkDescriptorError } from '../../common/errors/handle-error';
 
 export function _desaturate(layer: Layer): ActionDescriptor {
     return {
@@ -16,7 +17,5 @@ export async function imageDesaturation(layer: Layer) {
         _desaturate(layer)
     ], {});
 
-    if (result.message) {
-        throw new Error(result.message);
-    }
+    checkDescriptorError(result);
 }

@@ -1,6 +1,7 @@
 import { app } from 'photoshop';
 import { ActionDescriptor } from 'photoshop/dom/CoreModules';
 import { Layer } from 'photoshop/dom/Layer';
+import { checkDescriptorError } from '../../common/errors/handle-error';
 
 
 export function _selectLayers(layers: Layer[], makeVisible = false): ActionDescriptor {
@@ -27,7 +28,9 @@ export async function selectLayers(layers: Layer[], makeVisible = false): Promis
         return;
 
     const descriptor = _selectLayers(layers, makeVisible);
-    await app.batchPlay([
+    const [result] = await app.batchPlay([
         descriptor
     ], {});
+
+    checkDescriptorError(result);
 }
