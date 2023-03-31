@@ -1,10 +1,10 @@
-import i18next from 'i18next';
 import { parse } from 'path';
 import { app } from 'photoshop';
 import { ActionDescriptor } from 'photoshop/dom/CoreModules';
 import { Document } from 'photoshop/dom/Document';
 import { JPEGSaveOptions, PNGSaveOptions } from 'photoshop/dom/Objects';
 import { AbortError, isAbortError } from '../../common/errors/abort-error';
+import { checkDescriptorError } from '../../common/errors/handle-error';
 import { getFileForSaving } from '../../common/fs/get-file-for-saving';
 import { addFilenameSuffix } from '../../common/path/add-filename-suffix';
 import { replaceExtension } from '../../common/path/replace-extension';
@@ -12,7 +12,6 @@ import { pixels } from '../../common/units';
 import { DialogOptions } from '../../enums/dialog-options';
 import { setPreferredSaveFormat } from '../../reducer/save';
 import { store } from '../../store';
-import { showMessageDialog } from '../../ui/message-dialog';
 
 export function getLastScaleSize() {
     const storageValue = localStorage.getItem('lastScaleImageDescriptor');
@@ -60,17 +59,7 @@ async function scaleImage(dialogOptions = DialogOptions.DontDisplay, size = 2048
             }
         }
     ], {});
-
-    if (result._obj === 'error')
-        throw new Error(result.message ?? '');
-
-    if (result.message) {
-        throw new Error(result.message);
-    }
-
-    if (isEmptyDescriptor(result)) {
-        throw new AbortError();
-    }
+    checkDescriptorError(result);
 
     localStorage.setItem(key, JSON.stringify({
         ...descriptor,
@@ -90,14 +79,7 @@ async function unsharpMask(dialogOptions = DialogOptions.DontDisplay) {
     };
 
     const [result] = await app.batchPlay([descriptor], {});
-
-    if (result.message) {
-        throw new Error(result.message);
-    }
-
-    if (isEmptyDescriptor(result)) {
-        throw new AbortError();
-    }
+    checkDescriptorError(result);
 
     localStorage.setItem(key, JSON.stringify({
         ...descriptor,
@@ -131,9 +113,6 @@ export async function saveScaledCopy() {
 
         const file = await getFileForSaving(suggestedFileName, suggestedFolder);
         await save(copy, file, true);
-
-        const message = i18next.t('savePage.messages.copySaveSuccess');
-        showMessageDialog(message);
 
     } catch (err) {
 
@@ -170,9 +149,6 @@ export async function saveUnscaledCopy() {
 
         const file = await getFileForSaving(suggestedFileName, suggestedFolder);
         await save(copy, file, true);
-
-        const message = i18next.t('savePage.messages.copySaveSuccess');
-        showMessageDialog(message);
 
     } catch (err) {
 

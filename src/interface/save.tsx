@@ -198,7 +198,6 @@ export class SavePage extends StatefulComponent<P, S> {
 
             await core.executeAsModal(async () => {
                 await app.activeDocument.save();
-                await showMessageDialog(this.texts.messages.quicksaveSuccess);
             }, {
                 commandName: 'Quicksave'
             });
@@ -226,7 +225,6 @@ export class SavePage extends StatefulComponent<P, S> {
             await core.executeAsModal(async () => {
 
                 await save(document, file, true);
-                await showMessageDialog(this.texts.messages.copySaveSuccess);
 
             }, {
                 commandName: 'Save As'

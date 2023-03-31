@@ -9,7 +9,7 @@ const initialState = (): SavePageState => {
     const preferredSaveFormat = localStorage.getItem('save.preferredSaveFormat');
 
     return {
-        preferredSaveFormat: preferredSaveFormat || 'png'
+        preferredSaveFormat: preferredSaveFormat || 'jpg'
     };
 };
 

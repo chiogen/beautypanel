@@ -1,5 +1,6 @@
 import { app } from 'photoshop';
-import { isAbortError } from './abort-error';
+import { ActionDescriptor } from 'photoshop/dom/CoreModules';
+import { AbortError, isAbortError } from './abort-error';
 
 export async function handleException(err: unknown) {
 
@@ -15,4 +16,14 @@ export async function handleException(err: unknown) {
     if (typeof message === 'string' && message.length > 0)
         await app.showAlert(message);
     
+}
+
+export function checkDescriptorError(result: ActionDescriptor) {
+    if (result._obj === 'error') {
+        if (result.message) {
+            throw new Error(result.message);
+        } else {
+            throw new AbortError();
+        }
+    }
 }
