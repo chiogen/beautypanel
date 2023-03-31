@@ -1,6 +1,7 @@
 import { app } from 'photoshop';
 import { ActionDescriptor } from 'photoshop/dom/CoreModules';
 import { Layer } from 'photoshop/dom/Layer';
+import { checkDescriptorError } from '../../common/errors/handle-error';
 import { DialogOptions } from '../../enums/dialog-options';
 
 export interface LevelsAdjustmentsOptions {
@@ -21,10 +22,7 @@ export async function createAdjustmentLayer(options: AdjustmentLayerOptions): Pr
         _createAdjustmentLayer(options)
     ], {});
 
-    if (result.message) {
-        throw new Error(result.message);
-    }
-
+    checkDescriptorError(result);
     return app.activeDocument!.activeLayers[0];
 }
 

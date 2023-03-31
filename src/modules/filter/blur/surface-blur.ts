@@ -1,6 +1,7 @@
 import { app } from 'photoshop';
 import { ActionDescriptor } from 'photoshop/dom/CoreModules';
 import { Layer } from 'photoshop/dom/Layer';
+import { checkDescriptorError } from '../../../common/errors/handle-error';
 import { pixels } from '../../../common/units';
 
 
@@ -20,13 +21,9 @@ export function _surfaceBlur(layer: Layer, radius: number, threshold: number) {
 
 export async function surfaceBlur(layer: Layer, radius: number, threshold: number) {
 
-    const result = await app.batchPlay([
+    const [result] = await app.batchPlay([
         _surfaceBlur(layer, radius, threshold)
     ], {});
-
-    for (const item of result) {
-        if (item.message) {
-            await app.showAlert(item.message);
-        }
-    }
+    
+    checkDescriptorError(result);
 }

@@ -1,5 +1,6 @@
 import { app } from 'photoshop';
 import { ActionDescriptor } from 'photoshop/dom/CoreModules';
+import { checkDescriptorError } from '../../../common/errors/handle-error';
 import { pixels } from '../../../common/units';
 import { DialogOptions } from '../../../enums/dialog-options';
 
@@ -23,9 +24,6 @@ export async function filterGaussianBlur(radius: number, dialogOptions?: DialogO
         _filterGaussianBlur(radius, dialogOptions)
     ], {});
 
-    if (result.message) {
-        throw new Error(result.message);
-    }
-
+    checkDescriptorError(result);
     return result;
 }
