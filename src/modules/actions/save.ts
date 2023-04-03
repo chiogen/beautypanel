@@ -162,24 +162,33 @@ export async function saveUnscaledCopy() {
 
 export async function save(document: Document, file: File, saveAsCopy = false) {
 
-    const ext = file.name.toLowerCase().split('.').pop();
+    const { ext } = parse(file.name);
+
     if (!ext)
         throw new Error('Selected file has no extension.');
 
-    if (ext === 'png') {
-        await document.saveAs.png(file, {} as PNGSaveOptions, saveAsCopy);
-    } else if (ext === 'jpg' || ext === 'jpeg') {
-        await document.saveAs.jpg(file, {} as JPEGSaveOptions, saveAsCopy);
-    } else if (ext === 'bmp') {
-        await document.saveAs.bmp(file, {} as BMPSaveOptions, saveAsCopy);
-    } else if (ext === 'psd') {
-        await document.saveAs.psd(file, {} as never, saveAsCopy);
-    } else if (ext === 'psb') {
-        await document.saveAs.psb(file, {} as never, saveAsCopy);
-    } else if (ext === 'gif') {
-        await document.saveAs.gif(file, {} as GIFSaveOptions, saveAsCopy);
-    } else {
-        throw new Error('Unsupported file type: ' + file.type);
+    switch (ext.toLowerCase()) {
+        case '.jpg':
+        case '.jpeg':
+            await document.saveAs.jpg(file, {} as JPEGSaveOptions, saveAsCopy);
+            break;
+        case '.png':
+            await document.saveAs.png(file, {} as PNGSaveOptions, saveAsCopy);
+            break;
+        case '.gif':
+            await document.saveAs.gif(file, {} as GIFSaveOptions, saveAsCopy);
+            break;
+        case '.bmp':
+            await document.saveAs.bmp(file, {} as BMPSaveOptions, saveAsCopy);
+            break;
+        case '.psd':
+            await document.saveAs.psd(file, {} as never, saveAsCopy);
+            break;
+        case '.psb':
+            await document.saveAs.psb(file, {} as never, saveAsCopy);
+            break;
+        default:
+            throw new Error('Unsupported file type: ' + file.type);
     }
 
     store.dispatch(setPreferredSaveFormat(ext));
