@@ -8,7 +8,7 @@ import { Page } from '../../enums';
 import { TState } from '../../store';
 import { useSelector } from 'react-redux';
 
-export const Tools = () => {
+export const ToolsPage = () => {
 
     const isActive = useSelector((state: TState) => state.page === Page.Tools);
 

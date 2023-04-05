@@ -1,43 +1,19 @@
-import { SharpenPage } from './pages/sharpen';
-import { Tools } from './pages/tools';
 import * as React from 'react';
-import { StatefulComponent } from '../components/base/stateful-component';
-import { store, TState } from '../store';
+import { useSelector } from 'react-redux';
 import { Page } from '../enums';
-import { Effects } from './pages/effects';
+import { TState } from '../store';
+import { EffectsPage } from './pages/effects';
+import { SharpenPage } from './pages/sharpen';
+import { ToolsPage } from './pages/tools';
 import { SavePage } from './save';
-import { property } from '../decorators/react-property';
 
-type S = {
-    page: Page
+export const Pages = () => {
+    const activePage = useSelector((state: TState) => state.page);
+
+    return <div className="pages">
+        <ToolsPage />
+        <SharpenPage />
+        <EffectsPage />
+        <SavePage isActive={activePage === Page.Save} />
+    </div>;
 };
-
-export class Pages extends StatefulComponent<{}, S> {
-
-    @property
-    page: Page;
-
-    constructor(props) {
-        super(props);
-        const state = store.getState();
-        this.state = {
-            page: state.page
-        };
-    }
-
-    render() {
-        const { page } = this.state;
-
-        return <div className="pages">
-            <Tools isActive={page === Page.Tools} />
-            <SharpenPage />
-            <Effects isActive={page === Page.Effects} />
-            <SavePage isActive={page === Page.Save} />
-        </div>;
-    }
-
-    protected stateChanged(state: TState) {
-        this.page = state.page;
-    }
-
-}
