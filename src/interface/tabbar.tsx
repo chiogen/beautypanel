@@ -1,11 +1,10 @@
-import { Page } from '../enums';
-import { store, TState } from '../store';
-import { ActionType } from '../store-action-types';
+import { Tab, Tabs } from '@material-ui/core';
 import i18next from 'i18next';
 import * as React from 'react';
-import { StatefulComponent } from '../components/base/stateful-component';
-import { AppBar, Paper, Tab, Tabs } from '@material-ui/core';
-import { property } from '../decorators/react-property';
+import { useSelector } from 'react-redux';
+import { Page } from '../enums';
+import { setPage } from '../reducer/page';
+import { TState, store } from '../store';
 
 // ToDo: Make Tabbar a component
 const indexPageMap = [
@@ -16,56 +15,20 @@ const indexPageMap = [
     Page.Settings
 ];
 
-type State = {
-    page: Page
-};
+export const Tabbar = () => {
+    const page = useSelector((state: TState) => state.page);
+    const index = indexPageMap.indexOf(page);
 
-export class Tabbar extends StatefulComponent<{}, State> {
-
-    @property
-    page: Page;
-
-    texts: {
-        tools: string
-        sharpen: string
-        effects: string
-        settings: string
-        save: string
+    const onTabClick = (e: React.ChangeEvent<{}>, value: number) => {
+        store.dispatch(setPage(indexPageMap[value]));
     };
 
-    constructor(props) {
-        super(props);
-        this.texts = i18next.t('tabbar', { returnObjects: true });
-        const state = store.getState();
-        this.state = {
-            page: state.page
-        };
-    }
-
-    render() {
-
-        const index = indexPageMap.indexOf(this.page);
-
-        return (
-            <Tabs value={index} onChange={this._onTabClick} centered>
-                <Tab label={this.texts.tools} />
-                <Tab label={this.texts.sharpen} />
-                <Tab label={this.texts.effects} />
-                <Tab label={this.texts.save} />
-            </Tabs>
-        );
-    }
-
-
-    _onTabClick(_e: React.ChangeEvent<{}>, value: number) {
-        store.dispatch({
-            type: ActionType.SetPage,
-            page: indexPageMap[value]
-        });
-    }
-
-    protected stateChanged(state: TState) {
-        this.page = state.page;
-    }
-
-}
+    return (
+        <Tabs value={index} onChange={onTabClick} centered>
+            <Tab label={i18next.t('tabbar.tools')} />
+            <Tab label={i18next.t('tabbar.sharpen')} />
+            <Tab label={i18next.t('tabbar.effects')} />
+            <Tab label={i18next.t('tabbar.save')} />
+        </Tabs>
+    );
+};

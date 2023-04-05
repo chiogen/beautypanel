@@ -4,6 +4,10 @@ export class PresetsManager<T> {
     private name: string;
     private values: T[];
 
+    get count() {
+        return this.values.length;
+    }
+
     constructor(name: string, defaultValues: T[]) {
         this.name = name;
         this.values = defaultValues;

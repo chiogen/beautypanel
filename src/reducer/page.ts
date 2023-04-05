@@ -1,18 +1,17 @@
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Page } from '../enums';
-import { ActionType } from '../store-action-types';
 
-export interface SetPageAction {
-    type: ActionType.SetPage
-    page: Page
-}
-
-export type PageAction = SetPageAction;
-
-export default function (state: Page = Page.Tools, action: PageAction): Page {
-    switch (action.type) {
-        case ActionType.SetPage:
-            return action.page;
-        default:
-            return state;
+const { actions, reducer } = createSlice({
+    name: 'page',
+    initialState: Page.Tools,
+    reducers: {
+        setPage(state, action: PayloadAction<Page>) {
+            return action.payload;
+        }
     }
-}
+});
+
+export default reducer;
+export const {
+    setPage
+} = actions;

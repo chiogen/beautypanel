@@ -1,7 +1,6 @@
 import { app, constants } from 'photoshop';
 import { BeautyPanel } from '../../common/beautypanel';
 import { percent } from '../../common/units';
-import { opacityPresets } from '../../interface/pages/tools/opacity';
 import { selectTool } from '../application/select-tool';
 import { filterMedianNoise } from '../filter/noise/median';
 import { checkBitsPerChannel } from '../image/bits-per-channel';
@@ -9,6 +8,7 @@ import { imageCalculation } from '../image/calculation';
 import { selectLayers } from '../image/select-layers';
 import { createAdjustmentLayer } from '../masks/levels';
 import { showConfirmDialog } from '../ui/confirm';
+import { store } from '../../store';
 
 
 export async function executeFrequencySeparation() {
@@ -157,8 +157,11 @@ export async function selectLayerSoftForFrequencySeparation() {
     await selectLayers([soft]);
     soft.visible = true;
 
+    const state = store.getState();
+    const opacity = state.tools.opacity.presets[1];
+
     await selectTool('cloneStampTool', {
-        opacity: percent(opacityPresets.get(1)),
+        opacity,
         useScatter: false,
         brush: {
             _obj: 'computedBrush',

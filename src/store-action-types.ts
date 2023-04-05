@@ -6,7 +6,6 @@ export enum ActionType {
     SetToolOpacity = 'SET_TOOL_OPACITY',
     SetToolHardness = 'SET_TOOL_HARDNESS',
     // Page
-    SetPage = 'SET_PAGE',
     // SavePage
     SetLastCopyExtension = 'SET_LAST_COPY_EXTENSION',
     // Options

@@ -6,6 +6,7 @@ import currentTool from './reducer/current-tool';
 import currentToolOptions from './reducer/current-tool-options';
 import page from './reducer/page';
 import save from './reducer/save';
+import tools from './reducer/tools';
 import { CurrentToolOptionsDescriptor, UpdateToolDataAction } from './reducer/shared-action-types';
 import sharpenOptions from './reducer/sharpen-options';
 import { ActionType } from './store-action-types';
@@ -16,6 +17,7 @@ const lastAction = (_s: AnyAction, action: AnyAction) => action;
 export const store = createStore(combineReducers({
     lastAction,
     page,
+    tools,
     save,
     currentTool,
     currentToolOptions,

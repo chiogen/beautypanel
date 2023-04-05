@@ -1,136 +1,103 @@
+import { Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
 import i18next from 'i18next';
 import * as React from 'react';
-import { StatefulComponent } from '../../../components/base/stateful-component';
-import { property } from '../../../decorators/react-property';
-import { store, TState } from '../../../store';
+import { useSelector } from 'react-redux';
+import { closeOpacityPresetEdit, openOpacityPresetEdit } from '../../../reducer/tools';
+import { TState, store } from '../../../store';
 import { ActionType } from '../../../store-action-types';
-import { opacity as defaultPresets } from './default-presets.json';
-import { PresetsManager } from '../../../common/presets-manager';
-import { app } from 'photoshop';
-import { Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
 
-type State = {
-    opacity: number
+function applyOpacityPreset(value: number) {
+    const { open, index } = store.getState().tools.opacityPreseEdit;
+    if (!open || index === -1 || value < 0 || value > 100)
+        return;
+
+    store.dispatch(closeOpacityPresetEdit(value));
+}
+
+export const CurrentToolOpacity = () => {
+
+    return (
+        <div className="section">
+            <h3 className="title">{i18next.t('opacity')}</h3>
+            <OpacityPresetEditDialog />
+            <div className="flex stretch">
+                {OpacityPresetButton(0)}
+                {OpacityPresetButton(1)}
+                {OpacityPresetButton(2)}
+                {OpacityPresetButton(3)}
+                {OpacityPresetButton(4)}
+            </div>
+        </div>
+    );
 };
 
-export const opacityPresets = new PresetsManager<number>('opacity', defaultPresets);
+const OpacityPresetButton = (index: number) => {
 
+    const value = useSelector((state: TState) => state.tools.opacity.presets[index]);
+    const opacity = useSelector((state: TState) => state.currentToolOptions.opacity);
+    const isActive = Math.abs(value - opacity) < 1e-8;
 
-export class CurrentToolOpacity extends StatefulComponent<{}, State> {
+    const onClick = (e: React.MouseEvent<HTMLButtonElement>) => onPresetClick(e);
 
-    @property opacity: number;
-    @property presetEditIndex?: number;
-    @property presetEditValue?: number;
+    return (
+        <sp-action-button data-index={index} data-active={isActive} onClick={onClick}>{value}%</sp-action-button>
+    );
+};
 
-    constructor(props) {
-        super(props);
-        const state = store.getState();
-        this.state = {
-            opacity: state.currentToolOptions.opacity
-        };
-    }
+const OpacityPresetEditDialog = () => {
 
-    render() {
-        return (
-            <div className="section">
-                <h3 className="title">{i18next.t('opacity')}</h3>
-                {this.renderPresetEdit()}
-                <div className="flex stretch">
-                    {this.renderPresetButton(0)}
-                    {this.renderPresetButton(1)}
-                    {this.renderPresetButton(2)}
-                    {this.renderPresetButton(3)}
-                    {this.renderPresetButton(4)}
+    const open = useSelector((state: TState) => state.tools.opacityPreseEdit.open);
+    const index = useSelector((state: TState) => state.tools.opacityPreseEdit.index);
+    let value = useSelector((state: TState) => state.tools.opacityPreseEdit.index);
+
+    const defaultValue = (index !== -1) ? value : 0;
+    const titleIndex = index + 1;
+
+    const presetInputValueChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+        value = parseInt(e.currentTarget.value.replace(/,/, '.'));
+    };
+    const cancelPresetEdit = () => {
+        store.dispatch(closeOpacityPresetEdit());
+    };
+    const applyPresetEdit = () => {
+        applyOpacityPreset(value);
+        store.dispatch(closeOpacityPresetEdit());
+    };
+
+    return (
+        <Dialog open={open} BackdropProps={{ open: true }}>
+            <DialogTitle>Härte Preset {titleIndex}</DialogTitle>
+            <DialogContent>
+                <div className="flex" style={{ alignItems: 'center' }}>
+                    <sp-textfield placeholder="Value" type="number" defaultValue={defaultValue} onInput={presetInputValueChanged}></sp-textfield>
                 </div>
-            </div>
-        );
-    }
-    private renderPresetButton(index: number) {
+            </DialogContent>
+            <DialogActions>
+                <sp-action-button onClick={cancelPresetEdit}>{i18next.t('cancel')}</sp-action-button>
+                <sp-action-button onClick={applyPresetEdit}>OK</sp-action-button>
+            </DialogActions>
+        </Dialog>
+    );
+};
 
-        const value = opacityPresets.get(index);
-        const isActive = Math.abs(value - this.opacity) < 1e-8;
+async function onPresetClick(e: React.MouseEvent<HTMLButtonElement>) {
+    const button = e.currentTarget as HTMLButtonElement;
 
-        const onClick = (e: React.MouseEvent<HTMLButtonElement>) => this.onPresetClick(e);
+    if (e.button !== 0)
+        return;
 
-        return (
-            <sp-action-button data-index={index} data-active={isActive} onClick={onClick}>{value}%</sp-action-button>
-        );
-    }
-
-    private renderPresetEdit() {
-
-        const open = typeof this.presetEditIndex === 'number';
-        const defaultValue = this.presetEditValue ?? (this.presetEditIndex ? opacityPresets.get(this.presetEditIndex) : 0);
-        const titleIndex = (this.presetEditIndex ?? 0) + 1;
-
-        return (
-            <Dialog open={open}>
-                <DialogTitle>Härte Preset {titleIndex}</DialogTitle>
-                <DialogContent>
-                    <div className="flex" style={{ alignItems: 'center' }}>
-                        <sp-textfield placeholder="Value" type="number" defaultValue={defaultValue} onInput={this._presetInputValueChanged}></sp-textfield>
-                    </div>
-                </DialogContent>
-                <DialogActions>
-                    <sp-action-button onClick={this.cancelPresetEdit}>{i18next.t('cancel')}</sp-action-button>
-                    <sp-action-button onClick={this.applyPresetEdit}>OK</sp-action-button>
-                </DialogActions>
-            </Dialog>
-        );
-    }
-    private _presetInputValueChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = parseInt(e.currentTarget.value.replace(/,/, '.'));
-        if (!Number.isNaN(value)) {
-            this.presetEditValue = value ?? -1;
-        }
-    };
-    private cancelPresetEdit = () => {
-        this.presetEditIndex = undefined;
-        this.presetEditValue = undefined;
-    };
-    private applyPresetEdit = () => {
-        try {
-            if (typeof this.presetEditIndex !== 'number')
-                return;
-
-            if (typeof this.presetEditValue === 'number') {
-
-                if (this.presetEditValue < 0 || this.presetEditValue > 100) {
-                    throw new Error('Invalid value: ' + this.presetEditValue);
-                }
-
-                opacityPresets.set(this.presetEditIndex, this.presetEditValue);
-            }
-
-            this.presetEditIndex = undefined;
-            this.presetEditValue = undefined;
-        } catch (err) {
-            app.showAlert(err);
-        }
-    };
-
-    private async onPresetClick(e: React.MouseEvent<HTMLButtonElement>) {
-        const button = e.currentTarget as HTMLButtonElement;
-
-        if (e.button !== 0)
-            return;
-
-        if (e.altKey) {
-            const index = parseInt(button.dataset.index!);
-            this.presetEditIndex = index;
-            return;
-        }
-
+    if (e.altKey) {
         const index = parseInt(button.dataset.index!);
-        const value = opacityPresets.get(index);
-        store.dispatch({
-            type: ActionType.SetToolOpacity,
-            value
-        });
+        store.dispatch(openOpacityPresetEdit(index));
+        return;
     }
 
-    stateChanged(state: TState) {
-        this.opacity = state.currentToolOptions.opacity;
-    }
+    const state = store.getState();
+    const index = parseInt(button.dataset.index!);
+    const value = state.tools.opacity.presets[index];
 
+    store.dispatch({
+        type: ActionType.SetToolOpacity,
+        value
+    });
 }
