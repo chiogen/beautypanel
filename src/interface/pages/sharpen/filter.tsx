@@ -11,7 +11,7 @@ import { filterUnsharpMask } from '../../../modules/filter/sharpen/unsharp-mask'
 import { selectLayers } from '../../../modules/image/select-layers';
 import { store } from '../../../store';
 
-export const Filter = () => (
+export const SharpenFilters = () => (
     <div className="section filters">
         <h3>{i18next.t('sharpen.filters')}</h3>
         <div className="flex">
