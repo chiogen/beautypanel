@@ -3,7 +3,7 @@ import * as React from 'react';
 import { OpacityPresetButton } from './opacity-preset-button';
 import { OpacityPresetEditDialog } from './opacity-preset-edit-dialog';
 
-export const CurrentToolOpacity = () => (
+export const OpacityPresets = () => (
     <div className="section">
         <h3 className="title">{i18next.t('opacity')}</h3>
         <div className="flex stretch">

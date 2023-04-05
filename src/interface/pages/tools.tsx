@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { DodgeAndBurn } from './tools/dodge-and-burn';
 import { FrequencySeparation } from './tools/frequency-separation';
-import { CurrentToolHardness } from './tools/hardness';
-import { CurrentToolOpacity } from './tools/opacity';
+import { HardnessPresets } from './tools/hardness-presets';
+import { OpacityPresets } from './tools/opacity-presets';
 import { Zoom } from './tools/zoom';
 
 type P = {
@@ -20,8 +20,8 @@ export const Tools = (props: P) => {
         <div id="tools" className="page" style={style}>
             <FrequencySeparation />
             <DodgeAndBurn />
-            <CurrentToolOpacity />
-            <CurrentToolHardness />
+            <OpacityPresets />
+            <HardnessPresets />
             <Zoom />
         </div>
     );
