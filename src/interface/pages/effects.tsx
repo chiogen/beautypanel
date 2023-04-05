@@ -1,17 +1,14 @@
 import i18next from 'i18next';
 import { app, core } from 'photoshop';
 import * as React from 'react';
-import { BeautyPanel, E_Layer } from '../../common/beautypanel';
-import { executeCreateOrthonLayer, executeEnhanceDetailsEffect } from '../../modules/actions/effects';
-import { createSeasonEffect, SeasonProfile } from '../../modules/actions/season-effect';
-import { createVignette } from './effects/vignette';
 import { useSelector } from 'react-redux';
-import { TState } from '../../store';
+import { BeautyPanel, E_Layer } from '../../common/beautypanel';
 import { Page } from '../../enums';
+import { executeCreateOrthonLayer, executeEnhanceDetailsEffect } from '../../modules/actions/effects';
+import { SeasonProfile, createSeasonEffect } from '../../modules/actions/season-effect';
+import { TState } from '../../store';
+import { createVignette } from './effects/vignette';
 
-type Props = {
-    isActive: boolean
-};
 
 export const EffectsPage = () => {
 
@@ -32,28 +29,8 @@ export const EffectsPage = () => {
             <sp-action-button onClick={onCreateSpringEffectButtonClicked}># {i18next.t('effects.spring')}</sp-action-button>
         </div>
     );
-}
+};
 
-export class Effects extends React.Component<Props> {
-
-    render() {
-
-        const style: React.CSSProperties = {};
-        if (!this.props.isActive) {
-            style.display = 'none';
-        }
-
-        return <div id="effects" className="page" style={style}>
-            <sp-action-button onClick={onEnhanceDetailsButtonClicked}># {i18next.t('effects.enhanceDetails')}</sp-action-button>
-            <sp-action-button onClick={onStrengthenDetailsButtonClicked}># {i18next.t('effects.strengthenDetails')}</sp-action-button>
-            <sp-action-button onClick={onCreateOrthonEffectButtonClicked}># {i18next.t('effects.orton')}</sp-action-button>
-            <sp-action-button onClick={onCreateVignetteButtonClicked}># {i18next.t('effects.vignette')}</sp-action-button>
-            <sp-action-button onClick={onCreateAutumnEffectButtonClicked}>{i18next.t('effects.autumn')}</sp-action-button>
-            <sp-action-button onClick={onCreateSpringEffectButtonClicked}># {i18next.t('effects.spring')}</sp-action-button>
-        </div>;
-    }
-
-}
 
 async function onEnhanceDetailsButtonClicked() {
 
