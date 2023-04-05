@@ -2,7 +2,9 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { PresetsManager } from '../common/presets-manager';
 
 const DEFAULT_OPACITY_PRESETS = [2, 6, 32, 50, 100];
+const DEFAULT_HARDNESS_PRESETS = [2, 6, 32, 50, 100];
 const opacityPresets = new PresetsManager<number>('opacity', DEFAULT_OPACITY_PRESETS);
+const hardnessPresets = new PresetsManager<number>('hardness', DEFAULT_HARDNESS_PRESETS);
 
 const { actions, reducer } = createSlice({
     name: 'tools',
@@ -14,9 +16,18 @@ const { actions, reducer } = createSlice({
             open: false,
             index: -1,
             value: -1
+        },
+        hardness: {
+            presets: hardnessPresets.getAll()
+        },
+        hardnessPresetEdit: {
+            open: false,
+            index: -1,
+            value: -1
         }
     },
     reducers: {
+        // Opacity Preset Edit
         openOpacityPresetEdit(state, action: PayloadAction<number>) {
             state.opacityPreseEdit.open = true;
             state.opacityPreseEdit.index = action.payload;
@@ -29,7 +40,7 @@ const { actions, reducer } = createSlice({
         closeOpacityPresetEdit(state, action: PayloadAction<number | undefined>) {
             const { index } = state.opacityPreseEdit;
 
-            if (state.opacityPreseEdit.index !== -1 && typeof action.payload === 'number') {
+            if (index !== -1 && typeof action.payload === 'number') {
                 state.opacity.presets[index] = action.payload;
                 opacityPresets.set(index, action.payload);
             }
@@ -37,7 +48,29 @@ const { actions, reducer } = createSlice({
             state.opacityPreseEdit.open = false;
             state.opacityPreseEdit.index = -1;
             state.opacityPreseEdit.value = -1;
-        }
+        },
+        // Hardness Preset Edit
+        openHardnessPresetEdit(state, action: PayloadAction<number>) {
+            state.hardnessPresetEdit.open = true;
+            state.hardnessPresetEdit.index = action.payload;
+        },
+        updateHardnessPresetEditValue(state, action: PayloadAction<number>) {
+            if (!state.hardnessPresetEdit.open)
+                return;
+            state.hardnessPresetEdit.value = action.payload;
+        },
+        closeHardnessPresetEdit(state, action: PayloadAction<number | undefined>) {
+            const { index } = state.hardnessPresetEdit;
+
+            if (index !== -1 && typeof action.payload === 'number') {
+                state.hardness.presets[index] = action.payload;
+                hardnessPresets.set(index, action.payload);
+            }
+
+            state.hardnessPresetEdit.open = false;
+            state.hardnessPresetEdit.index = -1;
+            state.hardnessPresetEdit.value = -1;
+        },
     }
 });
 
@@ -46,4 +79,7 @@ export const {
     openOpacityPresetEdit,
     updateOpacityPresetEditValue,
     closeOpacityPresetEdit,
+    openHardnessPresetEdit,
+    updateHardnessPresetEditValue,
+    closeHardnessPresetEdit,
 } = actions;
