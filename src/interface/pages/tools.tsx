@@ -4,15 +4,16 @@ import { FrequencySeparation } from './tools/frequency-separation';
 import { HardnessPresets } from './tools/hardness-presets';
 import { OpacityPresets } from './tools/opacity-presets';
 import { Zoom } from './tools/zoom';
+import { Page } from '../../enums';
+import { TState } from '../../store';
+import { useSelector } from 'react-redux';
 
-type P = {
-    isActive: boolean
-};
+export const Tools = () => {
 
-export const Tools = (props: P) => {
+    const isActive = useSelector((state: TState) => state.page === Page.Tools);
 
     const style: React.CSSProperties = {};
-    if (!props.isActive) {
+    if (!isActive) {
         style.display = 'none';
     }
 

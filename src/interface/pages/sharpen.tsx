@@ -2,12 +2,14 @@ import * as React from 'react';
 import { SharpenFilters } from './sharpen/filter';
 import { SharpenOptions } from './sharpen/options';
 import { Presets } from './sharpen/presets';
+import { useSelector } from 'react-redux';
+import { TState } from '../../store';
+import { Page } from '../../enums';
 
-type Props = {
-    isActive: boolean
-};
+export const SharpenPage = () => {
 
-export const Sharpen = ({ isActive }: Props) => {
+    const isActive = useSelector((state: TState) => state.page === Page.Sharpen);
+
     const classes = ['page'];
 
     const style: React.CSSProperties = {};

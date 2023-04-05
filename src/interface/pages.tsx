@@ -1,4 +1,4 @@
-import { Sharpen } from './pages/sharpen';
+import { SharpenPage } from './pages/sharpen';
 import { Tools } from './pages/tools';
 import * as React from 'react';
 import { StatefulComponent } from '../components/base/stateful-component';
@@ -30,7 +30,7 @@ export class Pages extends StatefulComponent<{}, S> {
 
         return <div className="pages">
             <Tools isActive={page === Page.Tools} />
-            <Sharpen isActive={page === Page.Sharpen} />
+            <SharpenPage />
             <Effects isActive={page === Page.Effects} />
             <SavePage isActive={page === Page.Save} />
         </div>;

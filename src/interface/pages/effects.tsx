@@ -5,11 +5,34 @@ import { BeautyPanel, E_Layer } from '../../common/beautypanel';
 import { executeCreateOrthonLayer, executeEnhanceDetailsEffect } from '../../modules/actions/effects';
 import { createSeasonEffect, SeasonProfile } from '../../modules/actions/season-effect';
 import { createVignette } from './effects/vignette';
+import { useSelector } from 'react-redux';
+import { TState } from '../../store';
+import { Page } from '../../enums';
 
 type Props = {
     isActive: boolean
 };
 
+export const EffectsPage = () => {
+
+    const isActive = useSelector((state: TState) => state.page === Page.Effects);
+
+    const style: React.CSSProperties = {};
+    if (!isActive) {
+        style.display = 'none';
+    }
+
+    return (
+        <div id="effects" className="page" style={style}>
+            <sp-action-button onClick={onEnhanceDetailsButtonClicked}># {i18next.t('effects.enhanceDetails')}</sp-action-button>
+            <sp-action-button onClick={onStrengthenDetailsButtonClicked}># {i18next.t('effects.strengthenDetails')}</sp-action-button>
+            <sp-action-button onClick={onCreateOrthonEffectButtonClicked}># {i18next.t('effects.orton')}</sp-action-button>
+            <sp-action-button onClick={onCreateVignetteButtonClicked}># {i18next.t('effects.vignette')}</sp-action-button>
+            <sp-action-button onClick={onCreateAutumnEffectButtonClicked}>{i18next.t('effects.autumn')}</sp-action-button>
+            <sp-action-button onClick={onCreateSpringEffectButtonClicked}># {i18next.t('effects.spring')}</sp-action-button>
+        </div>
+    );
+}
 
 export class Effects extends React.Component<Props> {
 
@@ -76,14 +99,14 @@ async function onCreateOrthonEffectButtonClicked() {
     }
 }
 
-async function onCreateVignetteButtonClicked()  {
+async function onCreateVignetteButtonClicked() {
     try {
-        
+
         await core.executeAsModal(createVignette, {
             commandName: i18next.t('effects.vignette')
         });
 
-    } catch(err) {
+    } catch (err) {
         await app.showAlert(err.message);
     }
 }
