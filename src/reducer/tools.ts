@@ -13,12 +13,18 @@ const { actions, reducer } = createSlice({
         opacityPreseEdit: {
             open: false,
             index: -1,
+            value: -1
         }
     },
     reducers: {
         openOpacityPresetEdit(state, action: PayloadAction<number>) {
             state.opacityPreseEdit.open = true;
             state.opacityPreseEdit.index = action.payload;
+        },
+        updateOpacityPresetEditValue(state, action: PayloadAction<number>) {
+            if (!state.opacityPreseEdit.open)
+                return;
+            state.opacityPreseEdit.value = action.payload;
         },
         closeOpacityPresetEdit(state, action: PayloadAction<number | undefined>) {
             const { index } = state.opacityPreseEdit;
@@ -30,6 +36,7 @@ const { actions, reducer } = createSlice({
 
             state.opacityPreseEdit.open = false;
             state.opacityPreseEdit.index = -1;
+            state.opacityPreseEdit.value = -1;
         }
     }
 });
@@ -37,5 +44,6 @@ const { actions, reducer } = createSlice({
 export default reducer;
 export const {
     openOpacityPresetEdit,
+    updateOpacityPresetEditValue,
     closeOpacityPresetEdit,
 } = actions;
