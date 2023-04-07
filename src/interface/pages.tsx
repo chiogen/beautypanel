@@ -5,7 +5,7 @@ import { TState } from '../store';
 import { EffectsPage } from './pages/effects';
 import { SharpenPage } from './pages/sharpen';
 import { ToolsPage } from './pages/tools';
-import { SavePage } from './save';
+import { SavePage } from './pages/save';
 
 export const Pages = () => {
     const activePage = useSelector((state: TState) => state.page);
@@ -14,6 +14,6 @@ export const Pages = () => {
         <ToolsPage />
         <SharpenPage />
         <EffectsPage />
-        <SavePage isActive={activePage === Page.Save} />
+        <SavePage />
     </div>;
 };
