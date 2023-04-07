@@ -10,11 +10,14 @@ import tools from './reducer/tools';
 import { CurrentToolOptionsDescriptor, UpdateToolDataAction } from './reducer/shared-action-types';
 import sharpenOptions from './reducer/sharpen-options';
 import { ActionType } from './store-action-types';
+import activeDocument, { activeDocumentChanged } from './reducer/active-document';
+import { addActiveDocumentChangedListener } from './common/active-document-observer';
 
 
 const lastAction = (_s: AnyAction, action: AnyAction) => action;
 
 export const store = createStore(combineReducers({
+    activeDocument,
     lastAction,
     page,
     tools,
@@ -24,7 +27,17 @@ export const store = createStore(combineReducers({
     sharpenOptions
 }));
 
+Object.defineProperty(window, 'getState', {
+    value: store.getState
+});
+
 export type TState = ReturnType<typeof store['getState']>;
+
+
+
+addActiveDocumentChangedListener(() => {
+    store.dispatch(activeDocumentChanged());
+});
 
 // Poll required app state data
 async function poll() {
