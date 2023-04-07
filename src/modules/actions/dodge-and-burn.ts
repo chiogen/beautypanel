@@ -1,6 +1,8 @@
 import { app, constants } from 'photoshop';
 import { Layer } from 'photoshop/dom/Layer';
 import { BeautyPanel, E_Layer } from '../../common/beautypanel';
+import { useDodgeAndBurnColor } from '../../reducer/tools';
+import { store } from '../../store';
 import { setForegroundColor } from '../application/foreground-color';
 import { selectTool } from '../application/select-tool';
 import { checkBitsPerChannel } from '../image/bits-per-channel';
@@ -185,7 +187,14 @@ function curveArgument(curve: Array<number[]>) {
 
 
 
-export const setColorForDodgeAndBurn = (grayscale: number) => async () =>{
+export const setColorForDodgeAndBurn = (colorCode: string) => async () => {
+
+    let grayscale = 128;
+    if (colorCode === 'white') {
+        grayscale = 255;
+    } else if (colorCode === 'black') {
+        grayscale = 0;
+    }
 
     const layer = BeautyPanel.layers.dodgeAndBurnGray;
     if (!layer) {
@@ -197,6 +206,8 @@ export const setColorForDodgeAndBurn = (grayscale: number) => async () =>{
 
     layer.visible = true;
     await selectLayers([layer]);
+
+    store.dispatch(useDodgeAndBurnColor(colorCode));
 
 };
 

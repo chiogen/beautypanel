@@ -9,6 +9,9 @@ const hardnessPresets = new PresetsManager<number>('hardness', DEFAULT_HARDNESS_
 const { actions, reducer } = createSlice({
     name: 'tools',
     initialState: {
+        dodgeAndBurn: {
+            color: 'gray'
+        },
         opacity: {
             presets: opacityPresets.getAll()
         },
@@ -27,6 +30,10 @@ const { actions, reducer } = createSlice({
         }
     },
     reducers: {
+        // Dodge and Burn
+        useDodgeAndBurnColor(state, action: PayloadAction<string>) {
+            state.dodgeAndBurn.color = action.payload;
+        },
         // Opacity Preset Edit
         openOpacityPresetEdit(state, action: PayloadAction<number>) {
             state.opacityPreseEdit.open = true;
@@ -76,6 +83,7 @@ const { actions, reducer } = createSlice({
 
 export default reducer;
 export const {
+    useDodgeAndBurnColor,
     openOpacityPresetEdit,
     updateOpacityPresetEditValue,
     closeOpacityPresetEdit,
