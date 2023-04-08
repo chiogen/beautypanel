@@ -10,15 +10,19 @@ const { actions, reducer } = createSlice({
         directory: '',
         extension: '',
         path: '',
+        width: 0,
+        height: 0,
     },
     reducers: {
-        activeDocumentChanged(state) {
+        updateActiveDocumentInfo(state) {
 
             // Reset first
             state.name = '';
             state.directory = '';
             state.extension = '';
             state.path = '';
+            state.width = 0;
+            state.height = 0;
 
             const document = app.activeDocument;
             state.loaded = !!document;
@@ -27,7 +31,9 @@ const { actions, reducer } = createSlice({
                 return;
             }
 
-            const { dir, name, ext } = parse(document.path);
+            const { dir, ext } = parse(document.path);
+            state.width = document.width;
+            state.height = document.height;
             state.path = document.path;
             state.name = document.name;
             state.extension = ext;
@@ -39,5 +45,5 @@ const { actions, reducer } = createSlice({
 
 export default reducer;
 export const {
-    activeDocumentChanged
+    updateActiveDocumentInfo
 } = actions;

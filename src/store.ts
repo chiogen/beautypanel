@@ -10,7 +10,7 @@ import tools from './reducer/tools';
 import { CurrentToolOptionsDescriptor, UpdateToolDataAction } from './reducer/shared-action-types';
 import sharpenOptions from './reducer/sharpen-options';
 import { ActionType } from './store-action-types';
-import activeDocument, { activeDocumentChanged } from './reducer/active-document';
+import activeDocument, { updateActiveDocumentInfo } from './reducer/active-document';
 import { addActiveDocumentChangedListener } from './common/active-document-observer';
 
 
@@ -36,7 +36,7 @@ export type TState = ReturnType<typeof store['getState']>;
 
 
 addActiveDocumentChangedListener(() => {
-    store.dispatch(activeDocumentChanged());
+    store.dispatch(updateActiveDocumentInfo());
 });
 
 // Poll required app state data

@@ -6,6 +6,8 @@ import { replaceExtension } from '../../../common/path/replace-extension';
 import { getFileForSaving } from '../../../common/fs/get-file-for-saving';
 import { save } from '../../../modules/actions/save';
 import { handleException } from '../../../common/errors/handle-error';
+import { useSelector } from 'react-redux';
+import { TState } from '../../../store';
 
 export const SaveCurrentPictureSection = () => {
 
@@ -14,9 +16,7 @@ export const SaveCurrentPictureSection = () => {
     const width = activeDocument?.width ?? 0;
     const height = activeDocument?.height ?? 0;
 
-    const format = activeDocument?.path
-        ? path.parse(activeDocument.path).ext
-        : '';
+    const ext = useSelector<TState, string>(state => state.activeDocument.extension);
 
     return (
         <div className="section">
@@ -31,7 +31,7 @@ export const SaveCurrentPictureSection = () => {
                 </div>
                 <div className="flex">
                     <span>{i18next.t('savePage.pictureTypeLabel')}</span>
-                    <span>{format}</span>
+                    <span>{ext}</span>
                 </div>
             </div>
             <div className="flex stretch">
