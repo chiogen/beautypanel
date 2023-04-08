@@ -23,8 +23,12 @@ export const SaveCopySection = () => {
             <sp-action-button style={{ display: 'flex' }} onClick={onSaveUnscaledCopyButtonClicked}>
                 {i18next.t('savePage.saveUnscaledButtonText')} {preferredSaveFormat}
             </sp-action-button>
-            <div className="output-dir flex">
-                <span> {i18next.t('savePage.outputFolder')} {saveFolder} </span>
+
+            <div className="output-dir">
+                <div>
+                    <span> {i18next.t('savePage.outputFolder')} {saveFolder} </span>
+                </div>
+                <i>Currently photoshop ignores the preferred output folder, so this information is useless.</i>
             </div>
         </div>
     );

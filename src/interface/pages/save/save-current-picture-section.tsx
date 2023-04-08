@@ -11,11 +11,10 @@ import { TState } from '../../../store';
 
 export const SaveCurrentPictureSection = () => {
 
-    const activeDocument = app.activeDocument;
+    const width = useSelector<TState, number>(state => state.activeDocument.width);
+    const height = useSelector<TState, number>(state => state.activeDocument.height);
 
-    const width = activeDocument?.width ?? 0;
-    const height = activeDocument?.height ?? 0;
-
+    const path = useSelector<TState, string>(state => state.activeDocument.path);
     const ext = useSelector<TState, string>(state => state.activeDocument.extension);
 
     return (
@@ -23,7 +22,7 @@ export const SaveCurrentPictureSection = () => {
             <h3>{i18next.t('savePage.currentPicture')}</h3>
             <div id="document-information">
                 <div className="flex">
-                    <span>{activeDocument?.path ?? ''}</span>
+                    <span>{path ?? ''}</span>
                 </div>
                 <div className="flex">
                     <span>{i18next.t('savePage.resolution')}</span>
