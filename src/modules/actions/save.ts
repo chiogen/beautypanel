@@ -12,6 +12,7 @@ import { pixels } from '../../common/units';
 import { DialogOptions } from '../../enums/dialog-options';
 import { setPreferredSaveFormat } from '../../reducer/save';
 import { store } from '../../store';
+import { showMessageDialog } from '../../ui/message-dialog';
 
 export function getLastScaleSize() {
     const storageValue = localStorage.getItem('lastScaleImageDescriptor');
@@ -107,7 +108,18 @@ export async function saveScaledCopy() {
         let suggestedFileName = addFilenameSuffix(document.name, ' scaled copy');
         suggestedFileName = replaceExtension(suggestedFileName, state.save.preferredSaveFormat);
 
+        await showMessageDialog(`
+            <div> State before opening save dialog: </div>
+            <div> "suggestedFolder": ${JSON.stringify(suggestedFolder)} </div>
+            <div> "suggestedFileName": ${JSON.stringify(suggestedFileName)} </div>
+        `);
+
         const file = await getFileForSaving(suggestedFileName, suggestedFolder);
+        await showMessageDialog(`
+            <div> State after save dialog: </div>
+            <div> "file.name": ${JSON.stringify(file.name)} </div>
+        `);
+
         await save(copy, file, true);
 
     } catch (err) {
@@ -143,7 +155,18 @@ export async function saveUnscaledCopy() {
         let suggestedFileName = addFilenameSuffix(document.name, ' copy');
         suggestedFileName = replaceExtension(suggestedFileName, state.save.preferredSaveFormat);
 
+        await showMessageDialog(`
+            <div> State before opening save dialog: </div>
+            <div> "suggestedFolder": ${JSON.stringify(suggestedFolder)} </div>
+            <div> "suggestedFileName": ${JSON.stringify(suggestedFileName)} </div>
+        `);
+
         const file = await getFileForSaving(suggestedFileName, suggestedFolder);
+        await showMessageDialog(`
+            <div> State after save dialog: </div>
+            <div> "file.name": ${JSON.stringify(file.name)} </div>
+        `);
+
         await save(copy, file, true);
 
     } catch (err) {
@@ -166,6 +189,8 @@ export async function save(document: Document, file: File, saveAsCopy = false) {
 
     if (!ext)
         throw new Error('Selected file has no extension.');
+
+    await showMessageDialog(`File will be saved using the ${ext} extension`);
 
     switch (ext.toLowerCase()) {
         case '.jpg':
