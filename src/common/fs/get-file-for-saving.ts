@@ -1,6 +1,7 @@
 import { storage } from 'uxp';
 import { createFolderToken } from '../../modules/storage/fs';
 import { AbortError } from '../errors/abort-error';
+import { parse } from 'path';
 
 const SUPPORTED_FILE_TYPES = ['png', 'jpg', 'bmp'];
 
@@ -12,8 +13,17 @@ export async function getFileForSaving(suggestedFileName: string, suggestedFolde
         initialLocation = await createFolderToken(suggestedFolder);
     }
 
+    let extension = parse(suggestedFileName).ext.toLowerCase();
+    if (extension.startsWith('.'))
+        extension = extension.substring(1);
+
+    const types = [
+        extension,
+        ...SUPPORTED_FILE_TYPES.filter(x => x !== extension)
+    ];
+
     const file = await storage.localFileSystem.getFileForSaving(suggestedFileName, {
-        types: SUPPORTED_FILE_TYPES,
+        types,
         initialLocation
     });
 
