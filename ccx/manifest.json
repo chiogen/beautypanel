@@ -20,6 +20,13 @@
       }
     },
     {
+      "type": "command",
+      "id": "executeDodgeAndBurn",
+      "label": {
+        "default": "Dodge & Burn"
+      }
+    },
+    {
       "type": "panel",
       "id": "beautyPanel",
       "minimumSize": {
