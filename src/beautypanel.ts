@@ -9,9 +9,7 @@ import './common/prototype-pollution/layer';
 
 import { renderApp } from './interface';
 
-localizationLoaded.then(async () => {
-    renderApp();
-}).catch(err => {
+localizationLoaded.then(renderApp).catch(err => {
     app.showAlert(err.message);
 });
 
