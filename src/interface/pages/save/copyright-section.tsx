@@ -4,7 +4,7 @@ import { handleException } from '../../../common/errors/handle-error';
 import { app } from 'photoshop';
 import { insertCopyright } from '../../../modules/actions/copyright';
 
-export const CopyrightTool = () => {
+export const CopyrightSection = () => {
 
     return (
         <div id="copyright" className='section'>
