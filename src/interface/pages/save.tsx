@@ -4,6 +4,7 @@ import { Page } from '../../enums';
 import { TState } from '../../store';
 import { SaveCurrentPictureSection } from './save/save-current-picture-section';
 import { SaveCopySection } from './save/save-copy-section';
+import { CopyrightTool } from './save/copyright-tool';
 
 export const SavePage = () => {
 
@@ -15,6 +16,7 @@ export const SavePage = () => {
 
     return (
         <div id="save" className="page" style={style}>
+            <CopyrightTool />
             <SaveCurrentPictureSection />
             <SaveCopySection />
         </div>

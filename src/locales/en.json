@@ -64,6 +64,9 @@
             "copySaveSuccess": "Copy saved"
         }
     },
+    "copyright": {
+        "title": "Insert copyright"
+    },
     "options": "Options",
     "saveJpg2048": "Save JPG 2048",
     "opacity": "Opacity",
