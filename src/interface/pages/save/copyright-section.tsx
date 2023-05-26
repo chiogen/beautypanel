@@ -6,6 +6,7 @@ import { insertCopyright } from '../../../modules/actions/copyright';
 import { TState, store } from '../../../store';
 import { setCopyrightText } from '../../../reducer/copyright';
 import { useSelector } from 'react-redux';
+import { StorageKey } from '../../../enums/storage-key';
 
 export const CopyrightSection = () => {
 
@@ -46,6 +47,8 @@ async function onInsertCopyrightClicked() {
         await core.executeAsModal(() => insertCopyright(text), {
             commandName: 'Insert copyright'
         });
+
+        localStorage.setItem(StorageKey.CopyrightText, text);
 
     } catch (err) {
         handleException(err);
