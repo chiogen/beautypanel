@@ -1,9 +1,9 @@
 {
   "name": "beautypanel",
   "version": "1.1.8",
-  "description": "Starter template for creating Adobe UXP based photoshop plugin.",
-  "author": "Adobe Inc",
-  "license": "Apache-2.0",
+  "description": "Beautypanel plugin for Photoshop",
+  "author": "Chiogen <iwashier@gmail.com>",
+  "license": "MIT",
   "main": "index.js",
   "type": "module",
   "scripts": {
