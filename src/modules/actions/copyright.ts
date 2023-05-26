@@ -3,7 +3,7 @@ import { app, constants } from 'photoshop';
 import { BeautyPanel } from '../../common/beautypanel';
 import { selectTool } from '../application/select-tool';
 
-export async function insertCopyright() {
+export async function insertCopyright(text: string) {
 
     const document = app.activeDocument;
     if (!document) {
@@ -16,7 +16,7 @@ export async function insertCopyright() {
 
     const copyrightLayer = await document.createTextLayer({
         name: BeautyPanel.layerNames.copyright,
-        contents: 'Copyright Contents',
+        contents: text,
         fontSize: 32
     });
 

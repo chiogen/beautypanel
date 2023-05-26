@@ -38,6 +38,11 @@ declare namespace JSX {
         // <sp-textfield>
         'sp-textfield': TypedReactElement<HTMLInputElement, {
             type: string
+            value: string
+        }>
+        'sp-textarea': TypedReactElement<HTMLInputElement, {
+            type: string
+            value: string
         }>
 
         // <sp-slider>

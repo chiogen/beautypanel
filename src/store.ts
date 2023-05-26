@@ -2,6 +2,7 @@ import { app } from 'photoshop';
 import { ActionDescriptor } from 'photoshop/dom/CoreModules';
 import { AnyAction, combineReducers, createStore } from 'redux';
 import { setAsyncInterval } from './common/set-async-interval';
+import copyright from './reducer/copyright';
 import currentTool from './reducer/current-tool';
 import currentToolOptions from './reducer/current-tool-options';
 import page from './reducer/page';
@@ -22,6 +23,7 @@ export const store = createStore(combineReducers({
     page,
     tools,
     save,
+    copyright,
     currentTool,
     currentToolOptions,
     sharpenOptions

@@ -13,3 +13,6 @@ export const { actions, reducer } = createSlice({
 });
 
 export default reducer;
+export const {
+    setCopyrightText
+} = actions;
