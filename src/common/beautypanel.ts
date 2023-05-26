@@ -20,7 +20,8 @@ export enum E_Layer {
     Orton = 'orton',
     Vignette = 'vignette',
     Autumn = 'autumn',
-    Spring = 'spring'
+    Spring = 'spring',
+    Copyright = 'copyright'
 }
 
 const layers = {
@@ -62,6 +63,9 @@ const layers = {
     },
     get autumn() {
         return getLayerByCode(E_Layer.Autumn);
+    },
+    get copyright() {
+        return getLayerByCode(E_Layer.Copyright);
     }
 };
 
@@ -104,6 +108,9 @@ const layerNames = {
     },
     get autumn() {
         return getLayerName(E_Layer.Autumn);
+    },
+    get copyright() {
+        return getLayerName(E_Layer.Copyright);
     }
 };
 

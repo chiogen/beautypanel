@@ -97,8 +97,12 @@
         "dark": "Dark",
         "bright": "Bright",
         "autumn": "Autumn Effect",
-        "spring": "Spring Effect"
+        "spring": "Spring Effect",
+        "copyright": "Copyright"
     },
     "opacityValueSaved": "Opacity value saved.",
-    "layerNotFound": "Layer {{name}} doesn't exist."
+    "layerNotFound": "Layer {{name}} doesn't exist.",
+    "errors": {
+        "noDocumentActive": "No document active"
+    }
 }

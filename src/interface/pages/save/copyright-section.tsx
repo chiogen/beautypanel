@@ -1,7 +1,7 @@
 import i18next from 'i18next';
+import { core } from 'photoshop';
 import * as React from 'react';
 import { handleException } from '../../../common/errors/handle-error';
-import { app } from 'photoshop';
 import { insertCopyright } from '../../../modules/actions/copyright';
 
 export const CopyrightSection = () => {
@@ -19,7 +19,7 @@ export const CopyrightSection = () => {
 async function onInsertCopyrightClicked() {
     try {
 
-        await app.batchPlay(insertCopyright, {
+        await core.executeAsModal(insertCopyright, {
             commandName: 'Insert copyright'
         });
 

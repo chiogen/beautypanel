@@ -93,8 +93,12 @@
         "dark": "Dunkel",
         "bright": "Hell",
         "autumn": "Herbst Effekt",
-        "spring": "Frühling Effekt"
+        "spring": "Frühling Effekt",
+        "copyright": "Copyright"
     },
     "opacityValueSaved": "Deckkraft gespeichert.",
-    "layerNotFound": "Ebene {{name}} existiert nicht."
+    "layerNotFound": "Ebene {{name}} existiert nicht.",
+    "errors": {
+        "noDocumentActive": "Kein Dokument aktiv"
+    }
 }
