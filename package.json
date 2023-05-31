@@ -7,10 +7,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "",
+    "start": "webpack --watch",
     "start-styles": "sass --watch scss:ccx/styles --no-source-map --load-path=node_modules",
     "build": "npm run build-styles && npm run build-bundle",
-    "build-bundle": "NODE_ENV=production ",
+    "build-bundle": "NODE_ENV=production webpack",
     "build-styles": "sass scss:ccx/styles --no-source-map --load-path=node_modules"
   },
   "devDependencies": {
@@ -21,8 +21,12 @@
     "@types/photoshop": "^24.3.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "css-loader": "^6.8.1",
     "sass": "^1.59.3",
-    "typescript": "^5.0.2"
+    "ts-loader": "^9.4.3",
+    "typescript": "^5.0.2",
+    "webpack": "^5.84.1",
+    "webpack-cli": "^5.1.1"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.4",

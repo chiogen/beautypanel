@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { AbortError } from '../../common/errors/abort-error';
 
-export const enum ConfirmDialogChoiceSet {
+export enum ConfirmDialogChoiceSet {
     YesNo,
     OkAbort
 }
