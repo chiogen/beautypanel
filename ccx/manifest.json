@@ -2,7 +2,7 @@
   "manifestVersion": 4,
   "id": "com.chiogen.beautypanel",
   "name": "Beautypanel",
-  "version": "1.1.8",
+  "version": "1.1.8.alpha-1",
   "main": "index.html",
   "host": [
     {

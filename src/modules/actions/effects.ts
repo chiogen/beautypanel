@@ -2,6 +2,7 @@ import { app, constants } from 'photoshop';
 import { Layer } from 'photoshop/dom/Layer';
 import { BeautyPanel, E_Layer } from '../../common/beautypanel';
 import { DialogOptions } from '../../enums/dialog-options';
+import { duplicateReferenceLayer, duplicateReferenceLayerIntoSmartObject } from '../document/duplicate-reference-layer';
 import { filterGaussianBlur } from '../filter/blur/gaussian-blur';
 import { surfaceBlur } from '../filter/blur/surface-blur';
 import { checkBitsPerChannel } from '../image/bits-per-channel';
@@ -57,24 +58,12 @@ export async function executeEnhanceDetailsEffect() {
 }
 
 export async function executeCreateOrthonLayer() {
-    
+
     const document = app.activeDocument;
     if (!document)
         throw new Error('No document active.');
 
-    const referenceLayer = document.backgroundLayer ?? document.layers[0];
-
-    let orthonLayer: Layer;
-    const soft = BeautyPanel.layers.soft;
-    const detail = BeautyPanel.layers.detail;
-
-    if (soft && detail) {
-        const detailCopy = await detail.duplicate();
-        const softCopy = await soft.duplicate();
-        orthonLayer = await mergeLayers(document, [detailCopy!, softCopy!]);
-    } else {
-        orthonLayer = await referenceLayer.duplicate() as Layer;
-    }
+    const orthonLayer = await duplicateReferenceLayer(document);
 
     orthonLayer.name = BeautyPanel.layerNames.orton;
     orthonLayer.blendMode = constants.BlendMode.NORMAL;
@@ -86,5 +75,25 @@ export async function executeCreateOrthonLayer() {
             adjustment: {}
         }
     });
+
+}
+
+export async function executeCreateOrthonLayer2() {
+    // Source: https://youtu.be/hgcHDHzfr2Q
+
+    const document = app.activeDocument;
+    if (!document)
+        throw new Error('No document active.');
+
+    const detailsLayer = await duplicateReferenceLayerIntoSmartObject(document);
+    const blurLayer = await duplicateReferenceLayerIntoSmartObject(document);
+
+    await blurLayer.applyGaussianBlur(25);
+    blurLayer.blendMode = constants.BlendMode.SCREEN;
+    blurLayer.name = 'Orthon Blur';
+
+    await detailsLayer.applyHighPass(10);
+    detailsLayer.blendMode = constants.BlendMode.SOFTLIGHT;
+    detailsLayer.name = 'Orthon Details';
 
 }

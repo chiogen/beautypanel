@@ -99,6 +99,8 @@
     "opacityValueSaved": "Deckkraft gespeichert.",
     "layerNotFound": "Ebene {{name}} existiert nicht.",
     "errors": {
-        "noDocumentActive": "Kein Dokument aktiv"
+        "noDocumentActive": "Kein Dokument aktiv",
+        "noBackgroundLayer": "Das Dokument hat keinen Background layer",
+        "noDuplicateResult": "Layerduplikation hat keinen neuen Layer zurückgegeben."
     }
 }

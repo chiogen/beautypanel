@@ -103,6 +103,8 @@
     "opacityValueSaved": "Opacity value saved.",
     "layerNotFound": "Layer {{name}} doesn't exist.",
     "errors": {
-        "noDocumentActive": "No document active"
+        "noDocumentActive": "No document active",
+        "noBackgroundLayer": "Document has no background layer",
+        "noDuplicateResult": "Layer duplicate didnt return a new layer."
     }
 }

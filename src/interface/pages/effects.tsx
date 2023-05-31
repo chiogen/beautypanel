@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { BeautyPanel, E_Layer } from '../../common/beautypanel';
 import { Page } from '../../enums';
-import { executeCreateOrthonLayer, executeEnhanceDetailsEffect } from '../../modules/actions/effects';
+import { executeCreateOrthonLayer2, executeEnhanceDetailsEffect } from '../../modules/actions/effects';
 import { SeasonProfile, createSeasonEffect } from '../../modules/actions/season-effect';
 import { TState } from '../../store';
 import { createVignette } from './effects/vignette';
@@ -23,7 +23,7 @@ export const EffectsPage = () => {
         <div id="effects" className="page" style={style}>
             <sp-action-button onClick={onEnhanceDetailsButtonClicked}># {i18next.t('effects.enhanceDetails')}</sp-action-button>
             <sp-action-button onClick={onStrengthenDetailsButtonClicked}># {i18next.t('effects.strengthenDetails')}</sp-action-button>
-            <sp-action-button onClick={onCreateOrthonEffectButtonClicked}># {i18next.t('effects.orton')}</sp-action-button>
+            <sp-action-button onClick={onCreateOrthonEffectButtonClicked}>{i18next.t('effects.orton')}</sp-action-button>
             <sp-action-button onClick={onCreateVignetteButtonClicked}># {i18next.t('effects.vignette')}</sp-action-button>
             <sp-action-button onClick={onCreateAutumnEffectButtonClicked}>{i18next.t('effects.autumn')}</sp-action-button>
             <sp-action-button onClick={onCreateSpringEffectButtonClicked}># {i18next.t('effects.spring')}</sp-action-button>
@@ -66,7 +66,7 @@ async function onCreateOrthonEffectButtonClicked() {
         if (!app.activeDocument)
             return;
 
-        await core.executeAsModal(executeCreateOrthonLayer, {
+        await core.executeAsModal(executeCreateOrthonLayer2, {
             commandName: i18next.t('effects.orton')
         });
 
