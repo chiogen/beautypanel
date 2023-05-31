@@ -1,4 +1,4 @@
-export const enum DialogOptions {
+export enum DialogOptions {
     Display = 'display',
     DontDisplay = 'dontDisplay'
 }

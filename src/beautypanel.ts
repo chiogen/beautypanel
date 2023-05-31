@@ -12,15 +12,3 @@ import { renderApp } from './interface';
 localizationLoaded.then(renderApp).catch(err => {
     app.showAlert(err.message);
 });
-
-try {
-    app.eventNotifier = (event: object, descriptor: object) => {
-        console.log('-------------------------------------------------------');
-        console.log(event);
-        console.log(descriptor);
-        console.log(JSON.stringify(descriptor, null, ' '));
-        console.log('-------------------------------------------------------');
-    };
-} catch (err) {
-    console.log('eventNotifier not available.');
-}
