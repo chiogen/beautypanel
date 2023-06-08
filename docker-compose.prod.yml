@@ -1,0 +1,21 @@
+version: "2"
+
+services:
+    bundle:
+        image: node
+        volumes:
+            - .:/code
+        environment: 
+            - NODE_ENV=production
+        working_dir: /code
+        entrypoint: npm
+        command: start
+    styles:
+        image: node
+        volumes:
+            - .:/code
+        environment: 
+            - NODE_ENV=production
+        working_dir: /code
+        entrypoint: npm
+        command: run start-styles
