@@ -1,13 +1,18 @@
 import * as uxp from 'uxp';
 import i18next from 'i18next';
 import * as resources from './locales/index';
+import { handleException } from './common/errors/handle-error';
 
 const supportedLanguages = ['en', 'de'];
 
 function detectLanguage(): string {
-    const uiLocale = uxp.host?.uiLocale.substring(0, 2).toLowerCase() ?? 'en';
-    if (supportedLanguages.includes(uiLocale)) {
-        return uiLocale;
+    try {
+        const uiLocale = uxp.host?.uiLocale.substring(0, 2).toLowerCase() ?? 'en';
+        if (supportedLanguages.includes(uiLocale)) {
+            return uiLocale;
+        }
+    } catch (err) {
+        handleException(err);
     }
     return 'en';
 }
