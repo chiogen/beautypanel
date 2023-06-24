@@ -1,11 +1,7 @@
-import { Action } from 'redux';
-import { ActionType } from '../store-action-types';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-export interface SavePageState {
-    preferredSaveFormat: string
-}
 
-const initialState = (): SavePageState => {
+const initialState = () => {
     const preferredSaveFormat = localStorage.getItem('save.preferredSaveFormat');
 
     return {
@@ -13,27 +9,18 @@ const initialState = (): SavePageState => {
     };
 };
 
-type SetLastCopyExtensionAction = Action<ActionType.SetLastCopyExtension> & {
-    ext: string
-};
-
-type SavePageAction = SetLastCopyExtensionAction;
-
-export default (state = initialState(), action: SavePageAction): SavePageState => {
-    switch (action.type) {
-        case ActionType.SetLastCopyExtension:
-            if (action.ext)
-                localStorage.setItem('save.preferredSaveFormat', action.ext);
-            return {
-                ...state,
-                preferredSaveFormat: action.ext
-            };
-        default:
-            return state;
+const { reducer, actions } = createSlice({
+    name: 'save',
+    initialState,
+    reducers: {
+        setPreferredSaveFormat(state, action: PayloadAction<string>) {
+            localStorage.setItem('save.preferredSaveFormat', action.payload);
+            state.preferredSaveFormat = action.payload;
+        }
     }
-};
-
-export const setPreferredSaveFormat = (ext: string): SetLastCopyExtensionAction => ({
-    type: ActionType.SetLastCopyExtension,
-    ext
 });
+
+export default reducer;
+export const {
+    setPreferredSaveFormat
+} = actions;

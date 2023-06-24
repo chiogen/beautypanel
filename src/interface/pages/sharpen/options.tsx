@@ -1,10 +1,7 @@
-import * as React from 'react';
 import i18next from 'i18next';
-import { store, TState } from '../../../store';
+import * as React from 'react';
+import { store } from '../../../store';
 import { ActionType } from '../../../store-action-types';
-
-type P = {};
-type S = {};
 
 export function SharpenOptions() {
     return (
