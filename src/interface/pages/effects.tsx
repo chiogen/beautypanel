@@ -1,26 +1,15 @@
 import i18next from 'i18next';
 import { app, core } from 'photoshop';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { BeautyPanel, E_Layer } from '../../common/beautypanel';
-import { Page } from '../../enums';
 import { executeCreateOrthonLayer2, executeEnhanceDetailsEffect } from '../../modules/actions/effects';
 import { SeasonProfile, createSeasonEffect } from '../../modules/actions/season-effect';
-import { TState } from '../../store';
 import { createVignette } from './effects/vignette';
 
 
 export const EffectsPage = () => {
-
-    const isActive = useSelector((state: TState) => state.page === Page.Effects);
-
-    const style: React.CSSProperties = {};
-    if (!isActive) {
-        style.display = 'none';
-    }
-
     return (
-        <div id="effects" className="page" style={style}>
+        <div id="effects" className="page">
             <sp-action-button onClick={onEnhanceDetailsButtonClicked}># {i18next.t('effects.enhanceDetails')}</sp-action-button>
             <sp-action-button onClick={onStrengthenDetailsButtonClicked}># {i18next.t('effects.strengthenDetails')}</sp-action-button>
             <sp-action-button onClick={onCreateOrthonEffectButtonClicked}>{i18next.t('effects.orton')}</sp-action-button>

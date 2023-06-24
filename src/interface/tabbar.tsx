@@ -11,8 +11,7 @@ const indexPageMap = [
     Page.Tools,
     Page.Sharpen,
     Page.Effects,
-    Page.Save,
-    Page.Settings
+    Page.Save
 ];
 
 export const Tabbar = () => {
