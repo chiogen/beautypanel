@@ -1,7 +1,7 @@
 import i18next from 'i18next';
 import * as React from 'react';
+import { setUseDetailLayer } from '../../../reducer/sharpen-options';
 import { store } from '../../../store';
-import { ActionType } from '../../../store-action-types';
 
 export function SharpenOptions() {
     return (
@@ -19,8 +19,5 @@ export function SharpenOptions() {
 function switchToDetailLayerChanged(e: React.FormEvent<HTMLInputElement>) {
     const isSelected = (e.target as HTMLInputElement).checked;
 
-    store.dispatch({
-        type: ActionType.SetSharpenOptions,
-        useDetailLayer: isSelected
-    });
+    store.dispatch(setUseDetailLayer(isSelected));
 }

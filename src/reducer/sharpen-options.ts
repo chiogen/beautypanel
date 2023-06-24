@@ -1,25 +1,18 @@
-import { combineReducers } from 'redux';
-import { ActionType } from '../store-action-types';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-export interface SharpenOptions {
-    useDetailLayer: boolean
-}
-
-export interface SetSharpenOptionsAction extends Partial<SharpenOptions> {
-    type: ActionType.SetSharpenOptions
-}
-export type SharpenOptionsAction = SetSharpenOptionsAction;
-
-function useDetailLayer(state = true, action: SharpenOptionsAction): boolean {
-    switch (action.type) {
-        case ActionType.SetSharpenOptions:
-            return Boolean(action.useDetailLayer) ?? state;
-        default:
-            return state;
+const { reducer, actions } = createSlice({
+    name: 'sharpen',
+    initialState: {
+        useDetailLayer: true
+    },
+    reducers: {
+        setUseDetailLayer(state, action: PayloadAction<boolean>) {
+            state.useDetailLayer = action.payload;
+        }
     }
-}
-
-
-export default combineReducers<SharpenOptions, SharpenOptionsAction>({
-    useDetailLayer
 });
+
+export default reducer;
+export const {
+    setUseDetailLayer
+} = actions;
