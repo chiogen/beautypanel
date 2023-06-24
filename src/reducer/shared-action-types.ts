@@ -1,13 +1,9 @@
-import { Document } from 'photoshop/dom/Document';
 import { PercentValue } from 'photoshop/util/unit';
-import type { ActionType } from '../store-action-types';
 
-export interface DocumentChangedAction {
-    type: ActionType.DocumentChanged
-    document: Document | null
-}
+export const UPDATE_TOOL_DATA = 'UPDATE_TOOL_DATA';
+
 export interface UpdateToolDataAction {
-    type: ActionType.UpdatePollData
+    type: typeof UPDATE_TOOL_DATA
     currentToolOptions: CurrentToolOptionsDescriptor
 }
 
@@ -19,3 +15,10 @@ export interface CurrentToolOptionsDescriptor {
     opacity: number
     useScatter: boolean
 }
+
+export const updateToolData = (currentToolOptions: CurrentToolOptionsDescriptor): UpdateToolDataAction => {
+    return {
+        type: UPDATE_TOOL_DATA,
+        currentToolOptions
+    };
+};

@@ -1,33 +1,35 @@
+import { configureStore } from '@reduxjs/toolkit';
 import { app } from 'photoshop';
 import { ActionDescriptor } from 'photoshop/dom/CoreModules';
-import { AnyAction, combineReducers, createStore } from 'redux';
+import { AnyAction } from 'redux';
+import { addActiveDocumentChangedListener } from './common/active-document-observer';
 import { setAsyncInterval } from './common/set-async-interval';
+import activeDocument, { updateActiveDocumentInfo } from './reducer/active-document';
 import copyright from './reducer/copyright';
 import currentTool from './reducer/current-tool';
 import currentToolOptions from './reducer/current-tool-options';
 import page from './reducer/page';
 import save from './reducer/save';
-import tools from './reducer/tools';
-import { CurrentToolOptionsDescriptor, UpdateToolDataAction } from './reducer/shared-action-types';
+import { CurrentToolOptionsDescriptor, updateToolData } from './reducer/shared-action-types';
 import sharpenOptions from './reducer/sharpen-options';
-import { ActionType } from './store-action-types';
-import activeDocument, { updateActiveDocumentInfo } from './reducer/active-document';
-import { addActiveDocumentChangedListener } from './common/active-document-observer';
+import tools from './reducer/tools';
 
 
 const lastAction = (_s: AnyAction, action: AnyAction) => action;
 
-export const store = createStore(combineReducers({
-    activeDocument,
-    lastAction,
-    page,
-    tools,
-    save,
-    copyright,
-    currentTool,
-    currentToolOptions,
-    sharpenOptions
-}));
+export const store = configureStore({
+    reducer: {
+        activeDocument,
+        lastAction,
+        page,
+        tools,
+        save,
+        copyright,
+        currentTool,
+        currentToolOptions,
+        sharpenOptions
+    }
+});
 
 Object.defineProperty(window, 'getState', {
     value: store.getState
@@ -71,11 +73,7 @@ async function poll() {
         const currentToolOptions = toolData.currentToolOptions as CurrentToolOptionsDescriptor;
 
         if (currentToolOptions) {
-            const action: UpdateToolDataAction = {
-                type: ActionType.UpdatePollData,
-                currentToolOptions
-            };
-            store.dispatch(action);
+            store.dispatch(updateToolData(currentToolOptions));
         }
 
     } catch (err) {

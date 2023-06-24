@@ -1,41 +1,51 @@
+import { Draft, PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { core } from 'photoshop';
 import { percent } from '../common/units';
 import { setToolOptions } from '../modules/application/set-tool-options';
-import { ActionType } from '../store-action-types';
-import { CurrentToolOptionsDescriptor, UpdateToolDataAction } from './shared-action-types';
+import { CurrentToolOptionsDescriptor, UPDATE_TOOL_DATA, UpdateToolDataAction } from './shared-action-types';
 
-export interface CurrentToolOptionsStateBase {
+type CurrentToolOptionsState = {
     _descriptor: CurrentToolOptionsDescriptor
     hardness: number
     opacity: number
-}
-export interface CurrentToolOptionsState extends CurrentToolOptionsStateBase {
     promise?: Promise<void>
-}
-export interface SetToolOpacityAction {
-    type: ActionType.SetToolOpacity,
-    value: number
-}
-export interface SetToolHardnessAction {
-    type: ActionType.SetToolHardness,
-    value: number
-}
-export interface SetToolOptionsAction {
-    type: ActionType.SetToolOptions
-    values: Partial<CurrentToolOptionsStateBase>
-}
-
-const initial: CurrentToolOptionsState = {
-    _descriptor: {} as CurrentToolOptionsDescriptor,
-    promise: undefined,
-    hardness: -1,
-    opacity: 0
 };
 
-export type CurrentToolOptionsAction = UpdateToolDataAction | SetToolOpacityAction | SetToolHardnessAction | SetToolOptionsAction;
+const { reducer, actions } = createSlice({
+    name: 'currentToolOptions',
+    initialState: {
+        _descriptor: {} as CurrentToolOptionsDescriptor,
+        promise: undefined,
+        hardness: -1,
+        opacity: 0
+    } as CurrentToolOptionsState,
+    reducers: {
+        setToolOpacity(state, action: PayloadAction<number>) {
+            state.opacity = action.payload;
+            state.promise = applyUpdatedToolOptions(state);
+        },
+        setToolHardness(state, action: PayloadAction<number>) {
+            state.hardness = action.payload;
+            state.promise = applyUpdatedToolOptions(state);
+        }
+    },
+    extraReducers(builder) {
+        builder.addCase(UPDATE_TOOL_DATA, (state, action: UpdateToolDataAction) => {
+            state._descriptor = action.currentToolOptions;
+            state.hardness = action.currentToolOptions.brush?.hardness?._value ?? -1;
+            state.opacity = action.currentToolOptions.opacity;
+        });
+    },
+});
 
-function updateToolOptions(state: CurrentToolOptionsState): CurrentToolOptionsState {
-    state.promise = Promise.resolve(state.promise).then(() => core.executeAsModal(() => {
+export default reducer;
+export const {
+    setToolHardness,
+    setToolOpacity,
+} = actions;
+
+function applyUpdatedToolOptions(state: Draft<CurrentToolOptionsState>) {
+    return Promise.resolve(state.promise).then(() => core.executeAsModal(() => {
 
         const descriptor = state._descriptor;
 
@@ -51,35 +61,4 @@ function updateToolOptions(state: CurrentToolOptionsState): CurrentToolOptionsSt
     }, {
         commandName: 'Update Tool Options'
     }));
-    return state;
-}
-
-export default function currentToolOptions(state: CurrentToolOptionsState = initial, action: CurrentToolOptionsAction): CurrentToolOptionsState {
-    switch (action.type) {
-        case ActionType.SetToolOpacity: {
-            return updateToolOptions({
-                ...state,
-                opacity: action.value
-            });
-        }
-        case ActionType.SetToolHardness: {
-            return updateToolOptions({
-                ...state,
-                hardness: action.value
-            });
-        }
-        case ActionType.SetToolOptions:
-            return updateToolOptions({
-                ...state,
-                ...action.values
-            });
-        case ActionType.UpdatePollData:
-            return {
-                _descriptor: action.currentToolOptions,
-                hardness: action.currentToolOptions.brush?.hardness?._value ?? -1,
-                opacity: action.currentToolOptions.opacity
-            };
-        default:
-            return state;
-    }
 }

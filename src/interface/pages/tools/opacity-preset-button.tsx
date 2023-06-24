@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
+import { setToolOpacity } from '../../../reducer/current-tool-options';
 import { openOpacityPresetEdit } from '../../../reducer/tools';
 import { TState, store } from '../../../store';
-import { ActionType } from '../../../store-action-types';
 
 type OpacityPresetButtonProps = {
     index: number
@@ -35,8 +35,5 @@ async function onPresetClick(e: React.MouseEvent<HTMLButtonElement>) {
     const index = parseInt(button.dataset.index!);
     const value = state.tools.opacity.presets[index];
 
-    store.dispatch({
-        type: ActionType.SetToolOpacity,
-        value
-    });
+    store.dispatch(setToolOpacity(value));
 }

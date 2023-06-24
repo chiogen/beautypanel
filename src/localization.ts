@@ -9,6 +9,7 @@ function detectLanguage(): string {
     try {
         const uiLocale = uxp.host?.uiLocale.substring(0, 2).toLowerCase() ?? 'en';
         if (supportedLanguages.includes(uiLocale)) {
+            console.log('Detected language', uiLocale);
             return uiLocale;
         }
     } catch (err) {
