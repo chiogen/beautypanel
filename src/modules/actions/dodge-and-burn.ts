@@ -9,6 +9,7 @@ import { checkBitsPerChannel } from '../image/bits-per-channel';
 import { selectLayers } from '../image/select-layers';
 import { invert } from '../layer/invert';
 import { showConfirmDialog } from '../ui/confirm';
+import { checkDescriptorError, checkDescriptorErrors } from '../../common/errors/handle-error';
 
 export async function executeDodgeAndBurn() {
 
@@ -56,9 +57,7 @@ export async function executeDodgeAndBurn() {
         }
     ], {});
 
-    if (fillResult.message) {
-        throw new Error(fillResult.message);
-    }
+    checkDescriptorError(fillResult);
 
     await selectTool('paintbrushTool');
     await setForegroundColor(255, 255, 255);
@@ -139,7 +138,7 @@ async function addCurvedAdjustmentLayer(sourceLayer: Layer, name: string, curve:
 
     layer.name = name;
 
-    const result = await app.batchPlay([
+    const results = await app.batchPlay([
         {
             _obj: 'select',
             _target: {
@@ -167,11 +166,7 @@ async function addCurvedAdjustmentLayer(sourceLayer: Layer, name: string, curve:
         }
     ], {});
 
-    for (const item of result) {
-        if (item.message) {
-            await app.showAlert(item.message);
-        }
-    }
+    checkDescriptorErrors(results);
 
     return layer;
 }

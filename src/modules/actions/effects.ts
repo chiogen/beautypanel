@@ -64,16 +64,15 @@ export async function createOrthonEffectLayerFromV1() {
 
     const orthonLayer = await duplicateReferenceLayer(document);
 
-    // orthonLayer.name = BeautyPanel.layerNames.orton;
-    // orthonLayer.blendMode = constants.BlendMode.NORMAL;
-    // orthonLayer.opacity = 50;
+    orthonLayer.name = BeautyPanel.layerNames.orton;
+    orthonLayer.blendMode = constants.BlendMode.NORMAL;
+    orthonLayer.opacity = 50;
 
-    // await filterGaussianBlur(5, DialogOptions.Display);
-    // await createRevealAllMask(orthonLayer);
+    await filterGaussianBlur(5, DialogOptions.Display);
+    await createRevealAllMask(orthonLayer);
 
-    // moveLayerToTop(orthonLayer);
-
-
+    moveLayerToTop(orthonLayer);
+    
 }
 
 export async function executeCreateOrthonLayer() {

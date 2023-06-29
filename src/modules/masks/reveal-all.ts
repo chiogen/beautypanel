@@ -2,6 +2,7 @@ import { app } from 'photoshop';
 import { ActionDescriptor } from 'photoshop/dom/CoreModules';
 import { Layer } from 'photoshop/dom/Layer';
 import { selectLayers } from '../image/select-layers';
+import { checkDescriptorError } from '../../common/errors/handle-error';
 
 export async function createRevealAllMask(layer: Layer): Promise<Layer> {
 
@@ -23,13 +24,11 @@ export async function createRevealAllMask(layer: Layer): Promise<Layer> {
 
     await selectLayers([layer]);
 
-    const [, result] = await app.batchPlay([
+    const [result] = await app.batchPlay([
         descriptor
     ], {});
 
-    if (result.message) {
-        await app.showAlert(result.message);
-    }
+    checkDescriptorError(result);
 
     return app.activeDocument!.activeLayers[0];
 

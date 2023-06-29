@@ -2,6 +2,7 @@ import { app } from 'photoshop';
 import { ActionDescriptor } from 'photoshop/dom/CoreModules';
 import { percent, pixels } from '../../../common/units';
 import { DialogOptions } from '../../../enums/dialog-options';
+import { checkDescriptorError } from '../../../common/errors/handle-error';
 
 interface AdaptCorrectTonesOptions {
     amount: number
@@ -77,9 +78,7 @@ export async function filterSmartSharpen(options: FilterSmartSharpenOptions): Pr
         _filterSmartSharpen(options)
     ], {});
 
-    if (result.message) {
-        throw new Error(result.message);
-    }
+    checkDescriptorError(result);
 
     return result;
 }

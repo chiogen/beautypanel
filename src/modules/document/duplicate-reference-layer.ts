@@ -4,6 +4,7 @@ import type { Document } from 'photoshop/dom/Document';
 import { BeautyPanel } from '../../common/beautypanel';
 import { mergeLayers } from '../image/merge-layers';
 import { selectLayers } from '../image/select-layers';
+import { checkDescriptorError } from '../../common/errors/handle-error';
 
 /**
  * This function does one of two things
@@ -37,11 +38,13 @@ export async function duplicateReferenceLayerIntoSmartObject(document: Document)
 
     await selectLayers([layer]);
 
-    await app.batchPlay([
+    const [result] = await app.batchPlay([
         {
             _obj: 'newPlacedLayer'
         }
     ], {});
+
+    checkDescriptorError(result);
 
     return document.activeLayers[0];
 }
