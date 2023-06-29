@@ -1,13 +1,9 @@
 import { app } from 'photoshop';
 import { ActionDescriptor } from 'photoshop/dom/CoreModules';
 import { Layer } from 'photoshop/dom/Layer';
-import { _selectLayers } from '../image/select-layers';
+import { selectLayers } from '../image/select-layers';
 
-export interface RevealAllMaskOptions {
-    layer: Layer
-}
-
-export async function createRevealAllMask(options: RevealAllMaskOptions): Promise<Layer> {
+export async function createRevealAllMask(layer: Layer): Promise<Layer> {
 
     const descriptor: ActionDescriptor = {
         _obj: 'make',
@@ -25,8 +21,9 @@ export async function createRevealAllMask(options: RevealAllMaskOptions): Promis
         }
     };
 
+    await selectLayers([layer]);
+
     const [, result] = await app.batchPlay([
-        _selectLayers([options.layer]),
         descriptor
     ], {});
 

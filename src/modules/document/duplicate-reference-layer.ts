@@ -1,9 +1,9 @@
 import i18next from 'i18next';
+import { app } from 'photoshop';
 import type { Document } from 'photoshop/dom/Document';
 import { BeautyPanel } from '../../common/beautypanel';
 import { mergeLayers } from '../image/merge-layers';
-import { _selectLayers } from '../image/select-layers';
-import { app } from 'photoshop';
+import { selectLayers } from '../image/select-layers';
 
 /**
  * This function does one of two things
@@ -18,11 +18,8 @@ export async function duplicateReferenceLayer(document: Document) {
     const detail = BeautyPanel.layers.detail;
 
     if (soft && detail) {
-        const detailCopy = await detail.duplicate();
-        const softCopy = await soft.duplicate();
-        return await mergeLayers(document, [detailCopy!, softCopy!]);
+        return await mergeLayers(document, [detail, soft]);
     }
-
 
     const referenceLayer = document.backgroundLayer;
     if (!referenceLayer)
@@ -38,8 +35,9 @@ export async function duplicateReferenceLayer(document: Document) {
 export async function duplicateReferenceLayerIntoSmartObject(document: Document) {
     const layer = await duplicateReferenceLayer(document);
 
+    await selectLayers([layer]);
+
     await app.batchPlay([
-        _selectLayers([layer]),
         {
             _obj: 'newPlacedLayer'
         }

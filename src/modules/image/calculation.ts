@@ -1,7 +1,7 @@
 import { app } from 'photoshop';
 import { ActionDescriptor } from 'photoshop/dom/CoreModules';
 import { Layer } from 'photoshop/dom/Layer';
-import { _selectLayers } from './select-layers';
+import { selectLayers } from './select-layers';
 
 export type ImageCalculationType = 'normal' |
     'add' | 'subtract' |
@@ -58,8 +58,10 @@ export function _imageCalculation(options: ImageCalculationOptions): ActionDescr
 }
 
 export async function imageCalculation(options: ImageCalculationOptions) {
+
+    await selectLayers([options.targetLayer]);
+
     const [result] = await app.batchPlay([
-        _selectLayers([options.targetLayer]),
         _imageCalculation(options)
     ], {});
 

@@ -2,7 +2,7 @@ import i18next from 'i18next';
 import { app, core } from 'photoshop';
 import * as React from 'react';
 import { BeautyPanel, E_Layer } from '../../common/beautypanel';
-import { executeCreateOrthonLayer2, executeEnhanceDetailsEffect } from '../../modules/actions/effects';
+import { createOrthonEffectLayerFromV1, executeCreateOrthonLayer2, executeEnhanceDetailsEffect } from '../../modules/actions/effects';
 import { SeasonProfile, createSeasonEffect } from '../../modules/actions/season-effect';
 import { createVignette } from './effects/vignette';
 
@@ -55,7 +55,7 @@ async function onCreateOrthonEffectButtonClicked() {
         if (!app.activeDocument)
             return;
 
-        await core.executeAsModal(executeCreateOrthonLayer2, {
+        await core.executeAsModal(createOrthonEffectLayerFromV1, {
             commandName: i18next.t('effects.orton')
         });
 
