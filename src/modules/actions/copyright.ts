@@ -2,6 +2,7 @@ import i18next from 'i18next';
 import { app, constants } from 'photoshop';
 import { BeautyPanel } from '../../common/beautypanel';
 import { selectTool } from '../application/select-tool';
+import { moveLayerToTop } from '../layer/move-layer-to-top';
 
 export async function insertCopyright(text: string) {
 
@@ -26,9 +27,7 @@ export async function insertCopyright(text: string) {
     // For some reason, creatTextLayer() uses the contents for layername instead of the name.
     copyrightLayer.name = BeautyPanel.layerNames.copyright;
 
-    const moveRefLayer = document.layers[0];
-    if (moveRefLayer !== copyrightLayer)
-        copyrightLayer.move(moveRefLayer, constants.ElementPlacement.PLACEBEFORE);
+    moveLayerToTop(copyrightLayer);
 
     await selectTool('moveTool');
 

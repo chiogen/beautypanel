@@ -15,7 +15,7 @@ export async function handleException(err: unknown) {
 
     if (typeof message === 'string' && message.length > 0)
         await app.showAlert(message);
-    
+
 }
 
 export function checkDescriptorError(result: ActionDescriptor) {
@@ -24,6 +24,18 @@ export function checkDescriptorError(result: ActionDescriptor) {
             throw new Error(result.message);
         } else {
             throw new AbortError();
+        }
+    }
+}
+
+export function checkDescriptorErrors(results: ActionDescriptor[]) {
+    for (const result of results) {
+        if (result._obj === 'error') {
+            if (result.message) {
+                throw new Error(result.message);
+            } else {
+                throw new AbortError();
+            }
         }
     }
 }

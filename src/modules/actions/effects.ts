@@ -10,6 +10,7 @@ import { mergeLayers } from '../image/merge-layers';
 import { invert } from '../layer/invert';
 import { createAdjustmentLayer } from '../masks/levels';
 import { createRevealAllMask } from '../masks/reveal-all';
+import { moveLayerToTop } from '../layer/move-layer-to-top';
 
 export async function executeEnhanceDetailsEffect() {
 
@@ -51,9 +52,27 @@ export async function executeEnhanceDetailsEffect() {
     enhanceDetails.opacity = 50;
 
     // enhanceDetails.moveBelow(referenceLayer);
-    await createRevealAllMask({
-        layer: enhanceDetails
-    });
+    await createRevealAllMask(enhanceDetails);
+
+}
+
+export async function createOrthonEffectLayerFromV1() {
+
+    const document = app.activeDocument;
+    if (!document)
+        throw new Error('No document active.');
+
+    const orthonLayer = await duplicateReferenceLayer(document);
+
+    // orthonLayer.name = BeautyPanel.layerNames.orton;
+    // orthonLayer.blendMode = constants.BlendMode.NORMAL;
+    // orthonLayer.opacity = 50;
+
+    // await filterGaussianBlur(5, DialogOptions.Display);
+    // await createRevealAllMask(orthonLayer);
+
+    // moveLayerToTop(orthonLayer);
+
 
 }
 
