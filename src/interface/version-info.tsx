@@ -1,5 +1,5 @@
 import * as React from 'react';
-import manifest from '../../ccx/manifest.json';
+import manifest from '../../package.json';
 
 export const VersionInfo = () => (
     <div id="versionInfo">
