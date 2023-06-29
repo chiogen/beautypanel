@@ -12,3 +12,5 @@ import { renderApp } from './interface';
 localizationLoaded.then(renderApp).catch(err => {
     app.showAlert(err.message);
 });
+
+import './watchers/watch-copyright-layer';
