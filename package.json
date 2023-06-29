@@ -10,8 +10,9 @@
     "start": "webpack --watch",
     "start-styles": "sass --watch scss:ccx/styles --no-source-map --load-path=node_modules",
     "build": "npm run build-styles && npm run build-bundle",
-    "build-bundle": "NODE_ENV=production webpack",
-    "build-styles": "sass scss:ccx/styles --no-source-map --load-path=node_modules"
+    "build:production": "npm run build:bundle && npm run build:styles",
+    "build:bundle": "NODE_ENV=production webpack",
+    "build:styles": "sass scss:ccx/styles --no-source-map --load-path=node_modules"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
