@@ -1,5 +1,11 @@
-
 #effects {
     display: flex;
     flex-direction: column;
+}
+
+.orthon-effect {
+    padding: 0.25rem 0;
+    .helper-text {
+        margin: 0 0.5rem;
+    }
 }

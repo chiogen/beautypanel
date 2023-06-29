@@ -41,6 +41,8 @@
         "enhanceDetails": "Details verbessern",
         "strengthenDetails": "Details verstärken",
         "orton": "Orton Effect",
+        "ortonFromOldVersion": "Orton effect aus alter Beautypanel Version",
+        "ortonWithSmartObjects": "Orton effect mit Smartobject Layer",
         "vignette": "Vignette",
         "autumn": "Season: Herbst",
         "spring": "Season: Frühling"

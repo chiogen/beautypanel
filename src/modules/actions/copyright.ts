@@ -1,7 +1,8 @@
 import i18next from 'i18next';
-import { app, constants } from 'photoshop';
+import { app } from 'photoshop';
 import { BeautyPanel } from '../../common/beautypanel';
 import { selectTool } from '../application/select-tool';
+import { selectLayers } from '../image/select-layers';
 import { moveLayerToTop } from '../layer/move-layer-to-top';
 
 export async function insertCopyright(text: string) {
@@ -15,6 +16,8 @@ export async function insertCopyright(text: string) {
         return;
     }
 
+    await switchToDetailLayer();
+
     const copyrightLayer = await document.createTextLayer({
         name: BeautyPanel.layerNames.copyright,
         contents: text,
@@ -26,10 +29,19 @@ export async function insertCopyright(text: string) {
 
     // For some reason, creatTextLayer() uses the contents for layername instead of the name.
     copyrightLayer.name = BeautyPanel.layerNames.copyright;
+    copyrightLayer.opacity = 82;
 
     moveLayerToTop(copyrightLayer);
 
     await selectTool('moveTool');
 
     // throw new Error('[insertCopyright] Not implemented');
+}
+
+async function switchToDetailLayer() {
+    const detail = BeautyPanel.layers.detail;
+
+    if (detail) {
+        await selectLayers([detail]);
+    }
 }

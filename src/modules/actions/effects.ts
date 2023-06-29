@@ -96,7 +96,7 @@ export async function executeCreateOrthonLayer() {
 
 }
 
-export async function executeCreateOrthonLayer2() {
+export async function executeOrthonEffectSmart() {
     // Source: https://youtu.be/hgcHDHzfr2Q
 
     const document = app.activeDocument;

@@ -2,17 +2,18 @@ import i18next from 'i18next';
 import { app, core } from 'photoshop';
 import * as React from 'react';
 import { BeautyPanel, E_Layer } from '../../common/beautypanel';
-import { createOrthonEffectLayerFromV1, executeCreateOrthonLayer2, executeEnhanceDetailsEffect } from '../../modules/actions/effects';
+import { executeEnhanceDetailsEffect } from '../../modules/actions/effects';
 import { SeasonProfile, createSeasonEffect } from '../../modules/actions/season-effect';
 import { createVignette } from './effects/vignette';
+import { EffectsOrthonSection } from './effects/effects-orthon-section';
 
 
 export const EffectsPage = () => {
     return (
         <div id="effects" className="page">
+            <EffectsOrthonSection />
             <sp-action-button onClick={onEnhanceDetailsButtonClicked}># {i18next.t('effects.enhanceDetails')}</sp-action-button>
-            <sp-action-button onClick={onStrengthenDetailsButtonClicked}># {i18next.t('effects.strengthenDetails')}</sp-action-button>
-            <sp-action-button onClick={onCreateOrthonEffectButtonClicked}>{i18next.t('effects.orton')}</sp-action-button>
+            <sp-action-button onClick={onStrengthenDetailsButtonClicked}># {i18next.t('effects.strengthenDetails')}</sp-action-button>            
             <sp-action-button onClick={onCreateVignetteButtonClicked}># {i18next.t('effects.vignette')}</sp-action-button>
             <sp-action-button onClick={onCreateAutumnEffectButtonClicked}>{i18next.t('effects.autumn')}</sp-action-button>
             <sp-action-button onClick={onCreateSpringEffectButtonClicked}># {i18next.t('effects.spring')}</sp-action-button>
@@ -42,22 +43,6 @@ async function onStrengthenDetailsButtonClicked() {
     try {
 
         throw new Error('Not implemented');
-
-    } catch (err) {
-        const message = err.message || err;
-        app.showAlert(message);
-    }
-}
-
-async function onCreateOrthonEffectButtonClicked() {
-    try {
-
-        if (!app.activeDocument)
-            return;
-
-        await core.executeAsModal(createOrthonEffectLayerFromV1, {
-            commandName: i18next.t('effects.orton')
-        });
 
     } catch (err) {
         const message = err.message || err;

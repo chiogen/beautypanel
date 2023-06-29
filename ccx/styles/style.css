@@ -183,6 +183,13 @@ dialog .actions sp-action-button {
   flex-direction: column;
 }
 
+.orthon-effect {
+  padding: 0.25rem 0;
+}
+.orthon-effect .helper-text {
+  margin: 0 0.5rem;
+}
+
 #save #document-information {
   display: contents;
 }
