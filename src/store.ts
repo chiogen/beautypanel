@@ -13,6 +13,8 @@ import save from './reducer/save';
 import { CurrentToolOptionsDescriptor, updateToolData } from './reducer/shared-action-types';
 import sharpenOptions from './reducer/sharpen-options';
 import tools from './reducer/tools';
+import { toolOptionsUpdateComplete } from './modules/actions/tool-options';
+import { checkDescriptorError } from './common/errors/handle-error';
 
 
 const lastAction = (_s: AnyAction, action: AnyAction) => action;
@@ -48,7 +50,7 @@ async function poll() {
     try {
 
         // Wait for latest promise for setting tool options
-        await store.getState().currentToolOptions.promise;
+        await toolOptionsUpdateComplete();
 
         const brushDataDescriptor: ActionDescriptor = {
             _obj: 'get',
@@ -70,6 +72,9 @@ async function poll() {
         const [toolData] = await app.batchPlay([
             brushDataDescriptor
         ], {});
+
+        checkDescriptorError(toolData);
+
         const currentToolOptions = toolData.currentToolOptions as CurrentToolOptionsDescriptor;
 
         if (currentToolOptions) {

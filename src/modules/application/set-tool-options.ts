@@ -1,5 +1,6 @@
 import { app } from 'photoshop';
 import { ActionDescriptor } from 'photoshop/dom/CoreModules';
+import { checkDescriptorError } from '../../common/errors/handle-error';
 
 export async function setToolOptions(options: Object) {
 
@@ -7,8 +8,7 @@ export async function setToolOptions(options: Object) {
         _setToolOptions(options)
     ], {});
 
-    if (result.message)
-        await app.showAlert(result.message);
+    checkDescriptorError(result);
 
 }
 
