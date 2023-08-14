@@ -1,4 +1,5 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
+import type { Textfield } from '@spectrum-web-components/textfield';
 import i18next from 'i18next';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
@@ -29,7 +30,7 @@ export const HardnessPresetEditDialog = () => {
     );
 };
 
-function presetInputValueChanged(e: React.ChangeEvent<HTMLInputElement>) {
+function presetInputValueChanged(e: React.ChangeEvent<Textfield>) {
     const value = parseInt(e.currentTarget.value.replace(/,/, '.'));
     store.dispatch(updateHardnessPresetEditValue(value));
 }
