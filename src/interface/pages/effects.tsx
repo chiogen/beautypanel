@@ -1,11 +1,10 @@
 import i18next from 'i18next';
 import { app, core } from 'photoshop';
 import * as React from 'react';
-import { BeautyPanel, E_Layer } from '../../common/beautypanel';
 import { executeEnhanceDetailsEffect } from '../../modules/actions/effects';
-import { SeasonProfile, createSeasonEffect } from '../../modules/actions/season-effect';
-import { createVignette } from './effects/vignette';
 import { EffectsOrthonSection } from './effects/effects-orthon-section';
+import { createVignette } from './effects/vignette';
+import { EffectsSeasonSection } from './effects/effects.season-section';
 
 
 export const EffectsPage = () => {
@@ -13,10 +12,9 @@ export const EffectsPage = () => {
         <div id="effects" className="page">
             <EffectsOrthonSection />
             <sp-action-button onClick={onEnhanceDetailsButtonClicked}># {i18next.t('effects.enhanceDetails')}</sp-action-button>
-            <sp-action-button onClick={onStrengthenDetailsButtonClicked}># {i18next.t('effects.strengthenDetails')}</sp-action-button>            
+            <sp-action-button onClick={onStrengthenDetailsButtonClicked}># {i18next.t('effects.strengthenDetails')}</sp-action-button>
             <sp-action-button onClick={onCreateVignetteButtonClicked}># {i18next.t('effects.vignette')}</sp-action-button>
-            <sp-action-button onClick={onCreateAutumnEffectButtonClicked}>{i18next.t('effects.autumn')}</sp-action-button>
-            <sp-action-button onClick={onCreateSpringEffectButtonClicked}># {i18next.t('effects.spring')}</sp-action-button>
+            <EffectsSeasonSection />
         </div>
     );
 };
@@ -60,104 +58,4 @@ async function onCreateVignetteButtonClicked() {
     } catch (err) {
         await app.showAlert(err.message);
     }
-}
-
-export async function onCreateAutumnEffectButtonClicked(e: React.MouseEvent<HTMLButtonElement>) {
-    try {
-
-        if (e.altKey) {
-            optAutumnEffect();
-            return;
-        }
-
-        const profile: SeasonProfile = {
-            layerOpacity: 100,
-            colorCorrection: [
-                {
-                    color: 'reds',
-                    cyan: 1,
-                    magenta: 2,
-                    yellow: 3,
-                    black: 0
-                },
-                {
-                    color: 'yellows',
-                    cyan: -100,
-                    magenta: 42,
-                    yellow: 40,
-                    black: 0
-                },
-                {
-                    color: 'greens',
-                    cyan: 100,
-                    magenta: 100,
-                    yellow: 100,
-                    black: 100
-                }
-            ]
-        };
-
-        const opacity = localStorage.getItem('autumnLayerOpacity');
-        const autumnLayerName = BeautyPanel.getLayerName(E_Layer.Autumn);
-
-        if (opacity) {
-            profile.layerOpacity = parseInt(opacity);
-        }
-
-        await core.executeAsModal(() => createSeasonEffect(autumnLayerName, profile), {
-            commandName: i18next.t('effects.autumn')
-        });
-
-    } catch (err) {
-        app.showAlert(err.message);
-    }
-}
-function optAutumnEffect() {
-    const key = 'autumnLayerOpacity';
-    const layerName = BeautyPanel.getLayerName(E_Layer.Autumn);
-    const layer = BeautyPanel.getLayerByCode(E_Layer.Autumn);
-
-    if (layer) {
-        localStorage.setItem(key, String(layer.opacity));
-        app.showAlert('Opacity value saved.');
-    } else {
-        app.showAlert(i18next.t('layerNotFound', { name: layerName }));
-    }
-
-}
-
-export async function onCreateSpringEffectButtonClicked(_e: React.MouseEvent<HTMLButtonElement>) {
-    try {
-
-        throw new Error('No profile defined.');
-
-        if (_e.altKey) {
-            optAutumnEffect();
-            return;
-        }
-
-        // const profile = springToAutumn;
-        // const opacity = localStorage.getItem('springLayerOpacity');
-        // if (opacity) {
-        //     profile.layerOpacity = parseInt(opacity);
-        // }
-
-        // await createSeasonEffect(BeautyPanel.getLayerName(E_Layer.Spring), profile);
-
-    } catch (err) {
-        app.showAlert(err.message);
-    }
-}
-function optSpringEffect() {
-    const key = 'springLayerOpacity';
-    const layerName = BeautyPanel.getLayerName(E_Layer.Autumn);
-    const layer = BeautyPanel.getLayerByCode(E_Layer.Autumn);
-
-    if (layer) {
-        localStorage.setItem(key, String(layer.opacity));
-        app.showAlert('Opacity value saved.');
-    } else {
-        app.showAlert(i18next.t('layerNotFound', { name: layerName }));
-    }
-
 }

@@ -44,7 +44,13 @@
         "ortonWithSmartObjects": "Orton Effekt with smart object layer",
         "vignette": "Vignette",
         "autumn": "Season: Autumn",
-        "spring": "Season: Spring"
+        "spring": "Season: Spring",
+        "season": {
+            "title": "Season Effect",
+            "spring": "Spring",
+            "autumn": "Autumn",
+            "autumnEffectCommand": "Autumn Effect"
+        }
     },
     "savePage": {
         "currentPicture": "Current picture",

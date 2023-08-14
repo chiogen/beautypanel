@@ -44,8 +44,12 @@
         "ortonFromOldVersion": "Orton effect aus alter Beautypanel Version",
         "ortonWithSmartObjects": "Orton effect mit Smartobject Layer",
         "vignette": "Vignette",
-        "autumn": "Season: Herbst",
-        "spring": "Season: Frühling"
+        "season": {
+            "title": "Season Effekt",
+            "spring": "Frühling",
+            "autumn": "Herbst",
+            "autumnEffectCommand": "Herbst Effekt"
+        }
     },
     "savePage": {
         "currentPicture": "Aktuelles Bild",

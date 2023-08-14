@@ -115,11 +115,20 @@ body {
   flex-direction: column;
 }
 
+.flex-stack {
+  display: flex;
+  flex-direction: column;
+}
+.flex-stack > * {
+  flex-grow: 1;
+}
+
 .section {
   background-color: rgba(0, 0, 0, 0.2);
   padding: 5px;
-  margin: 5px;
-  border-radius: 4px;
+  margin: 8px 4px;
+  border: 4px solid #666666;
+  border-radius: 7px;
 }
 
 sp-action-button {
