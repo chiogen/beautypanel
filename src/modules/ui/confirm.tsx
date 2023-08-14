@@ -15,17 +15,17 @@ export async function showConfirmDialog(message: string, choiceSet = ConfirmDial
     document.body.appendChild(dialog);
 
     ReactDom.render(
-        <sp-body>
+        <div>
             <p>
                 {message}
             </p>
             <div className="actions">
                 {renderChoices(dialog, choiceSet)}
             </div>
-        </sp-body>,
+        </div>,
         dialog
     );
-    
+
     const result = await dialog.uxpShowModal({
         title
     });
@@ -40,7 +40,7 @@ export async function showConfirmDialog(message: string, choiceSet = ConfirmDial
 }
 
 function renderChoices(dialog: HTMLUxpDialogElement, choiceSet: ConfirmDialogChoiceSet) {
-    switch(choiceSet) {
+    switch (choiceSet) {
         case ConfirmDialogChoiceSet.YesNo:
             return renderYesNoChoices(dialog);
         default:

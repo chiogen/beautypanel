@@ -10,6 +10,9 @@
       "minVersion": "23"
     }
   ],
+  "!featureFlags": {
+    "enableSWCSupport": true
+  },
   "entrypoints": [
     {
       "type": "command",

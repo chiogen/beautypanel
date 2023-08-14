@@ -1,25 +1,38 @@
-#save {
-    
-    #document-information {
-        display: contents;
+.copyright-text-container {
+    padding: 5px;
+    justify-content: stretch;
 
-        & > div {
-            padding-left: 1em;            
-            padding-right: 1em;
+    sp-textarea {
+        flex: 1 1;
+    }
+}
 
-            > span {
-               width: 100px;
-            }
+.document-information {
+
+    .row {
+        padding-left: 1em;
+        padding-right: 1em;
+
+        > span {
+            width: 100px;
         }
-
-        span {
-            white-space: nowrap;
-        }
-
     }
 
+    span {
+        white-space: nowrap;
+    }
+
+    .actions {
+        sp-action-button {
+            width: 50%;
+        }
+    }
+}
+
+#save {
+
     .output-dir {
-        padding: 1rem 0.5rem ;
+        padding: 1rem 0.5rem;
     }
 
     a {

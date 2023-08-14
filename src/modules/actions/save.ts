@@ -16,8 +16,8 @@ export function getLastScaleSize() {
     const storageValue = localStorage.getItem('lastScaleImageDescriptor');
     if (storageValue) {
         const descriptor = JSON.parse(storageValue);
-        const width = descriptor.width?.value ?? -1;
-        const height = descriptor.height?.value ?? -1;
+        const width = descriptor.width?.value ?? descriptor.width?._value ?? -1;
+        const height = descriptor.height?.value ?? descriptor.height?._value ?? -1;
         return Math.max(width, height);
     }
 }

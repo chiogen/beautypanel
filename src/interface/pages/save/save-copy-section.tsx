@@ -1,44 +1,31 @@
 import i18next from 'i18next';
-import * as path from 'path';
-import { app, core } from 'photoshop';
+import { core } from 'photoshop';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { handleException } from '../../../common/errors/handle-error';
+import { Card } from '../../../components/card';
 import { getLastScaleSize, saveScaledCopy, saveUnscaledCopy } from '../../../modules/actions/save';
 import { TState } from '../../../store';
 
 export const SaveCopySection = () => {
     const preferredSaveFormat = useSelector<TState, string>(state => state.save.preferredSaveFormat);
-
     const scaleWidth = String(getLastScaleSize() ?? '');
-    const saveFolder = getCopyOutputFolder();
 
     return (
-        <div className="section">
-            <h3>{i18next.t('savePage.saveScaledCopyTo')}</h3>
-            <sp-action-button style={{ display: 'flex' }} onClick={onSaveScaledCopyButtonClicked}>
-                {i18next.t('savePage.saveScaledButtonText')} {preferredSaveFormat} {scaleWidth}
-            </sp-action-button>
-            <h3>{i18next.t('savePage.saveUnscaledCopyTo')}</h3>
-            <sp-action-button style={{ display: 'flex' }} onClick={onSaveUnscaledCopyButtonClicked}>
-                {i18next.t('savePage.saveUnscaledButtonText')} {preferredSaveFormat}
-            </sp-action-button>
-
-            <div className="output-dir">
-                <div>
-                    <span> {i18next.t('savePage.outputFolder')} {saveFolder} </span>
-                </div>
-                <i>Currently photoshop ignores the preferred output folder, so this information is useless.</i>
-            </div>
-        </div>
+        <>
+            <Card title={i18next.t('savePage.saveScaledCopyTo')}>
+                <sp-action-button style={{ display: 'flex' }} onClick={onSaveScaledCopyButtonClicked}>
+                    {i18next.t('savePage.saveScaledButtonText')} {preferredSaveFormat} {scaleWidth}
+                </sp-action-button>
+            </Card>
+            <Card title={i18next.t('savePage.saveUnscaledCopyTo')}>
+                <sp-action-button style={{ display: 'flex' }} onClick={onSaveUnscaledCopyButtonClicked}>
+                    {i18next.t('savePage.saveUnscaledButtonText')} {preferredSaveFormat}
+                </sp-action-button>
+            </Card>
+        </>
     );
 };
-
-function getCopyOutputFolder() {
-    if (app.activeDocument?.path) {
-        return path.parse(app.activeDocument.path).dir;
-    }
-}
 
 async function onSaveScaledCopyButtonClicked() {
     try {

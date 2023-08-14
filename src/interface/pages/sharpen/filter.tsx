@@ -10,19 +10,19 @@ import { executeSelectiveFilter } from '../../../modules/actions/selective-filte
 import { filterUnsharpMask } from '../../../modules/filter/sharpen/unsharp-mask';
 import { selectLayers } from '../../../modules/image/select-layers';
 import { store } from '../../../store';
+import { Card } from '../../../components/card';
 
 export const SharpenFilters = () => (
-    <div className="section filters">
-        <h3>{i18next.t('sharpen.filters')}</h3>
-        <div className="flex">
+    <Card title={i18next.t('sharpen.filters')}>
+        <div className="flex stretch filter-buttons">
             <sp-action-button onClick={onUnsharpMaskButtonClicked}> {i18next.t('sharpen.unsharpen')} </sp-action-button>
             <sp-action-button onClick={onSelectiveFilterButtonClicked}> {i18next.t('sharpen.selective')} </sp-action-button>
         </div>
-        <div className="flex">
+        <div className="flex stretch filter-buttons">
             <sp-action-button onClick={onFreqSeparationFilterButtonClicked}># {i18next.t('sharpen.frequencySeparation')} </sp-action-button>
             <sp-action-button onClick={onMaskedFilterButtonClicked}># {i18next.t('sharpen.masked')} </sp-action-button>
         </div>
-    </div>
+    </Card>
 );
 
 async function onUnsharpMaskButtonClicked() {

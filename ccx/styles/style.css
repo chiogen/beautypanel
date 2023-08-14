@@ -123,7 +123,8 @@ body {
   flex-grow: 1;
 }
 
-.section {
+.section,
+.card {
   background-color: rgba(0, 0, 0, 0.2);
   padding: 5px;
   margin: 8px 4px;
@@ -162,27 +163,15 @@ dialog .actions sp-action-button {
   width: 100px;
 }
 
-#frequency-separation {
-  display: flex;
-}
-#frequency-separation > sp-action-button {
-  flex-grow: 1;
-}
-#frequency-separation > div {
-  flex-grow: 1;
-  display: flex;
-}
-#frequency-separation > div > sp-action-button {
-  flex-grow: 1;
-}
-
-#sharpen .filters sp-action-button {
+.filter-buttons sp-action-button {
   width: 50%;
 }
-#sharpen .options div {
+
+.sharpen-options {
   margin-left: 1rem;
 }
-#sharpen .presets sp-action-button {
+
+.unsharp-mask-preset-buttons sp-action-button {
   text-align: center;
   height: 3rem;
 }
@@ -199,19 +188,28 @@ dialog .actions sp-action-button {
   margin: 0 0.5rem;
 }
 
-#save #document-information {
-  display: contents;
+.copyright-text-container {
+  padding: 5px;
+  justify-content: stretch;
 }
-#save #document-information > div {
+.copyright-text-container sp-textarea {
+  flex: 1 1;
+}
+
+.document-information .row {
   padding-left: 1em;
   padding-right: 1em;
 }
-#save #document-information > div > span {
+.document-information .row > span {
   width: 100px;
 }
-#save #document-information span {
+.document-information span {
   white-space: nowrap;
 }
+.document-information .actions sp-action-button {
+  width: 50%;
+}
+
 #save .output-dir {
   padding: 1rem 0.5rem;
 }

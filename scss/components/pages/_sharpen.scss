@@ -1,20 +1,12 @@
-#sharpen {
-    .filters {
-        sp-action-button {
-            width: 50%;
-        }
-    }
+.filter-buttons sp-action-button {
+    width: 50%;
+}
 
-    .options {
-        div {
-            margin-left: 1rem;
-        }
-    }
+.sharpen-options {
+    margin-left: 1rem;
+}
 
-    .presets {
-        sp-action-button {
-            text-align: center;
-            height: 3rem;
-        }
-    }
+.unsharp-mask-preset-buttons sp-action-button {
+    text-align: center;
+    height: 3rem;
 }

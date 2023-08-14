@@ -5,6 +5,7 @@ import { handleException } from '../../../common/errors/handle-error';
 import { setColorForDodgeAndBurn } from '../../../modules/actions/dodge-and-burn';
 import { TState } from '../../../store';
 import i18next from 'i18next';
+import type { ActionButton } from '@spectrum-web-components/action-button';
 
 export const DodgeAndBurnColorSelection = () => {
 
@@ -44,14 +45,14 @@ export const DodgeAndBurnColorSelection = () => {
     );
 };
 
-async function setColorFodDodgeAndBurnListener(e: React.MouseEvent<HTMLButtonElement>) {
+async function setColorFodDodgeAndBurnListener(e: React.MouseEvent<ActionButton>) {
     try {
 
         const button = e.target as HTMLButtonElement;
         const colorCode = button.dataset.color;
 
         if (colorCode) {
-    
+
             await core.executeAsModal(setColorForDodgeAndBurn(colorCode), {
                 commandName: 'Select Dodge And Burn Color ' + colorCode
             });

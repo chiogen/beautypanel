@@ -29,8 +29,9 @@ export const OpacityPresetEditDialog = () => {
     );
 };
 
-function presetInputValueChanged(e: React.ChangeEvent<HTMLInputElement>) {
-    const value = parseInt(e.currentTarget.value.replace(/,/, '.'));
+function presetInputValueChanged(e: React.FormEvent<HTMLElement>) {
+    const element = e.currentTarget as HTMLInputElement;
+    const value = parseInt(element.value.replace(/,/, '.'));
     store.dispatch(updateOpacityPresetEditValue(value));
 }
 function cancelPresetEdit() {

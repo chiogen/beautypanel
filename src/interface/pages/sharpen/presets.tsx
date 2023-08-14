@@ -1,9 +1,10 @@
-import * as React from 'react';
 import i18next from 'i18next';
-import { PresetsManager } from '../../../common/presets-manager';
 import { app, core } from 'photoshop';
-import { filterUnsharpMask } from '../../../modules/filter/sharpen/unsharp-mask';
+import * as React from 'react';
+import { PresetsManager } from '../../../common/presets-manager';
 import { DialogOptions } from '../../../enums/dialog-options';
+import { filterUnsharpMask } from '../../../modules/filter/sharpen/unsharp-mask';
+import { Card } from '../../../components/card';
 
 type S = {};
 
@@ -21,20 +22,18 @@ interface UnsharpMaskPreset {
     radius: number
 }
 
-
 export class Presets extends React.Component<{}, S> {
 
     private presets = new PresetsManager<UnsharpMaskPreset>('unsharpmask', _defaultPresets);
-    
+
     render() {
         const presets = this.presets.getAll();
         return (
-            <div className="section presets">
-                <h3>{i18next.t('sharpen.presets')}</h3>
-                <div className="flex stretch">
+            <Card title={i18next.t('sharpen.presets')}>
+                <div className="flex stretch unsharp-mask-preset-buttons">
                     {presets.map(this.renderPreset.bind(this))}
                 </div>
-            </div>
+            </Card>
         );
     }
 
@@ -59,14 +58,14 @@ export class Presets extends React.Component<{}, S> {
         }
     }
     private async _executePreset(event: React.MouseEvent, preset: UnsharpMaskPreset, index: number) {
-    
+
         const result = await filterUnsharpMask({
             amount: preset.amount,
             radius: preset.radius,
             threshold: 0,
             dialogOptions: DialogOptions.Display
         });
-    
+
         if (event.altKey && result.amount && result.radius) {
             this.presets.set(index, {
                 amount: result.amount._value,
@@ -74,7 +73,7 @@ export class Presets extends React.Component<{}, S> {
             });
             this.forceUpdate();
         }
-        
+
     }
 
 }

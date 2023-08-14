@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { setToolOpacity } from '../../../reducer/current-tool-options';
 import { openOpacityPresetEdit } from '../../../reducer/tools';
 import { TState, store } from '../../../store';
+import type { ActionButton } from '@spectrum-web-components/action-button';
 
 type OpacityPresetButtonProps = {
     index: number
@@ -19,8 +20,8 @@ export const OpacityPresetButton = ({ index }: OpacityPresetButtonProps) => {
     );
 };
 
-async function onPresetClick(e: React.MouseEvent<HTMLButtonElement>) {
-    const button = e.currentTarget as HTMLButtonElement;
+async function onPresetClick(e: React.MouseEvent<ActionButton>) {
+    const button = e.currentTarget;
 
     if (e.button !== 0)
         return;

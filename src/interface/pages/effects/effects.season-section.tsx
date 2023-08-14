@@ -1,3 +1,4 @@
+import type { ActionButton } from '@spectrum-web-components/action-button';
 import i18next from 'i18next';
 import { app, core } from 'photoshop';
 import * as React from 'react';
@@ -6,7 +7,7 @@ import { SeasonProfile, createSeasonEffect } from '../../../modules/actions/seas
 
 export const EffectsSeasonSection = () => {
     return (
-        <div id="seasons" className="section">
+        <div id="seasons" className="card">
             <h3>{i18next.t('effects.season.title')}</h3>
             <div className="flex-stack">
                 <sp-action-button onClick={onCreateSpringEffectButtonClicked}># {i18next.t('effects.season.spring')}</sp-action-button>
@@ -16,7 +17,7 @@ export const EffectsSeasonSection = () => {
     );
 };
 
-async function onCreateAutumnEffectButtonClicked(e: React.MouseEvent<HTMLButtonElement>) {
+async function onCreateAutumnEffectButtonClicked(e: React.MouseEvent<ActionButton>) {
     try {
 
         if (e.altKey) {
@@ -80,7 +81,7 @@ function optAutumnEffect() {
 
 }
 
-async function onCreateSpringEffectButtonClicked(_e: React.MouseEvent<HTMLButtonElement>) {
+async function onCreateSpringEffectButtonClicked(_e: React.MouseEvent<ActionButton>) {
     try {
 
         throw new Error('No profile defined.');

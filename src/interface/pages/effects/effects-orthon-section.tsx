@@ -3,11 +3,11 @@ import * as React from 'react';
 import { createOrthonEffectLayerFromV1, executeCreateOrthonLayer, executeOrthonEffectSmart } from '../../../modules/actions/effects';
 import { app, core } from 'photoshop';
 import { handleException } from '../../../common/errors/handle-error';
+import { Card } from '../../../components/card';
 
 export const EffectsOrthonSection = () => {
     return (
-        <div className='section'>
-            <h3>{i18next.t('effects.orton')}</h3>
+        <Card title={i18next.t('effects.orton')}>
             <div className="orthon-effect flex stack">
                 <sp-action-button onClick={triggerLegacyOrthonEffect}>{i18next.t('effects.ortonFromOldVersion')}</sp-action-button>
                 <div className="helper-text">
@@ -26,7 +26,7 @@ export const EffectsOrthonSection = () => {
                     Gaussian Blur (Smart Object) + High Pass (Smart Object)
                 </div>
             </div>
-        </div>
+        </Card>
     );
 };
 

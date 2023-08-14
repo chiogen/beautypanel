@@ -2,18 +2,16 @@ import i18next from 'i18next';
 import { app, core } from 'photoshop';
 import * as React from 'react';
 import { executeFrequencySeparation, selectLayerDetailsForFrequencySeparation, selectLayerSoftForFrequencySeparation } from '../../../modules/actions/frequency-separation';
+import { Card } from '../../../components/card';
 
 export const FrequencySeparation = () => (
-    <div className="section">
-        <h3 className="title"> {i18next.t('frequencySeparation.long')} </h3>
-        <div id="frequency-separation">
-            <sp-action-button onClick={onFrequencySeparationClicked}>{i18next.t('frequencySeparation.short')}</sp-action-button>
-            <div>
-                <sp-action-button onClick={onSelectLayerDetailsClicked}>{i18next.t('frequencySeparation.details')}</sp-action-button>
-                <sp-action-button onClick={onSelectLayerSoftClicked}>{i18next.t('frequencySeparation.soft')}</sp-action-button>
-            </div>
+    <Card title={i18next.t('frequencySeparation.long')} contentStyle='inline-stretch'>
+        <sp-action-button onClick={onFrequencySeparationClicked}>{i18next.t('frequencySeparation.short')}</sp-action-button>
+        <div className="flex stretch">
+            <sp-action-button onClick={onSelectLayerDetailsClicked}>{i18next.t('frequencySeparation.details')}</sp-action-button>
+            <sp-action-button onClick={onSelectLayerSoftClicked}>{i18next.t('frequencySeparation.soft')}</sp-action-button>
         </div>
-    </div>
+    </Card>
 );
 
 async function onFrequencySeparationClicked(e?: React.MouseEvent) {
@@ -47,7 +45,7 @@ async function onSelectLayerDetailsClicked() {
         await core.executeAsModal(selectLayerDetailsForFrequencySeparation, {
             commandName: 'Select Layer Details'
         });
-        
+
     } catch (err) {
         console.error(err);
         app.showAlert(err.message || err);

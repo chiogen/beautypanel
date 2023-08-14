@@ -7,29 +7,25 @@ import { useDodgeAndBurnColor } from '../../../reducer/tools';
 import { store } from '../../../store';
 import { DodgeAndBurnColorSelection } from './dodge-and-burn-color-selection';
 import { DodgeAndBurnToolSelection } from './dodge-and-burn-tool-selection';
-
+import { Card } from '../../../components/card';
 
 export const DodgeAndBurn = () => {
     return (
-        <div id="dodge-and-burn-section" className="section">
-            <h3 className="title">Dodge and Burn</h3>
-            <div id="dodge-and-burn">
-                <div className="flex stretch">
-                    <sp-action-button onClick={excecuteWithGradient}># {i18next.t('dodgeAndBurn.gradient')}</sp-action-button>
-                    <sp-action-button onClick={execute}>{i18next.t('dodgeAndBurn.default')}</sp-action-button>
-                </div>
-                <DodgeAndBurnColorSelection />
-                <DodgeAndBurnToolSelection />
+        <Card title='Dodge and Burn' contentStyle='stacked'>
+            <div className="flex stretch">
+                <sp-action-button onClick={excecuteWithGradient}># {i18next.t('dodgeAndBurn.gradient')}</sp-action-button>
+                <sp-action-button onClick={execute}>{i18next.t('dodgeAndBurn.default')}</sp-action-button>
             </div>
-        </div>
+            <DodgeAndBurnColorSelection />
+            <DodgeAndBurnToolSelection />
+        </Card>
     );
 };
 
 async function execute() {
 
-    if (!app.activeDocument) {
+    if (!app.activeDocument)
         return;
-    }
 
     try {
 
@@ -42,14 +38,12 @@ async function execute() {
     } catch (err) {
         await handleException(err);
     }
-
 }
 
 async function excecuteWithGradient() {
 
-    if (!app.activeDocument) {
+    if (!app.activeDocument)
         return;
-    }
 
     try {
 
@@ -60,5 +54,4 @@ async function excecuteWithGradient() {
     } catch (err) {
         await handleException(err);
     }
-
 }
