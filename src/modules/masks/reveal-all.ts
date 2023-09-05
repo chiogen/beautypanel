@@ -6,6 +6,8 @@ import { checkDescriptorError } from '../../common/errors/handle-error';
 
 export async function createRevealAllMask(layer: Layer): Promise<Layer> {
 
+    const document = layer.document;
+
     const descriptor: ActionDescriptor = {
         _obj: 'make',
         new: {
@@ -30,6 +32,6 @@ export async function createRevealAllMask(layer: Layer): Promise<Layer> {
 
     checkDescriptorError(result);
 
-    return app.activeDocument!.activeLayers[0];
+    return document.activeLayers[0];
 
 }

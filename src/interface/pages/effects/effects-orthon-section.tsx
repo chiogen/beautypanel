@@ -42,7 +42,7 @@ const createOrthonVariant = (variant: () => Promise<void>) => async () => {
         });
 
     } catch (err) {
-        handleException(err);
+        await handleException(err);
     }
 };
 

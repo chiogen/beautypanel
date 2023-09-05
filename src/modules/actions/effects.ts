@@ -63,16 +63,18 @@ export async function createOrthonEffectLayerFromV1() {
         throw new Error('No document active.');
 
     const orthonLayer = await duplicateReferenceLayer(document);
-
     orthonLayer.name = BeautyPanel.layerNames.orton;
     orthonLayer.blendMode = constants.BlendMode.NORMAL;
     orthonLayer.opacity = 50;
-
     await filterGaussianBlur(5, DialogOptions.Display);
-    await createRevealAllMask(orthonLayer);
+
+    const revealAllLayer = await createRevealAllMask(orthonLayer);
 
     moveLayerToTop(orthonLayer);
-    
+
+    const group = await document.groupLayers([orthonLayer, revealAllLayer]);
+    group!.name = BeautyPanel.layerNames.orton;
+
 }
 
 export async function executeCreateOrthonLayer() {
@@ -81,18 +83,21 @@ export async function executeCreateOrthonLayer() {
     if (!document)
         throw new Error('No document active.');
 
-    const orthonLayer = await duplicateReferenceLayer(document);
-
-    orthonLayer.name = BeautyPanel.layerNames.orton;
-    orthonLayer.blendMode = constants.BlendMode.NORMAL;
-    orthonLayer.opacity = 50;
-
+    const baselayer = await duplicateReferenceLayer(document);
+    baselayer.name = BeautyPanel.layerNames.orton;
+    baselayer.blendMode = constants.BlendMode.NORMAL;
+    baselayer.opacity = 50;
+    baselayer.name = 'base';
     await filterGaussianBlur(5, DialogOptions.Display);
-    await createAdjustmentLayer({
+
+    const adjustmentLayer = await createAdjustmentLayer({
         levels: {
             adjustment: {}
         }
     });
+
+    const group = await document.groupLayers([baselayer, adjustmentLayer]);
+    group!.name = BeautyPanel.layerNames.orton;
 
 }
 
@@ -113,5 +118,8 @@ export async function executeOrthonEffectSmart() {
     await detailsLayer.applyHighPass(10);
     detailsLayer.blendMode = constants.BlendMode.SOFTLIGHT;
     detailsLayer.name = 'Orthon Details';
+
+    const group = await document.groupLayers([detailsLayer, blurLayer]);
+    group!.name = BeautyPanel.layerNames.orton;
 
 }
