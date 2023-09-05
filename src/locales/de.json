@@ -48,7 +48,8 @@
             "title": "Season Effekt",
             "spring": "Frühling",
             "autumn": "Herbst",
-            "autumnEffectCommand": "Herbst Effekt"
+            "autumnEffectCommand": "Herbst Effekt",
+            "springEffectCommand": "Frühling Effekt"
         }
     },
     "savePage": {

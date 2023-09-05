@@ -109,6 +109,9 @@ const layerNames = {
     get autumn() {
         return getLayerName(E_Layer.Autumn);
     },
+    get spring() {
+        return getLayerName(E_Layer.Spring);
+    },
     get copyright() {
         return getLayerName(E_Layer.Copyright);
     }
