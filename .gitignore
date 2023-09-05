@@ -116,6 +116,8 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# Webstorm files
+.idea/
 
 # Build files
 ccx/index.css
